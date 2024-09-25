@@ -163,7 +163,7 @@ jobs:
           git config --local user.name "GitHub Action"
 
       # Download the .vsix artifacts
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -202,7 +202,7 @@ jobs:
         run: git pull origin dev
 
       # 1. Download the artifacts
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
 
       # 2. Publish the extension to VS Code Marketplace
       - name: Publish to VS Code Marketplace
