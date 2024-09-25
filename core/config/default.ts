@@ -1,7 +1,7 @@
 import {
   ContextProviderWithParams,
   ModelDescription,
-  SerializedContinueConfig,
+  SerializedSoftcodesConfig,
   SlashCommandDescription,
 } from "../index.js";
 
@@ -90,7 +90,7 @@ export const defaultSlashCommandsJetBrains = [
   },
 ];
 
-export const defaultConfig: SerializedContinueConfig = {
+export const defaultConfig: SerializedSoftcodesConfig = {
   models: [],
   customCommands: [
     {
@@ -109,7 +109,7 @@ export const defaultConfig: SerializedContinueConfig = {
   slashCommands: defaultSlashCommandsVscode,
 };
 
-export const defaultConfigJetBrains: SerializedContinueConfig = {
+export const defaultConfigJetBrains: SerializedSoftcodesConfig = {
   models: FREE_TRIAL_MODELS,
   customCommands: [
     {

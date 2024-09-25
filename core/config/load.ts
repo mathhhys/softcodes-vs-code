@@ -11,11 +11,11 @@ import { contextProviderClassFromName } from "../context/providers/index.js";
 import { AllRerankers } from "../context/rerankers/index.js";
 import { LLMReranker } from "../context/rerankers/llm.js";
 import {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedSoftcodesConfig,
   Config,
   ContextProviderWithParams,
-  ContinueConfig,
-  ContinueRcJson,
+  SoftcodesConfig,
+  SoftcodesRcJson,
   CustomContextProvider,
   CustomLLM,
   EmbeddingsProviderDescription,
@@ -26,7 +26,7 @@ import {
   ModelDescription,
   Reranker,
   RerankerDescription,
-  SerializedContinueConfig,
+  SerializedSoftcodesConfig,
   SlashCommand,
 } from "../index.js";
 import TransformersJsEmbeddingsProvider from "../indexing/embeddings/TransformersJsEmbeddingsProvider.js";
@@ -38,7 +38,7 @@ import { llmFromDescription } from "../llm/llms/index.js";
 
 import { execSync } from "child_process";
 import CodebaseContextProvider from "../context/providers/CodebaseContextProvider.js";
-import ContinueProxyContextProvider from "../context/providers/ContinueProxyContextProvider.js";
+import SoftcodesProxyContextProvider from "../context/providers/SoftcodesProxyContextProvider.js";
 import { fetchwithRequestOptions } from "../util/fetchWithOptions.js";
 import { copyOf } from "../util/index.js";
 import mergeJson from "../util/merge.js";
@@ -48,7 +48,7 @@ import {
   getConfigJsonPath,
   getConfigJsonPathForRemote,
   getConfigTsPath,
-  getContinueDotEnv,
+  getSoftcodesDotEnv,
   readAllGlobalPromptFiles,
 } from "../util/paths.js";
 import {
@@ -63,13 +63,13 @@ import {
   slashCommandFromPromptFile,
 } from "./promptFile.js";
 
-function resolveSerializedConfig(filepath: string): SerializedContinueConfig {
+function resolveSerializedConfig(filepath: string): SerializedSoftcodesConfig {
   let content = fs.readFileSync(filepath, "utf8");
-  const config = JSONC.parse(content) as unknown as SerializedContinueConfig;
+  const config = JSONC.parse(content) as unknown as SerializedSoftcodesConfig;
   if (config.env && Array.isArray(config.env)) {
     const env = {
       ...process.env,
-      ...getContinueDotEnv(),
+      ...getSoftcodesDotEnv(),
     };
 
     config.env.forEach((envVar) => {
@@ -82,7 +82,7 @@ function resolveSerializedConfig(filepath: string): SerializedContinueConfig {
     });
   }
 
-  return JSONC.parse(content) as unknown as SerializedContinueConfig;
+  return JSONC.parse(content) as unknown as SerializedSoftcodesConfig;
 }
 
 const configMergeKeys = {
@@ -93,13 +93,13 @@ const configMergeKeys = {
 };
 
 function loadSerializedConfig(
-  workspaceConfigs: ContinueRcJson[],
+  workspaceConfigs: SoftcodesRcJson[],
   ideSettings: IdeSettings,
   ideType: IdeType,
-  overrideConfigJson: SerializedContinueConfig | undefined,
-): SerializedContinueConfig {
+  overrideConfigJson: SerializedSoftcodesConfig | undefined,
+): SerializedSoftcodesConfig {
   const configPath = getConfigJsonPath(ideType);
-  let config: SerializedContinueConfig = overrideConfigJson!;
+  let config: SerializedSoftcodesConfig = overrideConfigJson!;
   if (!config) {
     try {
       config = resolveSerializedConfig(configPath);
@@ -146,7 +146,7 @@ function loadSerializedConfig(
 }
 
 async function serializedToIntermediateConfig(
-  initial: SerializedContinueConfig,
+  initial: SerializedSoftcodesConfig,
   ide: IDE,
   loadPromptFiles: boolean = true,
 ): Promise<Config> {
@@ -179,7 +179,7 @@ async function serializedToIntermediateConfig(
       .flat()
       .filter(({ path }) => path.endsWith(".prompt"));
 
-    // Also read from ~/.continue/.prompts
+    // Also read from ~/.softcodes/.prompts
     promptFiles.push(...readAllGlobalPromptFiles());
 
     for (const file of promptFiles) {
@@ -217,7 +217,7 @@ async function intermediateToFinalConfig(
   writeLog: (log: string) => Promise<void>,
   workOsAccessToken: string | undefined,
   allowFreeTrial: boolean = true,
-): Promise<ContinueConfig> {
+): Promise<SoftcodesConfig> {
   // Auto-detect models
   let models: BaseLLM[] = [];
   for (const desc of config.models) {
@@ -379,9 +379,9 @@ async function intermediateToFinalConfig(
       }
       const instance: IContextProvider = new cls(provider.params);
 
-      // Handle continue-proxy
-      if (instance.description.title === "continue-proxy") {
-        (instance as ContinueProxyContextProvider).workOsAccessToken =
+      // Handle softcodes-proxy
+      if (instance.description.title === "softcodes-proxy") {
+        (instance as SoftcodesProxyContextProvider).workOsAccessToken =
           workOsAccessToken;
       }
 
@@ -448,8 +448,8 @@ async function intermediateToFinalConfig(
 }
 
 function finalToBrowserConfig(
-  final: ContinueConfig,
-): BrowserSerializedContinueConfig {
+  final: SoftcodesConfig,
+): BrowserSerializedSoftcodesConfig {
   return {
     allowAnonymousTelemetry: final.allowAnonymousTelemetry,
     models: final.models.map((m) => ({
@@ -548,7 +548,7 @@ async function buildConfigTs() {
     }
   } catch (e) {
     console.log(
-      `Build error. Please check your ~/.continue/config.ts file: ${e}`,
+      `Build error. Please check your ~/.softcodes/config.ts file: ${e}`,
     );
     return undefined;
   }
@@ -561,14 +561,14 @@ async function buildConfigTs() {
 
 async function loadFullConfigNode(
   ide: IDE,
-  workspaceConfigs: ContinueRcJson[],
+  workspaceConfigs: SoftcodesRcJson[],
   ideSettings: IdeSettings,
   ideType: IdeType,
   uniqueId: string,
   writeLog: (log: string) => Promise<void>,
   workOsAccessToken: string | undefined,
-  overrideConfigJson: SerializedContinueConfig | undefined,
-): Promise<ContinueConfig> {
+  overrideConfigJson: SerializedSoftcodesConfig | undefined,
+): Promise<SoftcodesConfig> {
   // Serialized config
   let serialized = loadSerializedConfig(
     workspaceConfigs,
@@ -635,5 +635,5 @@ export {
   intermediateToFinalConfig,
   loadFullConfigNode,
   serializedToIntermediateConfig,
-  type BrowserSerializedContinueConfig,
+  type BrowserSerializedSoftcodesConfig,
 };

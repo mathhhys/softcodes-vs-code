@@ -17,11 +17,11 @@ const DefaultModelOptions: {
   [key: string]: { [key in ModelOption]?: string };
 } = {
   OpenAI: {
-    apiKey: "",
+    apiKey: "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",
     model: "gpt-4",
   },
   OpenAIFreeTrial: {
-    apiKey: "",
+    apiKey: "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",
     model: "gpt-4",
   },
   Anthropic: {
@@ -29,7 +29,7 @@ const DefaultModelOptions: {
     model: "claude-2",
   },
   default: {
-    apiKey: "",
+    apiKey: "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",
     model: "gpt-4",
   },
 };

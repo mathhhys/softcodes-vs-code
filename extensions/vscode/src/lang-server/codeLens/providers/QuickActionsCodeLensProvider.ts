@@ -1,22 +1,22 @@
-import { ContinueConfig, QuickActionConfig } from "core";
+import { SoftcodesConfig, QuickActionConfig } from "core";
 import { Telemetry } from "core/util/posthog";
 import * as vscode from "vscode";
 import { QuickEditShowParams } from "../../../quickEdit/QuickEditQuickPick";
 import {
-  CONTINUE_WORKSPACE_KEY,
-  getContinueWorkspaceConfig,
+  SOFTCODES_WORKSPACE_KEY,
+  getSoftcodesWorkspaceConfig,
 } from "../../../util/workspaceConfig";
 import { isTutorialFile } from "./TutorialCodeLensProvider";
 
 export const ENABLE_QUICK_ACTIONS_KEY = "enableQuickActions";
 
-export function getQuickActionsConfig(config: ContinueConfig) {
+export function getQuickActionsConfig(config: SoftcodesConfig) {
   return config.experimental?.quickActions;
 }
 
 export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
   vscode.workspace.onDidChangeConfiguration((e) => {
-    const configKey = `${CONTINUE_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
+    const configKey = `${SOFTCODES_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
 
     if (e.affectsConfiguration(configKey)) {
       Telemetry.capture("VSCode Quick Actions Settings Changed", {
@@ -31,11 +31,11 @@ export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
 export function toggleQuickActions() {
   const curStatus = quickActionsEnabledStatus();
 
-  getContinueWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
+  getSoftcodesWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
 }
 
 export function quickActionsEnabledStatus() {
-  return getContinueWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
+  return getSoftcodesWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
 }
 
 /**
@@ -74,12 +74,12 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
       return sendToChat
         ? {
             title,
-            command: "continue.customQuickActionSendToChat",
+            command: "softcodes.customQuickActionSendToChat",
             arguments: [prompt, range],
           }
         : {
             title,
-            command: "continue.customQuickActionStreamInlineEdit",
+            command: "softcodes.customQuickActionStreamInlineEdit",
             arguments: [prompt, range],
           };
     });
@@ -87,8 +87,8 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
 
   getDefaultCommand(range: vscode.Range): vscode.Command[] {
     const quickEdit: vscode.Command = {
-      command: "continue.defaultQuickAction",
-      title: "Continue",
+      command: "softcodes.defaultQuickAction",
+      title: "Softcodes",
       arguments: [{ range } as QuickEditShowParams],
     };
 

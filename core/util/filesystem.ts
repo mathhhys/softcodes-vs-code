@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import {
-  ContinueRcJson,
+  SoftcodesRcJson,
   FileType,
   IDE,
   IdeInfo,
@@ -14,7 +14,7 @@ import {
   Thread,
 } from "../index.d.js";
 
-import { getContinueGlobalPath } from "./paths.js";
+import { getSoftcodesGlobalPath } from "./paths.js";
 
 class FileSystemIde implements IDE {
   constructor(private readonly workspaceDir: string) {}
@@ -114,7 +114,7 @@ class FileSystemIde implements IDE {
     return Promise.resolve("NOT_UNIQUE");
   }
 
-  getWorkspaceConfigs(): Promise<ContinueRcJson[]> {
+  getWorkspaceConfigs(): Promise<SoftcodesRcJson[]> {
     return Promise.resolve([]);
   }
 
@@ -172,8 +172,8 @@ class FileSystemIde implements IDE {
     return Promise.resolve();
   }
 
-  getContinueDir(): Promise<string> {
-    return Promise.resolve(getContinueGlobalPath());
+  getSoftcodesDir(): Promise<string> {
+    return Promise.resolve(getSoftcodesGlobalPath());
   }
 
   openFile(path: string): Promise<void> {

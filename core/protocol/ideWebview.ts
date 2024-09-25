@@ -38,9 +38,9 @@ export type ToWebviewFromIdeProtocol = ToWebviewFromIdeOrCoreProtocol & {
   ];
   newSessionWithPrompt: [{ prompt: string }, void];
   userInput: [{ input: string }, void];
-  focusContinueInput: [undefined, void];
-  focusContinueInputWithoutClear: [undefined, void];
-  focusContinueInputWithNewSession: [undefined, void];
+  focusSoftcodesInput: [undefined, void];
+  focusSoftcodesInputWithoutClear: [undefined, void];
+  focusSoftcodesInputWithNewSession: [undefined, void];
   highlightedCode: [
     {
       rangeInFileWithContents: RangeInFileWithContents;

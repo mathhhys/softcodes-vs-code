@@ -1,14 +1,14 @@
-import { ContinueProxyReranker } from "../../context/rerankers/ContinueProxyReranker.js";
+import { SoftcodesProxyReranker } from "../../context/rerankers/SoftcodesProxyReranker.js";
 import { ControlPlaneClient } from "../../control-plane/client.js";
 import { TeamAnalytics } from "../../control-plane/TeamAnalytics.js";
 import {
-  ContinueRcJson,
+  SoftcodesRcJson,
   IDE,
   IdeSettings,
-  SerializedContinueConfig,
+  SerializedSoftcodesConfig,
 } from "../../index.js";
-import ContinueProxyEmbeddingsProvider from "../../indexing/embeddings/ContinueProxyEmbeddingsProvider.js";
-import ContinueProxy from "../../llm/llms/stubs/ContinueProxy.js";
+import SoftcodesProxyEmbeddingsProvider from "../../indexing/embeddings/SoftcodesProxyEmbeddingsProvider.js";
+import SoftcodesProxy from "../../llm/llms/stubs/SoftcodesProxy.js";
 import { Telemetry } from "../../util/posthog.js";
 import { loadFullConfigNode } from "../load.js";
 
@@ -17,9 +17,9 @@ export default async function doLoadConfig(
   ideSettingsPromise: Promise<IdeSettings>,
   controlPlaneClient: ControlPlaneClient,
   writeLog: (message: string) => Promise<void>,
-  overrideConfigJson: SerializedContinueConfig | undefined,
+  overrideConfigJson: SerializedSoftcodesConfig | undefined,
 ) {
-  let workspaceConfigs: ContinueRcJson[] = [];
+  let workspaceConfigs: SoftcodesRcJson[] = [];
   try {
     workspaceConfigs = await ide.getWorkspaceConfigs();
   } catch (e) {
@@ -61,20 +61,20 @@ export default async function doLoadConfig(
 
   [...newConfig.models, ...(newConfig.tabAutocompleteModels ?? [])].forEach(
     async (model) => {
-      if (model.providerName === "continue-proxy") {
-        (model as ContinueProxy).workOsAccessToken = workOsAccessToken;
+      if (model.providerName === "softcodes-proxy") {
+        (model as SoftcodesProxy).workOsAccessToken = workOsAccessToken;
       }
     },
   );
 
-  if (newConfig.embeddingsProvider?.providerName === "continue-proxy") {
+  if (newConfig.embeddingsProvider?.providerName === "softcodes-proxy") {
     (
-      newConfig.embeddingsProvider as ContinueProxyEmbeddingsProvider
+      newConfig.embeddingsProvider as SoftcodesProxyEmbeddingsProvider
     ).workOsAccessToken = workOsAccessToken;
   }
 
-  if (newConfig.reranker?.name === "continue-proxy") {
-    (newConfig.reranker as ContinueProxyReranker).workOsAccessToken =
+  if (newConfig.reranker?.name === "softcodes-proxy") {
+    (newConfig.reranker as SoftcodesProxyReranker).workOsAccessToken =
       workOsAccessToken;
   }
 

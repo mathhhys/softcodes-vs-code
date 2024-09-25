@@ -27,11 +27,11 @@ async function writeFile(uri: vscode.Uri, contents: string) {
 
 // THIS IS LOCAL
 export const DIFF_DIRECTORY = path
-  .join(os.homedir(), ".continue", ".diffs")
+  .join(os.homedir(), ".softcodes", ".diffs")
   .replace(/^C:/, "c:");
 
 export class DiffManager {
-  // Create a temporary file in the global .continue directory which displays the updated version
+  // Create a temporary file in the global .softcodes directory which displays the updated version
   // Doing this because virtual files are read-only
   private diffs: Map<string, DiffInfo> = new Map();
 
@@ -104,7 +104,7 @@ export class DiffManager {
 
     const rightUri = uriFromFilePath(newFilepath);
     const leftUri = uriFromFilePath(originalFilepath);
-    const title = "Continue Diff";
+    const title = "Softcodes Diff";
     vscode.commands.executeCommand("vscode.diff", leftUri, rightUri, title);
 
     const editor = vscode.window.activeTextEditor;
@@ -119,7 +119,7 @@ export class DiffManager {
 
     if (
       this.extensionContext.globalState.get<boolean>(
-        "continue.showDiffInfoMessage",
+        "softcodes.showDiffInfoMessage",
       ) !== false
     ) {
       vscode.window
@@ -132,7 +132,7 @@ export class DiffManager {
           if (selection === "Don't show again") {
             // Get the global state
             this.extensionContext.globalState.update(
-              "continue.showDiffInfoMessage",
+              "softcodes.showDiffInfoMessage",
               false,
             );
           }

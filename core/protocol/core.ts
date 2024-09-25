@@ -2,7 +2,7 @@
 import type { AutocompleteInput } from "../autocomplete/completionProvider.js";
 import { ProfileDescription } from "../config/ConfigHandler.js";
 import type {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedSoftcodesConfig,
   ChatMessage,
   ContextItemWithId,
   ContextSubmenuItem,
@@ -13,7 +13,7 @@ import type {
   ModelDescription,
   PersistedSessionInfo,
   RangeInFile,
-  SerializedContinueConfig,
+  SerializedSoftcodesConfig,
   SessionInfo,
   SiteIndexingConfig,
 } from "../index.js";
@@ -44,17 +44,17 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "devdata/log": [{ tableName: string; data: any }, void];
   "config/addOpenAiKey": [string, void];
   "config/addModel": [
-    { model: SerializedContinueConfig["models"][number] },
+    { model: SerializedSoftcodesConfig["models"][number] },
     void,
   ];
   "config/newPromptFile": [undefined, void];
   "config/ideSettingsUpdate": [IdeSettings, void];
   "config/getSerializedProfileInfo": [
     undefined,
-    { config: BrowserSerializedContinueConfig; profileId: string },
+    { config: BrowserSerializedSoftcodesConfig; profileId: string },
   ];
   "config/deleteModel": [{ title: string }, void];
-  "config/reload": [undefined, BrowserSerializedContinueConfig];
+  "config/reload": [undefined, BrowserSerializedSoftcodesConfig];
   "config/listProfiles": [undefined, ProfileDescription[]];
   "context/getContextItems": [
     {

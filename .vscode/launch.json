@@ -19,7 +19,6 @@
       "pauseForSourceMap": false,
       "outFiles": [
         "${workspaceFolder}/extensions/vscode/out/extension.js",
-        "/Users/natesesti/.continue/config.ts"
       ],
       "preLaunchTask": "vscode-extension:build",
       "env": {
@@ -39,8 +38,8 @@
       "internalConsoleOptions": "openOnSessionStart",
       "cwd": "${workspaceFolder}/binary",
       "env": {
-        "CONTINUE_DEVELOPMENT": "true",
-        "CONTINUE_GLOBAL_DIR": "${workspaceFolder}/binary/.continue"
+        "SOFTCODES_DEVELOPMENT": "true",
+        "SOFTCODES_GLOBAL_DIR": "${workspaceFolder}/binary/.softcodes"
       }
     },
     {

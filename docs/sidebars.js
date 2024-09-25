@@ -16,7 +16,7 @@ const sidebars = {
   docsSidebar: [
     "intro",
     "quickstart",
-    "how-to-use-continue",
+    "how-to-use-softcodes",
     {
       type: "category",
       label: "🌉 Setup",

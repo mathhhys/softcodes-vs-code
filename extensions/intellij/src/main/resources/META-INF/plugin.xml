@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.continuedev.continueintellijextension</id>
-    <name>Continue</name>
-    <vendor>continue-dev</vendor>
+    <name>Softcodes</name>
+    <vendor>Softcodes</vendor>
     <depends>com.intellij.modules.platform</depends>
     <idea-version since-build="223.0"/>
 
@@ -35,7 +35,7 @@
                 parentId="tools"
                 instance="com.github.continuedev.continueintellijextension.services.ContinueExtensionConfigurable"
                 id="com.github.continuedev.continueintellijextension.services.ContinueExtensionConfigurable"
-                displayName="Continue"/>
+                displayName="Softcodes"/>
         <applicationService
                 serviceImplementation="com.github.continuedev.continueintellijextension.services.ContinueExtensionSettings"/>
     </extensions>
@@ -92,8 +92,8 @@
             <!-- No shortcut defined -->
         </action>
        
-        <action id="continue.focusContinueInputWithoutClear"
-                class="com.github.continuedev.continueintellijextension.actions.FocusContinueInputWithoutClearAction"
+        <action id="continue.focusSoftcodesInputWithoutClear"
+                class="com.github.continuedev.continueintellijextension.actions.FocusSoftcodesInputWithoutClearAction"
                 text="Add selected code to context"
                 description="Focus Continue Input With Edit">
             <keyboard-shortcut keymap="$default"
@@ -118,8 +118,8 @@
                 icon="AllIcons.Vcs.History"
                 description="View History">
         </action>
-        <action id="continue.focusContinueInput"
-                class="com.github.continuedev.continueintellijextension.actions.FocusContinueInputAction"
+        <action id="continue.focusSoftcodesInput"
+                class="com.github.continuedev.continueintellijextension.actions.FocusSoftcodesInputAction"
                 text="Add selected code to context"
                 description="Focus Continue Input">
             <keyboard-shortcut keymap="$default"

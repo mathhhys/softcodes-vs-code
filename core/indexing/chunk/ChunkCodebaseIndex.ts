@@ -1,5 +1,5 @@
 import { RunResult } from "sqlite3";
-import { IContinueServerClient } from "../../continueServer/interface.js";
+import { ISoftcodesServerClient } from "../../SoftcodesServer/interface.js";
 import { Chunk, IndexTag, IndexingProgressUpdate } from "../../index.js";
 import { getBasename } from "../../util/index.js";
 import { getLanguageForFile } from "../../util/treeSitter.js";
@@ -21,7 +21,7 @@ export class ChunkCodebaseIndex implements CodebaseIndex {
   constructor(
     private readonly readFile: (filepath: string) => Promise<string>,
     private readonly pathSep: string,
-    private readonly continueServerClient: IContinueServerClient,
+    private readonly softcodesServerClient: ISoftcodesServerClient,
     private readonly maxChunkSize: number,
   ) {
     this.readFile = readFile;
@@ -38,10 +38,10 @@ export class ChunkCodebaseIndex implements CodebaseIndex {
     const tagString = tagToString(tag);
 
     // Check the remote cache
-    if (this.continueServerClient.connected) {
+    if (this.softcodesServerClient.connected) {
       try {
         const keys = results.compute.map(({ cacheKey }) => cacheKey);
-        const resp = await this.continueServerClient.getFromIndexCache(
+        const resp = await this.softcodesServerClient.getFromIndexCache(
           keys,
           "chunks",
           repoName,

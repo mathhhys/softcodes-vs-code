@@ -268,7 +268,7 @@ function useChatHandler(dispatch: Dispatch, ideMessenger: IIdeMessenger) {
         );
       }
     } catch (e: any) {
-      console.log("Continue: error streaming response: ", e);
+      console.log("Softcodes: error streaming response: ", e);
       ideMessenger.post("errorPopup", {
         message: `Error streaming response: ${e.message}`,
       });

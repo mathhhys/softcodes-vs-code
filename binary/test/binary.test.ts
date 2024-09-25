@@ -45,7 +45,7 @@ function autodetectPlatformAndArch() {
   return [platform, arch];
 }
 
-const CONTINUE_GLOBAL_DIR = path.join(__dirname, "..", ".continue");
+const SOFTCODES_GLOBAL_DIR = path.join(__dirname, "..", "softcodes");
 
 describe("Test Suite", () => {
   let messenger: IMessenger<ToIdeProtocol, FromIdeProtocol>;
@@ -58,7 +58,7 @@ describe("Test Suite", () => {
       "..",
       "bin",
       `${platform}-${arch}`,
-      `continue-binary${platform === "win32" ? ".exe" : ""}`,
+      `softcodes-binary${platform === "win32" ? ".exe" : ""}`,
     );
     expect(fs.existsSync(binaryPath)).toBe(true);
 
@@ -66,7 +66,7 @@ describe("Test Suite", () => {
       messenger = new CoreBinaryTcpMessenger<ToIdeProtocol, FromIdeProtocol>();
     } else {
       subprocess = spawn(binaryPath, {
-        env: { ...process.env, CONTINUE_GLOBAL_DIR },
+        env: { ...process.env, SOFTCODES_GLOBAL_DIR },
       });
       messenger = new CoreBinaryMessenger<ToIdeProtocol, FromIdeProtocol>(
         subprocess,
@@ -102,8 +102,8 @@ describe("Test Suite", () => {
     expect(resp).toBe("pong");
   });
 
-  it("should create .continue directory at the specified location with expected files", async () => {
-    expect(fs.existsSync(CONTINUE_GLOBAL_DIR)).toBe(true);
+  it("should create .softcodes directory at the specified location with expected files", async () => {
+    expect(fs.existsSync(SOFTCODES_GLOBAL_DIR)).toBe(true);
 
     // Many of the files are only created when trying to load the config
     const config = await messenger.request(
@@ -122,7 +122,7 @@ describe("Test Suite", () => {
     ];
 
     for (const file of expectedFiles) {
-      const filePath = path.join(CONTINUE_GLOBAL_DIR, file);
+      const filePath = path.join(SOFTCODES_GLOBAL_DIR, file);
       expect(fs.existsSync(filePath)).toBe(true);
     }
   });

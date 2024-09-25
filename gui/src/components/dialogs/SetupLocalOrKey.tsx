@@ -25,7 +25,7 @@ function SetupLocalOrKeyDialog() {
     <div className="p-4">
       <h3>Set up your own model</h3>
       <p>
-        To keep using Continue after your free inputs, you can either use your
+        To keep using Softcodes after your free inputs, you can either use your
         own API key, or use a local LLM. To read more about the options, see our{" "}
         <a
           className="cursor-pointer"

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import ContinueButton from "../components/mainInput/ContinueButton";
+import SoftcodesButton from "../components/mainInput/SoftcodesButton";
 
 function MigrationPage() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ function MigrationPage() {
       </h1>
 
       <p>
-        Continue now uses a .json config file. We hope that this takes the
+        Softcodes now uses a .json config file. We hope that this takes the
         guesswork out of setting up.
       </p>
 
@@ -40,7 +40,7 @@ function MigrationPage() {
         server, this message does not apply.
       </i>
 
-      <ContinueButton
+      <SoftcodesButton
         showStop={false}
         onClick={() => {
           navigate("/");

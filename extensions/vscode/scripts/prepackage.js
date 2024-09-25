@@ -64,17 +64,17 @@ const exe = os === "win32" ? ".exe" : "";
       "config_schema.json",
     ),
   );
-  // Modify and copy for .continuerc.json
+  // Modify and copy for .softcodesrc.json
   const schema = JSON.parse(fs.readFileSync("config_schema.json", "utf8"));
-  schema.definitions.SerializedContinueConfig.properties.mergeBehavior = {
+  schema.definitions.SerializedSoftcodesConfig.properties.mergeBehavior = {
     type: "string",
     enum: ["merge", "overwrite"],
     default: "merge",
     title: "Merge behavior",
     markdownDescription:
-      "If set to 'merge', .continuerc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .continuerc.json will overwrite that property from config.json.",
+      "If set to 'merge', .softcodesrc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .softcodesrc.json will overwrite that property from config.json.",
   };
-  fs.writeFileSync("continue_rc_schema.json", JSON.stringify(schema, null, 2));
+  fs.writeFileSync("softcodes_rc_schema.json", JSON.stringify(schema, null, 2));
 
   if (!process.cwd().endsWith("vscode")) {
     // This is sometimes run from root dir instead (e.g. in VS Code tasks)

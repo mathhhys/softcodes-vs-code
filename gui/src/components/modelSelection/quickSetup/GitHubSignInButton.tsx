@@ -55,7 +55,7 @@ function GitHubSignInButton(props: GitHubSignInButtonProps) {
           props.onComplete(jbGhAuthToken);
         }}
       >
-        Continue
+        Softcodes
       </Button>
     </div>
   ) : (

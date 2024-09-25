@@ -22,7 +22,7 @@ class CodeHighlightsContextProvider extends BaseContextProvider {
     extras: ContextProviderExtras,
   ): Promise<ContextItem[]> {
     // const { getHighlightsThatFit } = await import(
-    //   "llm-code-highlighter/src/index.continue.js"
+    //   "llm-code-highlighter/src/index.softcodes.js"
     // );
     const ide = extras.ide;
     const openFiles = await ide.getOpenFiles();

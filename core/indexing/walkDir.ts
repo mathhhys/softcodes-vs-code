@@ -175,7 +175,7 @@ class DFSWalker {
 }
 
 const defaultOptions: WalkerOptions = {
-  ignoreFiles: [".gitignore", ".continueignore"],
+  ignoreFiles: [".gitignore", ".softcodesignore"],
   additionalIgnoreRules: [...DEFAULT_IGNORE_DIRS, ...DEFAULT_IGNORE_FILETYPES],
 };
 

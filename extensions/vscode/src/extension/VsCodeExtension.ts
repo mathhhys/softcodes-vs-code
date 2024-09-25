@@ -7,14 +7,14 @@ import { getConfigJsonPath, getConfigTsPath } from "core/util/paths";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
-import { ContinueCompletionProvider } from "../autocomplete/completionProvider";
+import { SoftcodesCompletionProvider } from "../autocomplete/completionProvider";
 import {
   monitorBatteryChanges,
   setupStatusBar,
   StatusBarStatus,
 } from "../autocomplete/statusBar";
 import { registerAllCommands } from "../commands";
-import { ContinueGUIWebviewViewProvider } from "../ContinueGUIWebviewViewProvider";
+import { SoftcodesGUIWebviewViewProvider } from "../SoftcodesGUIWebviewViewProvider";
 import { registerDebugTracker } from "../debug/debug";
 import { DiffManager } from "../diff/horizontal";
 import { VerticalPerLineDiffManager } from "../diff/verticalPerLine/manager";
@@ -38,7 +38,7 @@ export class VsCodeExtension {
   private extensionContext: vscode.ExtensionContext;
   private ide: VsCodeIde;
   private tabAutocompleteModel: TabAutocompleteModel;
-  private sidebar: ContinueGUIWebviewViewProvider;
+  private sidebar: SoftcodesGUIWebviewViewProvider;
   private windowId: string;
   private diffManager: DiffManager;
   private verticalDiffManager: VerticalPerLineDiffManager;
@@ -75,7 +75,7 @@ export class VsCodeExtension {
     const configHandlerPromise = new Promise<ConfigHandler>((resolve) => {
       resolveConfigHandler = resolve;
     });
-    this.sidebar = new ContinueGUIWebviewViewProvider(
+    this.sidebar = new SoftcodesGUIWebviewViewProvider(
       configHandlerPromise,
       this.windowId,
       this.extensionContext,
@@ -84,7 +84,7 @@ export class VsCodeExtension {
     // Sidebar
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "continue.continueGUIView",
+        "softcodes.softcodesGUIView",
         this.sidebar,
         {
           webviewOptions: { retainContextWhenHidden: true },
@@ -95,7 +95,7 @@ export class VsCodeExtension {
 
     // Config Handler with output channel
     const outputChannel = vscode.window.createOutputChannel(
-      "Continue - LLM Prompt/Completion",
+      "Softcodes - LLM Prompt/Completion",
     );
     const inProcessMessenger = new InProcessMessenger<
       ToCoreProtocol,
@@ -163,7 +163,7 @@ export class VsCodeExtension {
     });
 
     // Tab autocomplete
-    const config = vscode.workspace.getConfiguration("continue");
+    const config = vscode.workspace.getConfiguration("softcodes");
     const enabled = config.get<boolean>("enableTabAutocomplete");
 
     // Register inline completion provider
@@ -173,7 +173,7 @@ export class VsCodeExtension {
     context.subscriptions.push(
       vscode.languages.registerInlineCompletionItemProvider(
         [{ pattern: "**" }],
-        new ContinueCompletionProvider(
+        new SoftcodesCompletionProvider(
           this.configHandler,
           this.ide,
           this.tabAutocompleteModel,
@@ -203,7 +203,7 @@ export class VsCodeExtension {
       this.configHandler,
       this.diffManager,
       this.verticalDiffManager,
-      this.core.continueServerClientPromise,
+      this.core.softcodesServerClientPromise,
       this.battery,
       quickEdit,
       this.core,
@@ -244,12 +244,12 @@ export class VsCodeExtension {
       }
 
       if (
-        filepath.endsWith(".continuerc.json") ||
+        filepath.endsWith(".softcodesrc.json") ||
         filepath.endsWith(".prompt")
       ) {
         this.configHandler.reloadConfig();
       } else if (
-        filepath.endsWith(".continueignore") ||
+        filepath.endsWith(".softcodesignore") ||
         filepath.endsWith(".gitignore")
       ) {
         // Reindex the workspaces
@@ -265,14 +265,14 @@ export class VsCodeExtension {
     vscode.authentication.onDidChangeSessions(async (e) => {
       if (e.provider.id === "github") {
         this.configHandler.reloadConfig();
-      } else if (e.provider.id === "continue") {
+      } else if (e.provider.id === "softcodes") {
         const sessionInfo = await getControlPlaneSessionInfo(true);
         this.webviewProtocolPromise.then(async (webviewProtocol) => {
           webviewProtocol.request("didChangeControlPlaneSessionInfo", {
             sessionInfo,
           });
 
-          // To make sure continue-proxy models and anything else requiring it get updated access token
+          // To make sure softcodes-proxy models and anything else requiring it get updated access token
           this.configHandler.reloadConfig();
         });
         this.core.invoke("didChangeControlPlaneSessionInfo", { sessionInfo });
@@ -318,7 +318,7 @@ export class VsCodeExtension {
     })();
     context.subscriptions.push(
       vscode.workspace.registerTextDocumentContentProvider(
-        VsCodeExtension.continueVirtualDocumentScheme,
+        VsCodeExtension.softcodesVirtualDocumentScheme,
         documentContentProvider,
       ),
     );
@@ -328,7 +328,7 @@ export class VsCodeExtension {
     });
   }
 
-  static continueVirtualDocumentScheme = "continue";
+  static softcodesVirtualDocumentScheme = "softcodes";
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private PREVIOUS_BRANCH_FOR_WORKSPACE_DIR: { [dir: string]: string } = {};

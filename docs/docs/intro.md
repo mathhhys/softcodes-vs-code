@@ -1,14 +1,14 @@
 ---
 title: 💻 Introduction
-description: Continue is the open-source autopilot for software development
-keywords: [introduction, intro, continue, autopilot, chatgpt]
+description: Softcodes is the open-source autopilot for software development
+keywords: [introduction, intro, softcodes, autopilot, chatgpt]
 ---
 
 # 💻 Introduction
 
-![continue-cover-logo](/img/intro.png)
+![softcodes-cover-logo](/img/intro.png)
 
-**Continue is the leading open-source AI code assistant. You can connect any models and any context to build custom autocomplete and chat experiences inside [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains](https://plugins.jetbrains.com/plugin/22707-continue-extension)**
+**Softcodes is the leading open-source AI code assistant. You can connect any models and any context to build custom autocomplete and chat experiences inside [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains](https://plugins.jetbrains.com/plugin/22707-continue-extension)**
 
 Some examples of what you can achieve are:
 
@@ -21,4 +21,4 @@ Some examples of what you can achieve are:
 - [Add classes, files, and more to context](how-to-use-continue.md#add-classes-files-and-more-to-context)
 - [Understand terminal errors immediately](how-to-use-continue.md#understand-terminal-errors-immediately)
 
-Continue enables you to use the right model for the job, whether it's open-source or commercial, running local or remote, and used for chat, autocomplete, or embeddings. And we provide numerous points of configuration, so that you can customize the extension to fit into your existing workflows.
+Softcodes enables you to use the right model for the job, whether it's open-source or commercial, running local or remote, and used for chat, autocomplete, or embeddings. And we provide numerous points of configuration, so that you can customize the extension to fit into your existing workflows.

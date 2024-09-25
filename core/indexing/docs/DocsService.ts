@@ -5,7 +5,7 @@ import { ConfigHandler } from "../../config/ConfigHandler.js";
 import DocsContextProvider from "../../context/providers/DocsContextProvider.js";
 import {
   Chunk,
-  ContinueConfig,
+  SoftcodesConfig,
   EmbeddingsProvider,
   IDE,
   IndexingProgressUpdate,
@@ -72,7 +72,7 @@ export default class DocsService {
   private globalContext = new GlobalContext();
   private lanceTableNamesSet = new Set<string>();
 
-  private config!: ContinueConfig;
+  private config!: SoftcodesConfig;
   private sqliteDb?: Database;
 
   // If we are instantiating a new DocsService from `getContextItems()`,

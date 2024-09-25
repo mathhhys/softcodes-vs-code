@@ -5,23 +5,23 @@ import * as os from "os";
 import * as path from "path";
 import { defaultConfig, defaultConfigJetBrains } from "../config/default.js";
 import Types from "../config/types.js";
-import { IdeType, SerializedContinueConfig } from "../index.js";
+import { IdeType, SerializedSoftcodesConfig } from "../index.js";
 
 dotenv.config();
-const CONTINUE_GLOBAL_DIR =
-  process.env.CONTINUE_GLOBAL_DIR ?? path.join(os.homedir(), ".continue");
+const SOFTCODES_GLOBAL_DIR =
+  process.env.SOFTCODES_GLOBAL_DIR ?? path.join(os.homedir(), ".softcodes");
 
-export function getContinueGlobalPath(): string {
-  // This is ~/.continue on mac/linux
-  const continuePath = CONTINUE_GLOBAL_DIR;
-  if (!fs.existsSync(continuePath)) {
-    fs.mkdirSync(continuePath);
+export function getSoftcodesGlobalPath(): string {
+  // This is ~/.softcodes on mac/linux
+  const softcodesPath = SOFTCODES_GLOBAL_DIR;
+  if (!fs.existsSync(softcodesPath)) {
+    fs.mkdirSync(softcodesPath);
   }
-  return continuePath;
+  return softcodesPath;
 }
 
 export function getSessionsFolderPath(): string {
-  const sessionsPath = path.join(getContinueGlobalPath(), "sessions");
+  const sessionsPath = path.join(getSoftcodesGlobalPath(), "sessions");
   if (!fs.existsSync(sessionsPath)) {
     fs.mkdirSync(sessionsPath);
   }
@@ -29,7 +29,7 @@ export function getSessionsFolderPath(): string {
 }
 
 export function getIndexFolderPath(): string {
-  const indexPath = path.join(getContinueGlobalPath(), "index");
+  const indexPath = path.join(getSoftcodesGlobalPath(), "index");
   if (!fs.existsSync(indexPath)) {
     fs.mkdirSync(indexPath);
   }
@@ -53,7 +53,7 @@ export function getSessionsListPath(): string {
 }
 
 export function getConfigJsonPath(ideType: IdeType = "vscode"): string {
-  const p = path.join(getContinueGlobalPath(), "config.json");
+  const p = path.join(getSoftcodesGlobalPath(), "config.json");
   if (!fs.existsSync(p)) {
     if (ideType === "jetbrains") {
       fs.writeFileSync(p, JSON.stringify(defaultConfigJetBrains, null, 2));
@@ -65,7 +65,7 @@ export function getConfigJsonPath(ideType: IdeType = "vscode"): string {
 }
 
 export function getConfigTsPath(): string {
-  const p = path.join(getContinueGlobalPath(), "config.ts");
+  const p = path.join(getSoftcodesGlobalPath(), "config.ts");
   if (!fs.existsSync(p)) {
     fs.writeFileSync(
       p,
@@ -75,7 +75,7 @@ export function getConfigTsPath(): string {
     );
   }
 
-  const typesPath = path.join(getContinueGlobalPath(), "types");
+  const typesPath = path.join(getSoftcodesGlobalPath(), "types");
   if (!fs.existsSync(typesPath)) {
     fs.mkdirSync(typesPath);
   }
@@ -83,14 +83,14 @@ export function getConfigTsPath(): string {
   if (!fs.existsSync(corePath)) {
     fs.mkdirSync(corePath);
   }
-  const packageJsonPath = path.join(getContinueGlobalPath(), "package.json");
+  const packageJsonPath = path.join(getSoftcodesGlobalPath(), "package.json");
   if (!fs.existsSync(packageJsonPath)) {
     fs.writeFileSync(
       packageJsonPath,
       JSON.stringify({
-        name: "continue-config",
+        name: "softcodes-config",
         version: "1.0.0",
-        description: "My Continue Configuration",
+        description: "My Softcodes Configuration",
         main: "config.js",
       }),
     );
@@ -102,11 +102,11 @@ export function getConfigTsPath(): string {
 
 export function getConfigJsPath(): string {
   // Do not create automatically
-  return path.join(getContinueGlobalPath(), "out", "config.js");
+  return path.join(getSoftcodesGlobalPath(), "out", "config.js");
 }
 
 export function getTsConfigPath(): string {
-  const tsConfigPath = path.join(getContinueGlobalPath(), "tsconfig.json");
+  const tsConfigPath = path.join(getSoftcodesGlobalPath(), "tsconfig.json");
   if (!fs.existsSync(tsConfigPath)) {
     fs.writeFileSync(
       tsConfigPath,
@@ -139,12 +139,12 @@ export function getTsConfigPath(): string {
   return tsConfigPath;
 }
 
-export function getContinueRcPath(): string {
+export function getSoftcodesRcPath(): string {
   // Disable indexing of the config folder to prevent infinite loops
-  const continuercPath = path.join(getContinueGlobalPath(), ".continuerc.json");
-  if (!fs.existsSync(continuercPath)) {
+  const softcodesrcPath = path.join(getSoftcodesGlobalPath(), ".softcodesrc.json");
+  if (!fs.existsSync(softcodesrcPath)) {
     fs.writeFileSync(
-      continuercPath,
+      softcodesrcPath,
       JSON.stringify(
         {
           disableIndexing: true,
@@ -154,11 +154,11 @@ export function getContinueRcPath(): string {
       ),
     );
   }
-  return continuercPath;
+  return softcodesrcPath;
 }
 
 export function devDataPath(): string {
-  const sPath = path.join(getContinueGlobalPath(), "dev_data");
+  const sPath = path.join(getSoftcodesGlobalPath(), "dev_data");
   if (!fs.existsSync(sPath)) {
     fs.mkdirSync(sPath);
   }
@@ -174,7 +174,7 @@ export function getDevDataFilePath(fileName: string): string {
 }
 
 export function editConfigJson(
-  callback: (config: SerializedContinueConfig) => SerializedContinueConfig,
+  callback: (config: SerializedSoftcodesConfig) => SerializedSoftcodesConfig,
 ): void {
   const config = fs.readFileSync(getConfigJsonPath(), "utf8");
   let configJson = JSONC.parse(config);
@@ -188,7 +188,7 @@ export function editConfigJson(
 }
 
 function getMigrationsFolderPath(): string {
-  const migrationsPath = path.join(getContinueGlobalPath(), ".migrations");
+  const migrationsPath = path.join(getSoftcodesGlobalPath(), ".migrations");
   if (!fs.existsSync(migrationsPath)) {
     fs.mkdirSync(migrationsPath);
   }
@@ -234,7 +234,7 @@ export function getDocsSqlitePath(): string {
 }
 
 export function getRemoteConfigsFolderPath(): string {
-  const dir = path.join(getContinueGlobalPath(), ".configs");
+  const dir = path.join(getSoftcodesGlobalPath(), ".configs");
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
@@ -257,7 +257,7 @@ export function getPathToRemoteConfig(remoteConfigServerUrl: string): string {
 }
 
 export function internalBetaPathExists(): boolean {
-  const sPath = path.join(getContinueGlobalPath(), ".internal_beta");
+  const sPath = path.join(getSoftcodesGlobalPath(), ".internal_beta");
   return fs.existsSync(sPath);
 }
 
@@ -273,8 +273,8 @@ export function getConfigJsPathForRemote(
   return path.join(getPathToRemoteConfig(remoteConfigServerUrl), "config.js");
 }
 
-export function getContinueDotEnv(): { [key: string]: string } {
-  const filepath = path.join(getContinueGlobalPath(), ".env");
+export function getSoftcodesDotEnv(): { [key: string]: string } {
+  const filepath = path.join(getSoftcodesGlobalPath(), ".env");
   if (fs.existsSync(filepath)) {
     return dotenv.parse(fs.readFileSync(filepath));
   }
@@ -282,7 +282,7 @@ export function getContinueDotEnv(): { [key: string]: string } {
 }
 
 export function getLogsDirPath(): string {
-  const logsPath = path.join(getContinueGlobalPath(), "logs");
+  const logsPath = path.join(getSoftcodesGlobalPath(), "logs");
   if (!fs.existsSync(logsPath)) {
     fs.mkdirSync(logsPath);
   }
@@ -298,7 +298,7 @@ export function getPromptLogsPath(): string {
 }
 
 export function getGlobalPromptsPath(): string {
-  return path.join(getContinueGlobalPath(), ".prompts");
+  return path.join(getSoftcodesGlobalPath(), ".prompts");
 }
 
 export function readAllGlobalPromptFiles(

@@ -1,8 +1,8 @@
-# Contributing to Continue
+# Contributing to Softcodes
 
 ## Table of Contents
 
-- [Contributing to Continue](#contributing-to-continue)
+- [Contributing to ](#contributing-to-continue)
   - [Table of Contents](#table-of-contents)
 - [❤️ Ways to Contribute](#️-ways-to-contribute)
   - [👋 Continue Contribution Ideas](#-continue-contribution-ideas)

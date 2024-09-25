@@ -1,6 +1,6 @@
 import { ControlPlaneSessionInfo } from "../control-plane/client.js";
 import type {
-  ContinueRcJson,
+  SoftcodesRcJson,
   DiffLine,
   FileType,
   IdeInfo,
@@ -20,7 +20,7 @@ export type ToIdeFromWebviewOrCoreProtocol = {
   listFolders: [undefined, string[]];
   writeFile: [{ path: string; contents: string }, void];
   showVirtualFile: [{ name: string; content: string }, void];
-  getContinueDir: [undefined, string];
+  getSoftcodesDir: [undefined, string];
   openFile: [{ path: string }, void];
   runCommand: [{ command: string }, void];
   getSearchResults: [{ query: string }, string];
@@ -48,7 +48,7 @@ export type ToIdeFromWebviewOrCoreProtocol = {
   showLines: [{ filepath: string; startLine: number; endLine: number }, void];
   readRangeInFile: [{ filepath: string; range: Range }, string];
   getDiff: [undefined, string];
-  getWorkspaceConfigs: [undefined, ContinueRcJson[]];
+  getWorkspaceConfigs: [undefined, SoftcodesRcJson[]];
   getTerminalContents: [undefined, string];
   getDebugLocals: [{ threadIndex: number }, string];
   getTopLevelCallStackSources: [

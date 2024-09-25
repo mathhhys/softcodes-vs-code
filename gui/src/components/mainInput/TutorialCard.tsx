@@ -64,7 +64,7 @@ export function TutorialCard({ onClose }: TutorialCardProps) {
             className="align-middle pr-3"
           />
           <span>
-            Click the gear icon in the bottom right to configure Continue
+            Click the gear icon in the bottom right to configure Softcodes
           </span>
         </li>
         <li className="flex items-start">

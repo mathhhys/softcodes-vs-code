@@ -25,27 +25,27 @@ Development data is essential for any organization aiming to optimize its softwa
 
 ### Data Storage
 
-By default, the development data collected by Continue is stored locally on your machine in the directory `~/.continue/dev_data`.
+By default, the development data collected by Softcodes is stored locally on your machine in the directory `~/.softcodes/dev_data`.
 
-The data remains within your control on your local machine. If you choose to share your data with Continue for improving LLMs or other services, you must give explicit consent. If you are interested in working with us, please email us at [data@continue.dev](mailto:data@continue.dev).
+The data remains within your control on your local machine. If you choose to share your data with Softcodes for improving LLMs or other services, you must give explicit consent. If you are interested in working with us, please email us at [mathys@softcodes.io](mailto:mathys@softcodes.io).
 
 ## Utilizing Development Data
 
-When combined with the code you commit, the development data can significantly improve the performance and relevance of LLMs. This results in more accurate suggestions and assistance during coding. Continue helps establish a continuous feedback loop to ensure LLMs always have fresh information, code, and preferred styles.
+When combined with the code you commit, the development data can significantly improve the performance and relevance of LLMs. This results in more accurate suggestions and assistance during coding. Softcodes helps establish a continuous feedback loop to ensure LLMs always have fresh information, code, and preferred styles.
 
-Continue plays a critical role in leveraging development data for enhancing LLMs:
+Softcodes plays a critical role in leveraging development data for enhancing LLMs:
 
-- **Automatic Data Collection**: Continue automatically collects development data, including the step-by-step process, context, and natural language reasoning.
+- **Automatic Data Collection**: Softcodes automatically collects development data, including the step-by-step process, context, and natural language reasoning.
   
 - **Improvement of LLMs**: The collected data is used to create a continuous feedback loop, ensuring the LLMs are constantly updated with fresh and relevant information, thus improving their performance and accuracy.
 
-- **Development Data Engine**: Continue aids organizations in setting up development data engines. These engines offer visibility into how developers interact with LLMs, help calculate the ROI, identify frustrations, and enhance the models to overcome challenges.
+- **Development Data Engine**: Softcodes aids organizations in setting up development data engines. These engines offer visibility into how developers interact with LLMs, help calculate the ROI, identify frustrations, and enhance the models to overcome challenges.
 
-- **Open-Source Coding Autopilot**: Continue is building an open-source coding autopilot that enables the automatic collection and utilization of development data, providing flexibility, customization, and better privacy and security.
+- **Open-Source Coding Autopilot**: Softcodes is building an open-source coding autopilot that enables the automatic collection and utilization of development data, providing flexibility, customization, and better privacy and security.
 
-- **Customized Improvement**: Continue allows teams to track and improve the metrics that matter most to their specific definitions of "great" software.
+- **Customized Improvement**: Softcodes allows teams to track and improve the metrics that matter most to their specific definitions of "great" software.
 
-- **Addressing Budget and Data Staleness**: Continue supports organizations in justifying their LLM budgets and managing data staleness by helping them extract, load, and transform their data effectively.
+- **Addressing Budget and Data Staleness**: Softcodes supports organizations in justifying their LLM budgets and managing data staleness by helping them extract, load, and transform their data effectively.
 
 ## Privacy, Security, and Additional Resources
 

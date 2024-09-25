@@ -34,7 +34,7 @@ import SageMaker from "./SageMaker";
 import TextGenWebUI from "./TextGenWebUI";
 import Together from "./Together";
 import WatsonX from "./WatsonX";
-import ContinueProxy from "./stubs/ContinueProxy";
+import SoftcodesProxy from "./stubs/SoftcodesProxy";
 
 const LLMs = [
   Anthropic,
@@ -58,7 +58,7 @@ const LLMs = [
   Flowise,
   Groq,
   Fireworks,
-  ContinueProxy,
+  SoftcodesProxy,
   Cloudflare,
   Deepseek,
   Msty,
@@ -106,7 +106,7 @@ export async function llmFromDescription(
     uniqueId,
   };
 
-  if (desc.provider === "continue-proxy") {
+  if (desc.provider === "softcodes-proxy") {
     options.apiKey = ideSettings.userToken;
     if (ideSettings.remoteConfigServerUrl) {
       options.apiBase = new URL(

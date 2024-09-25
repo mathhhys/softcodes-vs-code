@@ -1,5 +1,5 @@
 import { Response } from "node-fetch";
-import { getHeaders } from "../../continueServer/stubs/headers.js";
+import { getHeaders } from "../../SoftcodesServer/stubs/headers.js";
 import { constants } from "../../deploy/constants.js";
 import {
   EmbeddingsProviderName,

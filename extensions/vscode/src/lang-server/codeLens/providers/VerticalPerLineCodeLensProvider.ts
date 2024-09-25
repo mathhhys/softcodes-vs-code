@@ -49,12 +49,12 @@ export class VerticalPerLineCodeLensProvider
         codeLenses.push(
           new vscode.CodeLens(range, {
             title: `Accept All (${getMetaKeyLabel()}⇧↩)`,
-            command: "continue.acceptDiff",
+            command: "softcodes.acceptDiff",
             arguments: [filepath, i],
           }),
           new vscode.CodeLens(range, {
             title: `Reject All (${getMetaKeyLabel()}⇧⌫)`,
-            command: "continue.rejectDiff",
+            command: "softcodes.rejectDiff",
             arguments: [filepath, i],
           }),
         );
@@ -67,7 +67,7 @@ export class VerticalPerLineCodeLensProvider
               ? ` (${getAltOrOption()}${getMetaKeyLabel()}Y)`
               : ""
           }`,
-          command: "continue.acceptVerticalDiffBlock",
+          command: "softcodes.acceptVerticalDiffBlock",
           arguments: [filepath, i],
         }),
         new vscode.CodeLens(range, {
@@ -76,7 +76,7 @@ export class VerticalPerLineCodeLensProvider
               ? ` (${getAltOrOption()}${getMetaKeyLabel()}N)`
               : ""
           }`,
-          command: "continue.rejectVerticalDiffBlock",
+          command: "softcodes.rejectVerticalDiffBlock",
           arguments: [filepath, i],
         }),
       );

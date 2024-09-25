@@ -1,5 +1,5 @@
 import type {
-  ContinueRcJson,
+  SoftcodesRcJson,
   FileType,
   IDE,
   IdeInfo,
@@ -104,7 +104,7 @@ export class MessageIde implements IDE {
     return this.request("getUniqueId", undefined);
   }
 
-  getWorkspaceConfigs(): Promise<ContinueRcJson[]> {
+  getWorkspaceConfigs(): Promise<SoftcodesRcJson[]> {
     return this.request("getWorkspaceConfigs", undefined);
   }
 
@@ -132,14 +132,14 @@ export class MessageIde implements IDE {
     return await this.request("listFolders", undefined);
   }
 
-  _continueDir: string | null = null;
+  _softcodesDir: string | null = null;
 
-  async getContinueDir(): Promise<string> {
-    if (this._continueDir) {
-      return this._continueDir;
+  async getSoftcodesDir(): Promise<string> {
+    if (this._softcodesDir) {
+      return this._softcodesDir;
     }
-    const dir = await this.request("getContinueDir", undefined);
-    this._continueDir = dir;
+    const dir = await this.request("getSoftcodesDir", undefined);
+    this._softcodesDir = dir;
     return dir;
   }
 

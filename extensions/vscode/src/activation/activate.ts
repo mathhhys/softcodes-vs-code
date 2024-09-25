@@ -1,4 +1,4 @@
-import { getContinueRcPath, getTsConfigPath, migrate } from "core/util/paths";
+import { getSoftcodesRcPath, getTsConfigPath, migrate } from "core/util/paths";
 import { Telemetry } from "core/util/posthog";
 import path from "node:path";
 import * as vscode from "vscode";
@@ -6,13 +6,13 @@ import { VsCodeExtension } from "../extension/VsCodeExtension";
 import registerQuickFixProvider from "../lang-server/codeActions";
 import { getExtensionVersion } from "../util/util";
 import { getExtensionUri } from "../util/vscode";
-import { VsCodeContinueApi } from "./api";
+import { VsCodeSoftcodesApi } from "./api";
 import { setupInlineTips } from "./inlineTips";
 
 export async function activateExtension(context: vscode.ExtensionContext) {
   // Add necessary files
   getTsConfigPath();
-  getContinueRcPath();
+  getSoftcodesRcPath();
 
   // Register commands and providers
   registerQuickFixProvider();
@@ -28,10 +28,10 @@ export async function activateExtension(context: vscode.ExtensionContext) {
       ),
     );
 
-    vscode.commands.executeCommand("continue.focusContinueInput");
+    vscode.commands.executeCommand("softcodes.focusSoftcodesInput");
   });
 
-  // Load Continue configuration
+  // Load Softcodes configuration
   if (!context.globalState.get("hasBeenInstalled")) {
     context.globalState.update("hasBeenInstalled", true);
     Telemetry.capture(
@@ -43,8 +43,8 @@ export async function activateExtension(context: vscode.ExtensionContext) {
     );
   }
 
-  const api = new VsCodeContinueApi(vscodeExtension);
-  const continuePublicApi = {
+  const api = new VsCodeSoftcodesApi(vscodeExtension);
+  const softcodesPublicApi = {
     registerCustomContextProvider: api.registerCustomContextProvider.bind(api),
   };
 
@@ -52,8 +52,8 @@ export async function activateExtension(context: vscode.ExtensionContext) {
   // or entire extension for testing
   return process.env.NODE_ENV === "test"
     ? {
-        ...continuePublicApi,
+        ...softcodesPublicApi,
         extension: vscodeExtension,
       }
-    : continuePublicApi;
+    : softcodesPublicApi;
 }

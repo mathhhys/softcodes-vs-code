@@ -156,7 +156,7 @@ class QuickTextEntryAction : AnAction() {
              }
 
              continuePluginService.continuePluginWindow?.content?.components?.get(0)?.requestFocus()
-             continuePluginService.sendToWebview("focusContinueInput", null)
+             continuePluginService.sendToWebview("focusSoftcodesInput", null)
 
          }
     }
@@ -174,7 +174,7 @@ class ViewLogsAction : AnAction() {
 
 
 
-class FocusContinueInputWithoutClearAction : AnAction() {
+class FocusSoftcodesInputWithoutClearAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project
         if (project != null) {
@@ -190,13 +190,13 @@ class FocusContinueInputWithoutClearAction : AnAction() {
 
         val continuePluginService = pluginServiceFromActionEvent(e) ?: return
         continuePluginService.continuePluginWindow?.content?.components?.get(0)?.requestFocus()
-        continuePluginService.sendToWebview("focusContinueInputWithoutClear", null)
+        continuePluginService.sendToWebview("focusSoftcodesInputWithoutClear", null)
 
         continuePluginService.ideProtocolClient?.sendHighlightedCode()
     }
 }
 
-class FocusContinueInputAction : AnAction() {
+class FocusSoftcodesInputAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project
         if (project != null) {
@@ -213,7 +213,7 @@ class FocusContinueInputAction : AnAction() {
         val continuePluginService = pluginServiceFromActionEvent(e) ?: return
 
         continuePluginService.continuePluginWindow?.content?.components?.get(0)?.requestFocus()
-        continuePluginService.sendToWebview("focusContinueInput", null)
+        continuePluginService.sendToWebview("focusSoftcodesInput", null)
 
         continuePluginService.ideProtocolClient?.sendHighlightedCode()
     }
@@ -236,7 +236,7 @@ class NewContinueSessionAction : AnAction() {
         val continuePluginService = pluginServiceFromActionEvent(e) ?: return
 
         continuePluginService.continuePluginWindow?.content?.components?.get(0)?.requestFocus()
-        continuePluginService.sendToWebview("focusContinueInputWithNewSession", null)
+        continuePluginService.sendToWebview("focusSoftcodesInputWithNewSession", null)
     }
 }
 

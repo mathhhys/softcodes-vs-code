@@ -21,17 +21,17 @@ Quick Actions use a CodeLens provider to add interactive elements above function
 
 By default, Quick Actions include a single predefined action:
 
-- `Continue`: This action allows you to perform a quick edit on the selected class or function.
+- `Softcodes`: This action allows you to perform a quick edit on the selected class or function.
 
 ## How to disable Quick Actions
 
 Quick Actions are enabled by default _for pre-release versions of Contine_.
 
-To disable Quick Actions, open the settings menu (`⌘ + ,`), search for `"continue.enableQuickActions"`, and toggle the checkbox to disable.
+To disable Quick Actions, open the settings menu (`⌘ + ,`), search for `"softcodes.enableQuickActions"`, and toggle the checkbox to disable.
 
 ## Custom Quick Actions
 
-Custom Quick Actions allow you to tailor functionality to your specific needs, extending beyond the default actions. You can easily configure these custom actions in your `~/.continue/config.json` file.
+Custom Quick Actions allow you to tailor functionality to your specific needs, extending beyond the default actions. You can easily configure these custom actions in your `~/.softcodes/config.json` file.
 
 :::info
 [View the Configuration Options reference](../reference/config) for specific schema details.
@@ -43,7 +43,7 @@ Custom Quick Actions allow you to tailor functionality to your specific needs, e
 
 A quick action that generates and inserts a unit test above the selected code.
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 "experimental": {
     "quickActions": [
       {
@@ -58,7 +58,7 @@ A quick action that generates and inserts a unit test above the selected code.
 
 The default "Explain" aims to provide a brief overview of the code. This quick action sends the prompt and the code to the chat to provides a more detailed explanation.
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 "experimental": {
     "quickActions": [
       {
@@ -74,7 +74,7 @@ The default "Explain" aims to provide a brief overview of the code. This quick a
 
 A quick action that generates and inserts a Typescript interface above the selected code.
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 "experimental": {
     "quickActions": [
       {

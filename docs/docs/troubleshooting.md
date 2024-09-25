@@ -6,7 +6,7 @@ keywords: [reload, delete, manually, logs, server, console]
 
 # ❓ Troubleshooting
 
-The Continue VS Code extension is currently in beta, and the Intellij extension is in Alpha. If you are having trouble, please follow the steps below.
+The Softcodes VS Code extension is currently in beta, and the Intellij extension is in Alpha. If you are having trouble, please follow the steps below.
 
 ## Check the logs
 
@@ -27,18 +27,18 @@ To solve many problems, the first step is reading the logs to find the relevant 
 If you're getting a response from the LLM that doesn't seem to make sense, you can
 
 1. Open the "Output" panel (right next to the terminal)
-2. In the dropdown, select "Continue - LLM Prompts/Completions"
+2. In the dropdown, select "Softcodes - LLM Prompts/Completions"
 3. View the exact prompts that were sent to the LLM and the completions recieved
 
 ### JetBrains
 
-Open `~/.continue/core.log`. The most recent logs are found at the bottom of the file.
+Open `~/.softcodes/core.log`. The most recent logs are found at the bottom of the file.
 
 ## Download the latest pre-release
 
 ### VS Code
 
-We are constantly making fixes and improvements to Continue, but the latest changes remain in a "pre-release" version for roughly a week so that we can test their stability. If you are experiencing issues, you can try the pre-release by going to the Continue extension page in VS Code and selecting "Switch to Pre-Release" as shown below.
+We are constantly making fixes and improvements to Softcodes, but the latest changes remain in a "pre-release" version for roughly a week so that we can test their stability. If you are experiencing issues, you can try the pre-release by going to the Softcodes extension page in VS Code and selecting "Switch to Pre-Release" as shown below.
 
 ![Pre-Release](../static/img/prerelease.png)
 
@@ -62,7 +62,7 @@ You can find older versions of the JetBrains extension on their [marketplace](ht
 
 ## Keyboard shortcuts not resolving
 
-If your keyboard shortcuts are not resolving, you may have other commands that are taking precedence over the Continue shortcuts. You can see if this is the case, and change your shortcut mappings, in the configuration of your IDE.
+If your keyboard shortcuts are not resolving, you may have other commands that are taking precedence over the Softcodes shortcuts. You can see if this is the case, and change your shortcut mappings, in the configuration of your IDE.
 
 - [VSCode keyboard shortcuts docs](https://code.visualstudio.com/docs/getstarted/keybindings)
 - [IntelliJ keyboard shortcut docs](https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html)
@@ -98,11 +98,11 @@ If you are using VS Code and require requests to be made through a proxy, you ar
 
 #### code-server
 
-Continue can be used in [code-server](https://coder.com/), but if you are running across an error in the logs that includes "This is likely because the editor is not running in a secure context", please see [their documentation on securely exposing code-server](https://coder.com/docs/code-server/latest/guide#expose-code-server).
+Softcodes can be used in [code-server](https://coder.com/), but if you are running across an error in the logs that includes "This is likely because the editor is not running in a secure context", please see [their documentation on securely exposing code-server](https://coder.com/docs/code-server/latest/guide#expose-code-server).
 
-### I installed Continue, but don't see the sidebar window
+### I installed Softcodes, but don't see the sidebar window
 
-By default the Continue window is on the left side of VS Code, but it can be dragged to right side as well, which we recommend in our tutorial. In the situation where you have previously installed Continue and moved it to the right side, it may still be there. You can reveal Continue either by using cmd/ctrl+L or by clicking the button in the top right of VS Code to open the right sidebar.
+By default the Softcodes window is on the left side of VS Code, but it can be dragged to right side as well, which we recommend in our tutorial. In the situation where you have previously installed Softcodes and moved it to the right side, it may still be there. You can reveal Softcodes either by using cmd/ctrl+L or by clicking the button in the top right of VS Code to open the right sidebar.
 
 ### I'm getting a 404 error from OpenAI
 

@@ -43,7 +43,7 @@ const PROVIDER_HANDLES_TEMPLATING: ModelProvider[] = [
   "anthropic",
   "bedrock",
   "sagemaker",
-  "continue-proxy",
+  "softcodes-proxy",
   "mistral",
 ];
 
@@ -56,7 +56,7 @@ const PROVIDER_SUPPORTS_IMAGES: ModelProvider[] = [
   "anthropic",
   "bedrock",
   "sagemaker",
-  "continue-proxy",
+  "softcodes-proxy",
 ];
 
 const MODEL_SUPPORTS_IMAGES: string[] = [

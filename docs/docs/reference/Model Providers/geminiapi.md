@@ -1,8 +1,8 @@
 # Gemini API
 
-The Google Gemini API is currently in beta. You can [create an API key in Google AI Studio](https://aistudio.google.com) and use `gemini-1.5-pro-latest`. Change `~/.continue/config.json` to include the following entry in the "models" array:
+The Google Gemini API is currently in beta. You can [create an API key in Google AI Studio](https://aistudio.google.com) and use `gemini-1.5-pro-latest`. Change `~/.softcodes/config.json` to include the following entry in the "models" array:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
   "models": [
     {

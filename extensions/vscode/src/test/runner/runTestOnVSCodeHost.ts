@@ -12,13 +12,13 @@ export const testWorkspacePath = path.resolve(
   "test-workspace",
 );
 
-const continueGlobalDir = path.resolve(
+const softcodesGlobalDir = path.resolve(
   __dirname,
   "..",
   "src",
   "test",
   "fixtures",
-  ".continue",
+  ".softcodes",
 );
 
 function setupTestWorkspace() {
@@ -48,15 +48,15 @@ function setupTestWorkspace() {
   );
 }
 
-function setupContinueGlobalDir() {
-  if (fs.existsSync(continueGlobalDir)) {
-    fs.rmSync(continueGlobalDir, { recursive: true });
+function setupSoftcodesGlobalDir() {
+  if (fs.existsSync(softcodesGlobalDir)) {
+    fs.rmSync(softcodesGlobalDir, { recursive: true });
   }
-  fs.mkdirSync(continueGlobalDir, {
+  fs.mkdirSync(softcodesGlobalDir, {
     recursive: true,
   });
   fs.writeFileSync(
-    path.join(continueGlobalDir, "config.json"),
+    path.join(softcodesGlobalDir, "config.json"),
     JSON.stringify({
       ...defaultConfig,
       models: [
@@ -77,9 +77,9 @@ function cleanupTestWorkspace() {
   }
 }
 
-function cleanupContinueGlobalDir() {
-  if (fs.existsSync(continueGlobalDir)) {
-    fs.rmSync(continueGlobalDir, { recursive: true });
+function cleanupSoftcodesGlobalDir() {
+  if (fs.existsSync(softcodesGlobalDir)) {
+    fs.rmSync(softcodesGlobalDir, { recursive: true });
   }
 }
 
@@ -101,11 +101,11 @@ async function main() {
 
     const extensionTestsEnv = {
       NODE_ENV: "test",
-      CONTINUE_GLOBAL_DIR: continueGlobalDir,
+      SOFTCODES_GLOBAL_DIR: softcodesGlobalDir,
     };
 
     setupTestWorkspace();
-    setupContinueGlobalDir();
+    setupSoftcodesGlobalDir();
 
     // Download VS Code, unzip it and run the integration test
     await runTests({
@@ -119,7 +119,7 @@ async function main() {
     process.exit(1);
   } finally {
     cleanupTestWorkspace();
-    cleanupContinueGlobalDir();
+    cleanupSoftcodesGlobalDir();
   }
 }
 

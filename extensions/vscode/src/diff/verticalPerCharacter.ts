@@ -58,7 +58,7 @@ async function* streamDiffEvents(
       alreadyReplacedCurrentLine = false;
       i++;
     } else {
-      // Continue current line
+      // Softcodes current line
       newLine += chunk;
 
       if (oldLine?.startsWith(newLine)) {

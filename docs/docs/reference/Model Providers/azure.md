@@ -12,7 +12,7 @@ You need to apply for access to the Azure OpenAI service. Response times are typ
 
 You can configure Azure OpenAI service through the UI, or you can configure it manually in `config.json`.
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 "models": [{
     "title": "Azure OpenAI",
     "provider": "openai",

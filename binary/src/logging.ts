@@ -11,5 +11,5 @@ export function setupCoreLogging() {
   console.log = logger;
   console.error = logger;
   console.warn = logger;
-  console.log("[info] Starting Continue core...");
+  console.log("[info] Starting Softcodes core...");
 }

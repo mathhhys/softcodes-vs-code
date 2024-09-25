@@ -7,21 +7,21 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Continue",
+  title: "Softcodes",
   tagline:
     "the open-source library for accelerating software development with language models",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://continue.dev",
+  url: "https://www.softcodes.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "continuedev", // Usually your GitHub org/user name.
-  projectName: "continue", // Usually your repo name.
+  organizationName: "softcodes", // Usually your GitHub org/user name.
+  projectName: "softcodes-vscode", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -69,11 +69,11 @@ const config = {
       // Replace with your project's social card
       image: "https://docs.continue.dev/img/continue-social-card.png",
       navbar: {
-        title: "Continue",
+        title: "Softcodes",
         logo: {
-          alt: "Continue Logo",
+          alt: "Softcodes logo",
           src: "img/logo.png",
-          href: "https://continue.dev",
+          href: "https://www.softcodes.io",
         },
         items: [
           {
@@ -139,7 +139,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Continue Dev, Inc.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Softcodes, Inc.`,
       },
       prism: {
         theme: lightCodeTheme,
@@ -153,7 +153,7 @@ const config = {
         // Public API key: it is safe to commit it
         apiKey: "6795de0f612eebe17018f8061a9ef18e",
 
-        indexName: "continue",
+        indexName: "softcodes",
 
         // Optional: see doc section below
         contextualSearch: true,

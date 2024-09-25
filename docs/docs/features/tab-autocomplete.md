@@ -1,6 +1,6 @@
 # Tab Autocomplete (beta)
 
-Continue now provides support for tab autocomplete in [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains IDEs](https://plugins.jetbrains.com/plugin/22707-continue/edit). We will be greatly improving the experience over the next few releases, and it is always helpful to hear feedback. If you have any problems or suggestions, please let us know in our [Discord](https://discord.gg/vapESyrFmJ).
+Softcodes now provides support for tab autocomplete in [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains IDEs](https://plugins.jetbrains.com/plugin/22707-continue/edit). We will be greatly improving the experience over the next few releases, and it is always helpful to hear feedback. If you have any problems or suggestions, please let us know in our [Discord](https://discord.gg/vapESyrFmJ).
 
 ## Setting up with Codestral (recommended)
 
@@ -12,7 +12,7 @@ If you want to have the best autocomplete experience, we recommend using Codestr
     "title": "Codestral",
     "provider": "mistral",
     "model": "codestral-latest",
-    "apiKey": "YOUR_API_KEY"
+    "apiKey": "IVdgtOdZDTS2TDcfkUajjEBlyH9A1AKR"
   }
 }
 ```
@@ -34,13 +34,13 @@ You can also set up tab-autocomplete with a local LM Studio instance by followin
 1. Download the latest version of LM Studio from [here](https://lmstudio.ai/)
 2. Download a model (e.g. search for `second-state/StarCoder2-3B-GGUF` and choose one of the options there)
 3. Go to the server section (button is on the left), select your model from the dropdown at the top, and click "Start Server"
-4. Go to the "My Models" section (button is on the left), find your selected model, and copy the name the path (example: `second-state/StarCoder2-3B-GGUF/starcoder2-3b-Q8_0.gguf`); this will be used as the "model" attribute in Continue
-5. Go to Continue and modify the configurations for a [custom model](#setting-up-a-custom-model)
+4. Go to the "My Models" section (button is on the left), find your selected model, and copy the name the path (example: `second-state/StarCoder2-3B-GGUF/starcoder2-3b-Q8_0.gguf`); this will be used as the "model" attribute in Softcodes
+5. Go to Softcodes and modify the configurations for a [custom model](#setting-up-a-custom-model)
 6. Set the "provider" to `lmstudio` and the "model" to the path copied earlier
 
 Example:
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 {
   "tabAutocompleteModel": {
       "title": "Starcoder2 3b",
@@ -55,7 +55,7 @@ Example:
 
 All of the configuration options available for chat models are available to use for tab-autocomplete. For example, if you wanted to use a remote Ollama instance you would edit your `config.json` like this (note that it is not inside the models array):
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 {
     "tabAutocompleteModel": {
         "title": "Tab Autocomplete Model",
@@ -106,7 +106,7 @@ This object allows you to customize the behavior of tab-autocomplete. The availa
 
 ### Full example
 
-```json title=~/.continue/config.json
+```json title=~/.softcodes/config.json
 {
   "tabAutocompleteModel": {
     "title": "Tab Autocomplete Model",
@@ -132,11 +132,11 @@ Perhaps surprisingly, the answer is no. The models that we suggest for autocompl
 
 Follow these steps to ensure that everything is set up correctly:
 
-1. Make sure you have the "Enable Tab Autocomplete" setting checked (in VS Code, you can toggle by clicking the "Continue" button in the status bar, and in JetBrains by going to Settings -> Tools -> Continue).
+1. Make sure you have the "Enable Tab Autocomplete" setting checked (in VS Code, you can toggle by clicking the "Softcodes" button in the status bar, and in JetBrains by going to Settings -> Tools -> Softcodes).
 2. Make sure you have downloaded Ollama.
 3. Run `ollama run starcoder2:3b` to verify that the model is downloaded.
 4. Make sure that any other completion providers are disabled (e.g. Copilot), as they may interfere.
-5. Check the output of the logs to find any potential errors (cmd/ctrl+shift+p -> "Toggle Developer Tools" -> "Console" tab in VS Code, ~/.continue/core.log in JetBrains).
+5. Check the output of the logs to find any potential errors (cmd/ctrl+shift+p -> "Toggle Developer Tools" -> "Console" tab in VS Code, ~/.softcodes/core.log in JetBrains).
 6. Check VS Code settings to make sure that `"editor.inlineSuggest.enabled"` is set to `true` (use cmd/ctrl+, then search for this and check the box)
 7. If you are still having issues, please let us know in our [Discord](https://discord.gg/vapESyrFmJ) and we'll help as soon as possible.
 
@@ -146,7 +146,7 @@ Depending on your hardware, you may want to try a smaller, faster model. If 3b i
 
 ### Completions don't know about my code
 
-We are working on this! Right now Continue uses the Language Server Protocol to add definitions to the prompt, as well as using similarity search over recently edited files. We will be improving the accuracy of this system greatly over the next few weeks.
+We are working on this! Right now Softcodes uses the Language Server Protocol to add definitions to the prompt, as well as using similarity search over recently edited files. We will be improving the accuracy of this system greatly over the next few weeks.
 
 ### Completions contain formatting errors
 
@@ -176,13 +176,13 @@ This is a built-in feature of VS Code, but it's just a bit hidden. See this grea
 
 #### VS Code
 
-Click the "Continue" button in the status panel at the bottom right of the screen. The checkmark will become a "cancel" symbol and you will no longer see completions. You can click again to turn it back on.
+Click the "Softcodes" button in the status panel at the bottom right of the screen. The checkmark will become a "cancel" symbol and you will no longer see completions. You can click again to turn it back on.
 
-Alternatively, open VS Code settings, search for "Continue" and uncheck the box for "Enable Tab Autocomplete".
+Alternatively, open VS Code settings, search for "Softcodes" and uncheck the box for "Enable Tab Autocomplete".
 
 #### JetBrains
 
-Open Settings -> Tools -> Continue and uncheck the box for "Enable Tab Autocomplete".
+Open Settings -> Tools -> Softcodes and uncheck the box for "Enable Tab Autocomplete".
 
 ## Feedback
 

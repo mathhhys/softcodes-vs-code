@@ -64,7 +64,7 @@ async function installNodeModuleInTempDirAndCopyToCurrent(packageName, toCopy) {
   const tempDir = path.join(
     __dirname,
     "tmp",
-    `continue-node_modules-${adjustedName}`,
+    `softcodes-node_modules-${adjustedName}`,
   );
   const currentDir = process.cwd();
 
@@ -296,7 +296,7 @@ async function installNodeModuleInTempDirAndCopyToCurrent(packageName, toCopy) {
     const exe = target.startsWith("win") ? ".exe" : "";
     const targetDir = `bin/${target}`;
     pathsToVerify.push(
-      `${targetDir}/continue-binary${exe}`,
+      `${targetDir}/softcodes-binary${exe}`,
       `${targetDir}/esbuild${exe}`,
       `${targetDir}/index.node`, // @lancedb
       `${targetDir}/node_sqlite3.node`,

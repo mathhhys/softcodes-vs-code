@@ -1,7 +1,7 @@
 {
-  "name": "continue",
+  "name": "softcodes",
   "icon": "media/icon.png",
-  "author": "Continue Dev, Inc",
+  "author": "Softcodes",
   "version": "0.8.46",
   "repository": {
     "type": "git",
@@ -18,10 +18,10 @@
   "homepage": "https://continue.dev",
   "qna": "https://github.com/continuedev/continue/issues/new/choose",
   "license": "Apache-2.0",
-  "displayName": "Continue - Codestral, Claude, and more",
+  "displayName": "Softcodes - Your coding copilot",
   "pricing": "Free",
   "description": "The leading open-source AI code assistant",
-  "publisher": "Continue",
+  "publisher": "Softcodes",
   "engines": {
     "vscode": "^1.70.0",
     "node": ">=20.11.0"
@@ -53,7 +53,7 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onView:continueGUIView"
+    "onView:softcodesGUIView"
   ],
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
@@ -62,65 +62,65 @@
       {
         "filenames": [
           "config.json",
-          ".continuerc.json"
+          ".softcodesrc.json"
         ],
         "id": "jsonc"
       }
     ],
     "configuration": {
-      "title": "Continue",
+      "title": "Softcodes",
       "properties": {
-        "continue.telemetryEnabled": {
+        "softcodes.telemetryEnabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Continue collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [continue.dev › Telemetry](https://docs.continue.dev/telemetry)."
+          "markdownDescription": "Softcodes collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [.dev › Telemetry](https://docs.continue.dev/telemetry)."
         },
-        "continue.enableContinueForTeams": {
+        "softcodes.enableSoftcodesForTeams": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "_(Requires window reload)_ Enable Continue for teams beta features. To sign in, click the person icon in the bottom right of the sidebar."
+          "markdownDescription": "_(Requires window reload)_ Enable Softcodes for teams beta features. To sign in, click the person icon in the bottom right of the sidebar."
         },
-        "continue.showInlineTip": {
+        "softcodes.showInlineTip": {
           "type": "boolean",
           "default": true,
-          "description": "Show inline suggestion to use the Continue keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
+          "description": "Show inline suggestion to use the Softcodes keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
         },
-        "continue.enableQuickActions": {
+        "softcodes.enableQuickActions": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Quick Actions (experimental)](https://docs.continue.dev/features/quick-actions)"
         },
-        "continue.enableTabAutocomplete": {
+        "softcodes.enableTabAutocomplete": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable Continue's tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
+          "markdownDescription": "Enable Softcodes' tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
         },
-        "continue.pauseTabAutocompleteOnBattery": {
+        "softcodes.pauseTabAutocompleteOnBattery": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Continue's tab autocomplete feature when your battery is low."
+          "markdownDescription": "Pause Softcodes' tab autocomplete feature when your battery is low."
         },
-        "continue.pauseCodebaseIndexOnStart": {
+        "softcodes.pauseCodebaseIndexOnStart": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Continue's codebase index on start."
+          "markdownDescription": "Pause Softcodes' codebase index on start."
         },
-        "continue.enableDebugLogs": {
+        "softcodes.enableDebugLogs": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Enable Continue Debug Logs in the Output panel."
+          "markdownDescription": "Enable Softcodes Debug Logs in the Output panel."
         },
-        "continue.remoteConfigServerUrl": {
+        "softcodes.remoteConfigServerUrl": {
           "type": "string",
           "default": null,
           "markdownDescription": "If your team is set up to use shared configuration, enter the server URL here and your user token below to enable automatic syncing."
         },
-        "continue.userToken": {
+        "softcodes.userToken": {
           "type": "string",
           "default": null,
           "markdownDescription": "If your team is set up to use shared configuration, enter your user token here and your server URL above to enable automatic syncing."
         },
-        "continue.remoteConfigSyncPeriod": {
+        "softcodes.remoteConfigSyncPeriod": {
           "type": "number",
           "default": 60,
           "description": "The period of time in minutes between automatic syncs."
@@ -129,214 +129,214 @@
     },
     "commands": [
       {
-        "command": "continue.acceptDiff",
-        "category": "Continue",
+        "command": "softcodes.acceptDiff",
+        "category": "Softcodes",
         "title": "Accept Diff",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.rejectDiff",
-        "category": "Continue",
+        "command": "softcodes.rejectDiff",
+        "category": "Softcodes",
         "title": "Reject Diff",
-        "group": "Continue",
+        "group": "Softcodes",
         "icon": "$(stop)"
       },
       {
-        "command": "continue.acceptVerticalDiffBlock",
-        "category": "Continue",
+        "command": "softcodes.acceptVerticalDiffBlock",
+        "category": "Softcodes",
         "title": "Accept Vertical Diff Block",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.rejectVerticalDiffBlock",
-        "category": "Continue",
+        "command": "softcodes.rejectVerticalDiffBlock",
+        "category": "Softcodes",
         "title": "Reject Vertical Diff Block",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.quickEdit",
-        "category": "Continue",
+        "command": "softcodes.quickEdit",
+        "category": "Softcodes",
         "title": "Generate Code",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.focusContinueInput",
-        "category": "Continue",
+        "command": "softcodes.focusSoftcodesInput",
+        "category": "Softcodes",
         "title": "Add Highlighted Code to Context",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.focusContinueInputWithoutClear",
-        "category": "Continue",
+        "command": "softcodes.focusSoftcodesInputWithoutClear",
+        "category": "Softcodes",
         "title": "Add Highlighted Code to Context",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.debugTerminal",
-        "category": "Continue",
-        "title": "Continue: Debug Terminal",
-        "group": "Continue"
+        "command": "softcodes.debugTerminal",
+        "category": "Softcodes",
+        "title": "Softcodes: Debug Terminal",
+        "group": "Softcodes"
       },
       {
-        "command": "continue.toggleFullScreen",
-        "category": "Continue",
+        "command": "softcodes.toggleFullScreen",
+        "category": "Softcodes",
         "title": "Toggle Full Screen",
         "icon": "$(fullscreen)",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.openConfigJson",
-        "category": "Continue",
+        "command": "softcodes.openConfigJson",
+        "category": "Softcodes",
         "title": "Open config.json",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.toggleTabAutocompleteEnabled",
-        "category": "Continue",
+        "command": "softcodes.toggleTabAutocompleteEnabled",
+        "category": "Softcodes",
         "title": "Toggle Autocomplete Enabled",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.selectFilesAsContext",
-        "category": "Continue",
-        "title": "Continue: Select Files as Context",
-        "group": "Continue"
+        "command": "softcodes.selectFilesAsContext",
+        "category": "Softcodes",
+        "title": "Softcodes: Select Files as Context",
+        "group": "Softcodes"
       },
       {
-        "command": "continue.newSession",
-        "category": "Continue",
+        "command": "softcodes.newSession",
+        "category": "Softcodes",
         "title": "New Session",
         "icon": "$(add)",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.viewHistory",
-        "category": "Continue",
+        "command": "softcodes.viewHistory",
+        "category": "Softcodes",
         "title": "View History",
         "icon": "$(history)",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.writeCommentsForCode",
-        "category": "Continue",
+        "command": "softcodes.writeCommentsForCode",
+        "category": "Softcodes",
         "title": "Write Comments for this Code",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.writeDocstringForCode",
-        "category": "Continue",
+        "command": "softcodes.writeDocstringForCode",
+        "category": "Softcodes",
         "title": "Write a Docstring for this Code",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.fixCode",
-        "category": "Continue",
+        "command": "softcodes.fixCode",
+        "category": "Softcodes",
         "title": "Fix this Code",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.optimizeCode",
-        "category": "Continue",
+        "command": "softcodes.optimizeCode",
+        "category": "Softcodes",
         "title": "Optimize this Code",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.fixGrammar",
-        "category": "Continue",
+        "command": "softcodes.fixGrammar",
+        "category": "Softcodes",
         "title": "Fix Grammar / Spelling",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.codebaseForceReIndex",
-        "category": "Continue",
+        "command": "softcodes.codebaseForceReIndex",
+        "category": "Softcodes",
         "title": "Codebase Force Re-Index",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.docsIndex",
-        "category": "Continue",
+        "command": "softcodes.docsIndex",
+        "category": "Softcodes",
         "title": "Docs Index",
-        "group": "Continue"
+        "group": "Softcodes"
       },
       {
-        "command": "continue.docsReIndex",
-        "category": "Continue",
+        "command": "softcodes.docsReIndex",
+        "category": "Softcodes",
         "title": "Docs Force Re-Index",
-        "group": "Continue"
+        "group": "Softcodes"
       }
     ],
     "keybindings": [
       {
-        "command": "continue.focusContinueInput",
+        "command": "softcodes.focusSoftcodesInput",
         "mac": "cmd+l",
         "key": "ctrl+l"
       },
       {
-        "command": "continue.focusContinueInputWithoutClear",
+        "command": "softcodes.focusSoftcodesInputWithoutClear",
         "mac": "cmd+shift+l",
         "key": "ctrl+shift+l"
       },
       {
-        "command": "continue.toggleAuxiliaryBar",
+        "command": "softcodes.toggleAuxiliaryBar",
         "mac": "alt+cmd+l",
         "key": "alt+ctrl+l"
       },
       {
-        "command": "continue.acceptDiff",
+        "command": "softcodes.acceptDiff",
         "mac": "shift+cmd+enter",
         "key": "shift+ctrl+enter"
       },
       {
-        "command": "continue.rejectDiff",
+        "command": "softcodes.rejectDiff",
         "mac": "shift+cmd+backspace",
         "key": "shift+ctrl+backspace"
       },
       {
-        "command": "continue.rejectDiff",
+        "command": "softcodes.rejectDiff",
         "mac": "cmd+z",
         "key": "ctrl+z",
-        "when": "continue.diffVisible"
+        "when": "softcodes.diffVisible"
       },
       {
-        "command": "continue.quickEditHistoryUp",
+        "command": "softcodes.quickEditHistoryUp",
         "mac": "up",
         "key": "up",
-        "when": "false && continue.quickEditHistoryFocused"
+        "when": "false && softcodes.quickEditHistoryFocused"
       },
       {
-        "command": "continue.quickEditHistoryDown",
+        "command": "softcodes.quickEditHistoryDown",
         "mac": "down",
         "key": "down",
-        "when": "false && continue.quickEditHistoryFocused"
+        "when": "false && softcodes.quickEditHistoryFocused"
       },
       {
-        "command": "continue.acceptVerticalDiffBlock",
+        "command": "softcodes.acceptVerticalDiffBlock",
         "mac": "alt+cmd+y",
         "key": "alt+ctrl+y"
       },
       {
-        "command": "continue.rejectVerticalDiffBlock",
+        "command": "softcodes.rejectVerticalDiffBlock",
         "mac": "alt+cmd+n",
         "key": "alt+ctrl+n"
       },
       {
-        "command": "continue.quickEdit",
+        "command": "softcodes.quickEdit",
         "mac": "cmd+i",
         "key": "ctrl+i"
       },
       {
-        "command": "continue.debugTerminal",
+        "command": "softcodes.debugTerminal",
         "mac": "cmd+shift+r",
         "key": "ctrl+shift+r"
       },
       {
-        "command": "continue.toggleFullScreen",
+        "command": "softcodes.toggleFullScreen",
         "mac": "cmd+k cmd+m",
         "key": "ctrl+k ctrl+m",
         "when": "!terminalFocus"
       },
       {
-        "command": "continue.toggleTabAutocompleteEnabled",
+        "command": "softcodes.toggleTabAutocompleteEnabled",
         "mac": "cmd+k cmd+a",
         "key": "ctrl+k ctrl+a",
         "when": "!terminalFocus"
@@ -344,109 +344,109 @@
     ],
     "submenus": [
       {
-        "id": "continue.continueSubMenu",
-        "label": "Continue"
+        "id": "softcodes.softcodesSubMenu",
+        "label": "Softcodes"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "continue.quickEdit"
+          "command": "softcodes.quickEdit"
         },
         {
-          "command": "continue.focusContinueInput"
+          "command": "softcodes.focusSoftcodesInput"
         },
         {
-          "command": "continue.focusContinueInputWithoutClear"
+          "command": "softcodes.focusSoftcodesInputWithoutClear"
         },
         {
-          "command": "continue.debugTerminal"
+          "command": "softcodes.debugTerminal"
         },
         {
-          "command": "continue.toggleFullScreen"
+          "command": "softcodes.toggleFullScreen"
         },
         {
-          "command": "continue.newSession"
+          "command": "softcodes.newSession"
         }
       ],
       "editor/context": [
         {
-          "submenu": "continue.continueSubMenu",
-          "group": "0_acontinue"
+          "submenu": "softcodes.softcodesSubMenu",
+          "group": "0_asoftcodes"
         }
       ],
       "editor/title/run": [
         {
-          "command": "continue.rejectDiff",
-          "group": "Continue",
-          "when": "continue.streamingDiff"
+          "command": "softcodes.rejectDiff",
+          "group": "Softcodes",
+          "when": "softcodes.streamingDiff"
         }
       ],
-      "continue.continueSubMenu": [
+      "softcodes.softcodesSubMenu": [
         {
-          "command": "continue.focusContinueInputWithoutClear",
-          "group": "Continue",
+          "command": "softcodes.focusSoftcodesInputWithoutClear",
+          "group": "Softcodes",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.writeCommentsForCode",
-          "group": "Continue",
+          "command": "softcodes.writeCommentsForCode",
+          "group": "Softcodes",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.writeDocstringForCode",
-          "group": "Continue",
+          "command": "softcodes.writeDocstringForCode",
+          "group": "Softcodes",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.fixCode",
-          "group": "Continue",
+          "command": "softcodes.fixCode",
+          "group": "Softcodes",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.optimizeCode",
-          "group": "Continue",
+          "command": "softcodes.optimizeCode",
+          "group": "Softcodes",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.fixGrammar",
-          "group": "Continue",
+          "command": "softcodes.fixGrammar",
+          "group": "Softcodes",
           "when": "editorHasSelection && editorLangId == 'markdown'"
         }
       ],
       "explorer/context": [
         {
-          "command": "continue.selectFilesAsContext",
+          "command": "softcodes.selectFilesAsContext",
           "group": "1_debug@1"
         }
       ],
       "view/title": [
         {
-          "command": "continue.newSession",
+          "command": "softcodes.newSession",
           "group": "navigation@1",
-          "when": "view == continue.continueGUIView"
+          "when": "view == softcodes.softcodesGUIView"
         },
         {
-          "command": "continue.toggleFullScreen",
+          "command": "softcodes.toggleFullScreen",
           "group": "navigation@1",
-          "when": "view == continue.continueGUIView"
+          "when": "view == softcodes.softcodesGUIView"
         },
         {
-          "command": "continue.viewHistory",
+          "command": "softcodes.viewHistory",
           "group": "navigation@1",
-          "when": "view == continue.continueGUIView"
+          "when": "view == softcodes.softcodesGUIView"
         }
       ],
       "editor/title": [
         {
-          "command": "continue.toggleFullScreen",
+          "command": "softcodes.toggleFullScreen",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == continue.continueGUIView"
+          "when": "activeWebviewPanelId == softcodes.softcodesGUIView"
         }
       ],
       "terminal/context": [
         {
-          "command": "continue.debugTerminal",
+          "command": "softcodes.debugTerminal",
           "group": "navigation@top"
         }
       ]
@@ -454,17 +454,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "continue",
-          "title": "Continue",
+          "id": "softcodes",
+          "title": "Softcodes",
           "icon": "media/sidebar-icon.png"
         }
       ]
     },
     "views": {
-      "continue": [
+      "softcodes": [
         {
           "type": "webview",
-          "id": "continue.continueGUIView",
+          "id": "softcodes.softcodesGUIView",
           "name": "",
           "visibility": "visible"
         }
@@ -472,14 +472,14 @@
     },
     "walkthroughs": [
       {
-        "id": "continue",
+        "id": "softcodes",
         "title": "Getting Started",
-        "description": "Learn how to use Continue",
+        "description": "Learn how to use Softcodes",
         "steps": [
           {
             "id": "edit",
             "title": "Edit in natural language",
-            "description": "Highlight a section of code and instruct Continue to refactor it (e.g. `/edit rewrite this function to be async`)",
+            "description": "Highlight a section of code and instruct Softcodes to refactor it (e.g. `/edit rewrite this function to be async`)",
             "media": {
               "image": "media/edit.png",
               "altText": "Empty image"
@@ -489,7 +489,7 @@
           {
             "id": "explain",
             "title": "Get possible explanations",
-            "description": "Ask Continue about a part of your code to get another perspective (e.g. `where in the page should I be making this request to the backend?`)",
+            "description": "Ask Softcodes about a part of your code to get another perspective (e.g. `where in the page should I be making this request to the backend?`)",
             "media": {
               "image": "media/explain.png",
               "altText": "Empty image"
@@ -499,7 +499,7 @@
           {
             "id": "generate",
             "title": "Generate files from scratch",
-            "description": "Let Continue build the scaffolding of Python scripts, React components, and more (e.g. `/edit here is a connector for postgres, now write one for kafka`)",
+            "description": "Let Softcodes build the scaffolding of Python scripts, React components, and more (e.g. `/edit here is a connector for postgres, now write one for kafka`)",
             "media": {
               "image": "media/generate.png",
               "altText": "Empty image"
@@ -515,8 +515,8 @@
         "url": "./config_schema.json"
       },
       {
-        "fileMatch": ".continuerc.json",
-        "url": "./continue_rc_schema.json"
+        "fileMatch": ".softcodesrc.json",
+        "url": "./softcodes_rc_schema.json"
       }
     ]
   },

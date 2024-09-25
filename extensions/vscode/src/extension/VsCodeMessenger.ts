@@ -97,7 +97,7 @@ export class VsCodeMessenger {
     });
     this.onWebview("toggleDevTools", (msg) => {
       vscode.commands.executeCommand("workbench.action.toggleDevTools");
-      vscode.commands.executeCommand("continue.viewLogs");
+      vscode.commands.executeCommand("softcodes.viewLogs");
     });
     this.onWebview("reloadWindow", (msg) => {
       vscode.commands.executeCommand("workbench.action.reloadWindow");
@@ -106,7 +106,7 @@ export class VsCodeMessenger {
       vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
     });
     this.onWebview("toggleFullScreen", (msg) => {
-      vscode.commands.executeCommand("continue.toggleFullScreen");
+      vscode.commands.executeCommand("softcodes.toggleFullScreen");
     });
     // History
     this.onWebview("saveFile", async (msg) => {
@@ -247,8 +247,8 @@ export class VsCodeMessenger {
     this.onWebviewOrCore("showVirtualFile", async (msg) => {
       return ide.showVirtualFile(msg.data.name, msg.data.content);
     });
-    this.onWebviewOrCore("getContinueDir", async (msg) => {
-      return ide.getContinueDir();
+    this.onWebviewOrCore("getSoftcodesDir", async (msg) => {
+      return ide.getSoftcodesDir();
     });
     this.onWebviewOrCore("openFile", async (msg) => {
       return ide.openFile(msg.data.path);

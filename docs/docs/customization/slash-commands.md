@@ -16,7 +16,7 @@ To use any of the built-in slash commands, open `~/.continue/config.json` and ad
 
 ### `/edit`
 
-Select code with ctrl/cmd + L (VS Code) or ctrl/cmd + J (JetBrains), and then type "/edit", followed by instructions for the edit. Continue will stream the changes into a side-by-side diff editor.
+Select code with ctrl/cmd + L (VS Code) or ctrl/cmd + J (JetBrains), and then type "/edit", followed by instructions for the edit. Softcodes will stream the changes into a side-by-side diff editor.
 
 ```json
 {
@@ -74,7 +74,7 @@ Shows the LLM your current git diff and asks it to generate a commit message.
 
 ### `/http`
 
-Write a custom slash command at your own HTTP endpoint. Set 'url' in the params object for the endpoint you have setup. The endpoint should return a sequence of string updates, which will be streamed to the Continue sidebar. See our basic [FastAPI example](https://github.com/continuedev/continue/blob/74002369a5e435735b83278fb965e004ae38a97d/core/context/providers/context_provider_server.py#L34-L45) for reference.
+Write a custom slash command at your own HTTP endpoint. Set 'url' in the params object for the endpoint you have setup. The endpoint should return a sequence of string updates, which will be streamed to the Softcodes sidebar. See our basic [FastAPI example](https://github.com/continuedev/continue/blob/74002369a5e435735b83278fb965e004ae38a97d/core/context/providers/context_provider_server.py#L34-L45) for reference.
 
 ```json
 {
@@ -86,7 +86,7 @@ Write a custom slash command at your own HTTP endpoint. Set 'url' in the params 
 
 ### `/issue`
 
-Describe the issue you'd like to generate, and Continue will turn into a well-formatted title and body, then give you a link to the draft so you can submit. Make sure to set the URL of the repository you want to generate issues for.
+Describe the issue you'd like to generate, and Softcodes will turn into a well-formatted title and body, then give you a link to the draft so you can submit. Make sure to set the URL of the repository you want to generate issues for.
 
 ```json
 {
@@ -123,7 +123,7 @@ The Onboard slash command helps to familiarize yourself with a new project by an
 There are two ways to add custom slash commands:
 
 1. With natural language prompts - this is simpler and only requires writing a string or string template.
-2. With a custom function - this gives you full access to the Continue SDK and allows you to write arbitrary Typescript code.
+2. With a custom function - this gives you full access to the Softcodes SDK and allows you to write arbitrary Typescript code.
 
 ### "Custom Commands" (Use Natural Language)
 
@@ -135,7 +135,7 @@ You can add custom slash commands by adding to the `customCommands` property in 
 
 Custom commands are great when you are frequently reusing a prompt. For example, if you've crafted a great prompt and frequently ask the LLM to check for mistakes in your code, you could add a command like this:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 customCommands=[{
         "name": "check",
         "description": "Check for mistakes in my code",
@@ -156,7 +156,7 @@ If you want to go a step further than writing custom commands with natural langu
 
 To do this, push a new `SlashCommand` object to the `slashCommands` list. This object contains "name", the name that you will type to invoke the slash command, "description", the description seen in the dropdown menu, and "run". The `run` function is any async generator that should yield strings as you want them to be streamed to the UI. As an argument to the function, you have access to a `ContinueSDK` object with utilities such as access to certain information/actions within the IDE, the current language model, and a few other utilities. For example, here is a slash command that generates a commit message:
 
-```typescript title="~/.continue/config.ts"
+```typescript title="~/.softcodes/config.ts"
 export function modifyConfig(config: Config): Config {
   config.slashCommands?.push({
     name: "commit",

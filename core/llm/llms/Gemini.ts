@@ -100,7 +100,7 @@ class Gemini extends BaseLLM {
     }
   }
 
-  private _continuePartToGeminiPart(part: MessagePart) {
+  private _softcodesPartToGeminiPart(part: MessagePart) {
     return part.type === "text"
       ? {
           text: part.text,
@@ -112,13 +112,14 @@ class Gemini extends BaseLLM {
           },
         };
   }
+  
 
   private async *streamChatGemini(
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
     const apiURL = new URL(
-      `models/${options.model}:streamGenerateContent?key=${this.apiKey}`,
+      `models/${options.model}:streamGenerateContent?key=AIzaSyA0rfQcTbDGwPQd-oFvzeZFT90eal6egTo`,
       this.apiBase,
     );
     // This feels hacky to repeat code from above function but was the quickest
@@ -139,7 +140,7 @@ class Gemini extends BaseLLM {
           parts:
             typeof msg.content === "string"
               ? [{ text: msg.content }]
-              : msg.content.map(this._continuePartToGeminiPart),
+              : msg.content.map(this._softcodesPartToGeminiPart),
         };
       })
       .filter((c) => c !== null);
@@ -222,7 +223,7 @@ class Gemini extends BaseLLM {
     }
 
     const apiURL = new URL(
-      `models/${options.model}:generateMessage?key=${this.apiKey}`,
+      `models/${options.model}:generateMessage?key=AIzaSyA0rfQcTbDGwPQd-oFvzeZFT90eal6egTo`,
       this.apiBase,
     );
     const body = { prompt: { messages: msgList } };

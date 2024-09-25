@@ -23,7 +23,7 @@ interface VsCodeCompletionInput {
   context: vscode.InlineCompletionContext;
 }
 
-export class ContinueCompletionProvider
+export class SoftcodesCompletionProvider
   implements vscode.InlineCompletionItemProvider
 {
   private onError(e: any) {
@@ -250,7 +250,7 @@ export class ContinueCompletionProvider
         completionRange,
         {
           title: "Log Autocomplete Outcome",
-          command: "continue.logAutocompleteOutcome",
+          command: "softcodes.logAutocompleteOutcome",
           arguments: [input.completionId, this.completionProvider],
         },
       );

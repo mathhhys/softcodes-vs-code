@@ -16,8 +16,8 @@ import {
 } from "vscode";
 import { PromiseAdapter, promiseFromEvent } from "./promiseUtils";
 
-export const AUTH_TYPE = "continue";
-const AUTH_NAME = "Continue";
+export const AUTH_TYPE = "softcodes";
+const AUTH_NAME = "Softcodes";
 const CLIENT_ID =
   process.env.CONTROL_PLANE_ENV === "local"
     ? "client_01J0FW6XCPMJMQ3CG51RB4HBZQ"
@@ -64,7 +64,7 @@ async function generateCodeChallenge(verifier: string) {
   return base64String;
 }
 
-interface ContinueAuthenticationSession extends AuthenticationSession {
+interface SoftcodesAuthenticationSession extends AuthenticationSession {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
@@ -80,7 +80,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
     { promise: Promise<string>; cancel: EventEmitter<void> }
   >();
   private _uriHandler = new UriEventHandler();
-  private _sessions: ContinueAuthenticationSession[] = [];
+  private _sessions: SoftcodesAuthenticationSession[] = [];
 
   private static EXPIRATION_TIME_MS = 1000 * 60 * 5; // 5 minutes
 
@@ -178,11 +178,11 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
    */
   public async getSessions(
     scopes?: string[],
-  ): Promise<readonly ContinueAuthenticationSession[]> {
+  ): Promise<readonly SoftcodesAuthenticationSession[]> {
     const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
 
     if (allSessions) {
-      return JSON.parse(allSessions) as ContinueAuthenticationSession[];
+      return JSON.parse(allSessions) as SoftcodesAuthenticationSession[];
     }
 
     return [];
@@ -195,19 +195,19 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
    */
   public async createSession(
     scopes: string[],
-  ): Promise<ContinueAuthenticationSession> {
+  ): Promise<SoftcodesAuthenticationSession> {
     try {
       const codeVerifier = generateRandomString(64);
       const codeChallenge = await generateCodeChallenge(codeVerifier);
       const token = await this.login(codeChallenge, scopes);
       if (!token) {
-        throw new Error(`Continue login failure`);
+        throw new Error(`Softcodes login failure`);
       }
 
       const userInfo = (await this.getUserInfo(token, codeVerifier)) as any;
       const { user, access_token, refresh_token } = userInfo;
 
-      const session: ContinueAuthenticationSession = {
+      const session: SoftcodesAuthenticationSession = {
         id: uuidv4(),
         accessToken: access_token,
         refreshToken: refresh_token,
@@ -244,7 +244,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
   public async removeSession(sessionId: string): Promise<void> {
     const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
     if (allSessions) {
-      let sessions = JSON.parse(allSessions) as ContinueAuthenticationSession[];
+      let sessions = JSON.parse(allSessions) as SoftcodesAuthenticationSession[];
       const sessionIdx = sessions.findIndex((s) => s.id === sessionId);
       const session = sessions[sessionIdx];
       sessions.splice(sessionIdx, 1);
@@ -272,13 +272,13 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
   }
 
   /**
-   * Log in to Continue
+   * Log in to Softcodes
    */
   private async login(codeChallenge: string, scopes: string[] = []) {
     return await window.withProgress<string>(
       {
         location: ProgressLocation.Notification,
-        title: "Signing in to Continue...",
+        title: "Signing in to Softcodes...",
         cancellable: true,
       },
       async (_, token) => {
@@ -344,7 +344,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
   }
 
   /**
-   * Handle the redirect to VS Code (after sign in from Continue)
+   * Handle the redirect to VS Code (after sign in from Softcodes)
    * @param scopes
    * @returns
    */
@@ -405,7 +405,7 @@ export async function getControlPlaneSessionInfo(
   silent: boolean,
 ): Promise<ControlPlaneSessionInfo | undefined> {
   const session = await authentication.getSession(
-    "continue",
+    "softcodes",
     [],
     silent ? { silent: true } : { createIfNone: true },
   );

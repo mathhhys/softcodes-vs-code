@@ -5,7 +5,7 @@ export type ToWebviewFromIdeOrCoreProtocol = {
   getDefaultModelTitle: [undefined, string];
   indexProgress: [IndexingProgressUpdate, void];
   refreshSubmenuItems: [undefined, void];
-  isContinueInputFocused: [undefined, boolean];
+  isSoftcodesInputFocused: [undefined, boolean];
   addContextItem: [
     {
       historyIndex: number;

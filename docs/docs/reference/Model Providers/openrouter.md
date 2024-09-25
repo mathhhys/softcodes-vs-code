@@ -2,9 +2,9 @@
 
 OpenRouter is a unified interface for commercial and open-source models, giving you access to the best models at the best prices. You can sign up [here](https://openrouter.ai/signup), create your API key on the [keys page](https://openrouter.ai/keys), and then choose a model from the [list of supported models](https://openrouter.ai/models).
 
-Change `~/.continue/config.json` to look like the following. Since OpenRouter is fully API compatible with OpenAI, it is recommended to stick with `"provider": "openai"`, even if they aren't necessarily the upstream provider.
+Change `~/.softcodes/config.json` to look like the following. Since OpenRouter is fully API compatible with OpenAI, it is recommended to stick with `"provider": "openai"`, even if they aren't necessarily the upstream provider.
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
   "models": [
     {
@@ -22,7 +22,7 @@ To utilize features such as provider preferences or model routing configuration,
 
 For example, to prevent extra long prompts from being compressed, you can explicitly turn off the feature like so:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
   "models": [
     {

@@ -3,8 +3,8 @@ import {
   ControlPlaneSessionInfo,
 } from "../control-plane/client.js";
 import {
-  BrowserSerializedContinueConfig,
-  ContinueConfig,
+  BrowserSerializedSoftcodesConfig,
+  SoftcodesConfig,
   IContextProvider,
   IDE,
   IdeSettings,
@@ -23,9 +23,9 @@ export interface ProfileDescription {
 
 // Separately manages saving/reloading each profile
 class ProfileLifecycleManager {
-  private savedConfig: ContinueConfig | undefined;
-  private savedBrowserConfig?: BrowserSerializedContinueConfig;
-  private pendingConfigPromise?: Promise<ContinueConfig>;
+  private savedConfig: SoftcodesConfig | undefined;
+  private savedBrowserConfig?: BrowserSerializedSoftcodesConfig;
+  private pendingConfigPromise?: Promise<SoftcodesConfig>;
 
   constructor(private readonly profileLoader: IProfileLoader) {}
 
@@ -51,7 +51,7 @@ class ProfileLifecycleManager {
   }
 
   // Clear saved config and reload
-  reloadConfig(): Promise<ContinueConfig> {
+  reloadConfig(): Promise<SoftcodesConfig> {
     this.savedConfig = undefined;
     this.savedBrowserConfig = undefined;
     this.pendingConfigPromise = undefined;
@@ -61,7 +61,7 @@ class ProfileLifecycleManager {
 
   async loadConfig(
     additionalContextProviders: IContextProvider[],
-  ): Promise<ContinueConfig> {
+  ): Promise<SoftcodesConfig> {
     // If we already have a config, return it
     if (this.savedConfig) {
       return this.savedConfig;
@@ -90,10 +90,10 @@ class ProfileLifecycleManager {
 
   async getSerializedConfig(
     additionalContextProviders: IContextProvider[],
-  ): Promise<BrowserSerializedContinueConfig> {
+  ): Promise<BrowserSerializedSoftcodesConfig> {
     if (!this.savedBrowserConfig) {
-      const continueConfig = await this.loadConfig(additionalContextProviders);
-      this.savedBrowserConfig = finalToBrowserConfig(continueConfig);
+      const softcodesConfig = await this.loadConfig(additionalContextProviders);
+      this.savedBrowserConfig = finalToBrowserConfig(softcodesConfig);
     }
     return this.savedBrowserConfig;
   }
@@ -213,7 +213,7 @@ export class ConfigHandler {
     return dirs.join("&");
   }
 
-  // Automatically refresh config when Continue-related IDE (e.g. VS Code) settings are changed
+  // Automatically refresh config when Softcodes-related IDE (e.g. VS Code) settings are changed
   updateIdeSettings(ideSettings: IdeSettings) {
     this.ideSettingsPromise = Promise.resolve(ideSettings);
     this.reloadConfig();
@@ -241,15 +241,15 @@ export class ConfigHandler {
     }
   }
 
-  private notifyConfigListeners(newConfig: ContinueConfig) {
+  private notifyConfigListeners(newConfig: SoftcodesConfig) {
     // Notify listeners that config changed
     for (const listener of this.updateListeners) {
       listener(newConfig);
     }
   }
 
-  private updateListeners: ((newConfig: ContinueConfig) => void)[] = [];
-  onConfigUpdate(listener: (newConfig: ContinueConfig) => void) {
+  private updateListeners: ((newConfig: SoftcodesConfig) => void)[] = [];
+  onConfigUpdate(listener: (newConfig: SoftcodesConfig) => void) {
     this.updateListeners.push(listener);
   }
 
@@ -261,7 +261,7 @@ export class ConfigHandler {
     return newConfig;
   }
 
-  getSerializedConfig(): Promise<BrowserSerializedContinueConfig> {
+  getSerializedConfig(): Promise<BrowserSerializedSoftcodesConfig> {
     return this.currentProfile.getSerializedConfig(
       this.additionalContextProviders,
     );
@@ -271,7 +271,7 @@ export class ConfigHandler {
     return this.profiles.map((p) => p.profileDescription);
   }
 
-  async loadConfig(): Promise<ContinueConfig> {
+  async loadConfig(): Promise<SoftcodesConfig> {
     return this.currentProfile.loadConfig(this.additionalContextProviders);
   }
 

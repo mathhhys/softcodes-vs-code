@@ -30,7 +30,7 @@ interface StepContainerProps {
   onReverse: () => void;
   onUserInput: (input: string) => void;
   onRetry: () => void;
-  onContinueGeneration: () => void;
+  onSoftcodesGeneration: () => void;
   onDelete: () => void;
   open: boolean;
   isFirst: boolean;
@@ -148,9 +148,9 @@ function StepContainer(props: StepContainerProps) {
 
               {truncatedEarly && (
                 <HeaderButtonWithText
-                  text="Continue generation"
+                  text="Softcodes generation"
                   onClick={(e) => {
-                    props.onContinueGeneration();
+                    props.onSoftcodesGeneration();
                   }}
                 >
                   <BarsArrowDownIcon

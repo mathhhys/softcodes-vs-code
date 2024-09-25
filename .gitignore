@@ -135,9 +135,9 @@ cached_embeddings.pkl
 .ruff_cache
 codeql
 
-**/.continue
+**/.softcodes
 .DS_Store
-.continue
+.softcodes
 .test
 .tiktoken_cache
 
@@ -163,7 +163,7 @@ continue_server.dist
 Icon
 Icon?
 
-.continue
+.softcodes
 
 # Sandbox env default file
 extensions/vscode/manual-testing-sandbox/example.ts

@@ -6,9 +6,9 @@ Run the OpenAI-compatible server by vLLM using `vllm serve`. See their [server d
 vllm serve NousResearch/Meta-Llama-3-8B-Instruct --max-model-len 1024
 ```
 
-The continue implementation uses [OpenAI](./openai.md) under the hood and automatically selects the available model. You only need to set the `apiBase` like this:
+The Softcodes implementation uses [OpenAI](./openai.md) under the hood and automatically selects the available model. You only need to set the `apiBase` like this:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
   "models": [
     {

@@ -29,7 +29,7 @@ import {
 import { ChatScrollAnchor } from "../components/ChatScrollAnchor";
 import StepContainer from "../components/gui/StepContainer";
 import TimelineItem from "../components/gui/TimelineItem";
-import ContinueInputBox from "../components/mainInput/ContinueInputBox";
+import SoftcodesInputBox from "../components/mainInput/SoftcodesInputBox";
 import { defaultInputModifiers } from "../components/mainInput/inputModifiers";
 import { TutorialCard } from "../components/mainInput/TutorialCard";
 import { IdeMessengerContext } from "../context/IdeMessenger";
@@ -288,7 +288,7 @@ function GUI() {
           dispatch(
             setDialogMessage(
               <div className="text-center p-4">
-                👋 Thanks for using Continue. We are always trying to improve
+                👋 Thanks for using Softcodes. We are always trying to improve
                 and love hearing from users. If you're interested in speaking,
                 enter your name and email. We won't use this information for
                 anything other than reaching out.
@@ -400,7 +400,7 @@ function GUI() {
                     }}
                   >
                     {item.message.role === "user" ? (
-                      <ContinueInputBox
+                      <SoftcodesInputBox
                         onEnter={async (editorState, modifiers) => {
                           streamResponse(
                             editorState,
@@ -413,7 +413,7 @@ function GUI() {
                         isMainInput={false}
                         editorState={item.editorState}
                         contextItems={item.contextItems}
-                      ></ContinueInputBox>
+                      ></SoftcodesInputBox>
                     ) : (
                       <div className="thread-message">
                         <TimelineItem
@@ -468,7 +468,7 @@ function GUI() {
                                 index - 1,
                               );
                             }}
-                            onContinueGeneration={() => {
+                            onSoftcodesGeneration={() => {
                               window.postMessage(
                                 {
                                   messageType: "userInput",
@@ -493,14 +493,14 @@ function GUI() {
               );
             })}
           </StepsDiv>
-          <ContinueInputBox
+          <SoftcodesInputBox
             onEnter={(editorContent, modifiers) => {
               sendInput(editorContent, modifiers);
             }}
             isLastUserInput={false}
             isMainInput={true}
             hidden={active}
-          ></ContinueInputBox>
+          ></SoftcodesInputBox>
 
           {active ? (
             <>

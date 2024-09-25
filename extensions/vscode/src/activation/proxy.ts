@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 // http-middleware-proxy
 // app.use("/", (req, res, next) => {
 //   // Extract the target from the request URL
-//   const target = req.headers["x-continue-url"] as string;
+//   const target = req.headers["x-softcodes-url"] as string;
 //   const { origin, ...headers } = req.headers;
 
 //   // Create a new proxy middleware for this request

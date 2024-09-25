@@ -1,4 +1,4 @@
-import { ContinueConfig } from "core";
+import { SoftcodesConfig } from "core";
 import * as vscode from "vscode";
 import { VerticalDiffCodeLens } from "../../diff/verticalPerLine/manager";
 import { DiffManager } from "../../diff/horizontal";
@@ -28,11 +28,11 @@ let quickActionsCodeLensDisposable: vscode.Disposable | undefined = undefined;
  *
  * If a previous provider was registered, it is disposed of before the new one is created.
  *
- * @param config - The Continue configuration object
+ * @param config - The Softcodes configuration object
  * @param context - The VS Code extension context
  */
 function registerQuickActionsProvider(
-  config: ContinueConfig,
+  config: SoftcodesConfig,
   context: vscode.ExtensionContext,
 ) {
   if (quickActionsCodeLensDisposable) {
@@ -52,7 +52,7 @@ function registerQuickActionsProvider(
 }
 
 /**
- * Registers all CodeLens providers for the Continue extension.
+ * Registers all CodeLens providers for the Softcodes extension.
  *
  * This function disposes of any existing CodeLens providers and registers new ones for:
  * - Vertical per-line diffs
@@ -67,7 +67,7 @@ function registerQuickActionsProvider(
  * @param context - The VS Code extension context
  * @param diffManager - The DiffManager instance for managing diffs
  * @param editorToVerticalDiffCodeLens - A Map of editor IDs to VerticalDiffCodeLens arrays
- * @param config - The Continue configuration object
+ * @param config - The Softcodes configuration object
  *
  * @returns An object containing the verticalDiffCodeLens provider
  */
@@ -75,7 +75,7 @@ export function registerAllCodeLensProviders(
   context: vscode.ExtensionContext,
   diffManager: DiffManager,
   editorToVerticalDiffCodeLens: Map<string, VerticalDiffCodeLens[]>,
-  config: ContinueConfig,
+  config: SoftcodesConfig,
 ) {
   if (verticalPerLineCodeLensProvider) {
     verticalPerLineCodeLensProvider.dispose();

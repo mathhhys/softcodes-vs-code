@@ -1,12 +1,12 @@
-import { SerializedContinueConfig } from "../index.js";
+import { SerializedSoftcodesConfig } from "../index.js";
 import { FREE_TRIAL_MODELS } from "./default.js";
 
 export const TRIAL_FIM_MODEL = "codestral-latest";
 export const ONBOARDING_LOCAL_MODEL_TITLE = "Ollama";
 
 export function setupApiKeysMode(
-  config: SerializedContinueConfig,
-): SerializedContinueConfig {
+  config: SerializedSoftcodesConfig,
+): SerializedSoftcodesConfig {
   return {
     ...config,
     models: config.models.filter((model) => model.provider !== "free-trial"),
@@ -20,8 +20,8 @@ export function setupApiKeysMode(
 }
 
 export function setupLocalMode(
-  config: SerializedContinueConfig,
-): SerializedContinueConfig {
+  config: SerializedSoftcodesConfig,
+): SerializedSoftcodesConfig {
   return {
     ...config,
     models: [
@@ -51,8 +51,8 @@ export function setupLocalMode(
 }
 
 export function setupFreeTrialMode(
-  config: SerializedContinueConfig,
-): SerializedContinueConfig {
+  config: SerializedSoftcodesConfig,
+): SerializedSoftcodesConfig {
   return {
     ...config,
     models: [
@@ -74,8 +74,8 @@ export function setupFreeTrialMode(
 }
 
 export function setupLocalAfterFreeTrial(
-  config: SerializedContinueConfig,
-): SerializedContinueConfig {
+  config: SerializedSoftcodesConfig,
+): SerializedSoftcodesConfig {
   return {
     ...config,
     models: [

@@ -3,7 +3,7 @@ import { exec } from "node:child_process";
 import * as path from "node:path";
 
 import type {
-  ContinueRcJson,
+  SoftcodesRcJson,
   FileType,
   IDE,
   IdeInfo,
@@ -19,7 +19,7 @@ import { walkDir } from "core/indexing/walkDir";
 import {
   editConfigJson,
   getConfigJsonPath,
-  getContinueGlobalPath,
+  getSoftcodesGlobalPath,
 } from "core/util/paths";
 import * as vscode from "vscode";
 import { executeGotoProvider } from "./autocomplete/lsp";
@@ -96,7 +96,7 @@ class VsCodeIde implements IDE {
       if (!this.askedForAuth) {
         vscode.window
           .showInformationMessage(
-            "Continue will request read access to your GitHub email so that we can prevent abuse of the free trial. If you prefer not to sign in, you can use Continue with your own API keys or local model.",
+            "Softcodes will request read access to your GitHub email so that we can prevent abuse of the free trial. If you prefer not to sign in, you can use Softcodes with your own API keys or local model.",
             "Sign in",
             "Use API key / local model",
             "Learn more",
@@ -104,7 +104,7 @@ class VsCodeIde implements IDE {
           .then(async (selection) => {
             if (selection === "Use API key / local model") {
               await vscode.commands.executeCommand(
-                "continue.continueGUIView.focus",
+                "softcodes.softcodesGUIView.focus",
               );
               (await this.vscodeWebviewProtocolPromise).request(
                 "openOnboarding",
@@ -239,7 +239,7 @@ class VsCodeIde implements IDE {
       version: vscode.version,
       remoteName: vscode.env.remoteName || "local",
       extensionVersion:
-        vscode.extensions.getExtension("continue.continue")?.packageJSON
+        vscode.extensions.getExtension("softcodes.softcodes")?.packageJSON
           .version,
     });
   }
@@ -271,11 +271,11 @@ class VsCodeIde implements IDE {
 
   async isTelemetryEnabled(): Promise<boolean> {
     const globalEnabled = vscode.env.isTelemetryEnabled;
-    const continueEnabled: boolean =
+    const softcodesEnabled: boolean =
       (await vscode.workspace
-        .getConfiguration("continue")
+        .getConfiguration("softcodes")
         .get("telemetryEnabled")) ?? true;
-    return globalEnabled && continueEnabled;
+    return globalEnabled && softcodesEnabled;
   }
 
   getUniqueId(): Promise<string> {
@@ -310,11 +310,11 @@ class VsCodeIde implements IDE {
   async getWorkspaceConfigs() {
     const workspaceDirs =
       vscode.workspace.workspaceFolders?.map((folder) => folder.uri) || [];
-    const configs: ContinueRcJson[] = [];
+    const configs: SoftcodesRcJson[] = [];
     for (const workspaceDir of workspaceDirs) {
       const files = await vscode.workspace.fs.readDirectory(workspaceDir);
       for (const [filename, type] of files) {
-        if (type === vscode.FileType.File && filename === ".continuerc.json") {
+        if (type === vscode.FileType.File && filename === ".softcodesrc.json") {
           const contents = await this.ideUtils.readFile(
             vscode.Uri.joinPath(workspaceDir, filename).fsPath,
           );
@@ -341,8 +341,8 @@ class VsCodeIde implements IDE {
     return this.ideUtils.getWorkspaceDirectories();
   }
 
-  async getContinueDir(): Promise<string> {
-    return getContinueGlobalPath();
+  async getSoftcodesDir(): Promise<string> {
+    return getSoftcodesGlobalPath();
   }
 
   async writeFile(path: string, contents: string): Promise<void> {
@@ -510,7 +510,7 @@ class VsCodeIde implements IDE {
   }
 
   getIdeSettingsSync(): IdeSettings {
-    const settings = vscode.workspace.getConfiguration("continue");
+    const settings = vscode.workspace.getConfiguration("softcodes");
     const remoteConfigServerUrl = settings.get<string | undefined>(
       "remoteConfigServerUrl",
       undefined,
@@ -523,7 +523,7 @@ class VsCodeIde implements IDE {
       ),
       userToken: settings.get<string>("userToken", ""),
       enableControlServerBeta: settings.get<boolean>(
-        "enableContinueForTeams",
+        "enableSoftcodesForTeams",
         false,
       ),
       pauseCodebaseIndexOnStart: settings.get<boolean>(

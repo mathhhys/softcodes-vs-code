@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   ContextProviderDescription,
-  ContinueConfig,
+  SoftcodesConfig,
   SlashCommandDescription,
 } from "core";
 
@@ -16,7 +16,7 @@ const TEST_SLASH_COMMANDS = [
   },
   {
     name: "help",
-    description: "Get help using Continue",
+    description: "Get help using Softcodes",
   },
 ];
 
@@ -24,7 +24,7 @@ type ServerState = {
   meilisearchUrl: string | undefined;
   slashCommands: SlashCommandDescription[];
   selectedContextItems: any[];
-  config: ContinueConfig;
+  config: SoftcodesConfig;
   contextProviders: ContextProviderDescription[];
   savedContextGroups: any[]; // TODO: Context groups
   indexingProgress: number;

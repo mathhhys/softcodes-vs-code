@@ -20,7 +20,7 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: `${cmdCtrl}+L`,
-        command: "continue.focusContinueInput",
+        command: "softcodes.focusSoftcodesInput",
       },
     ],
   },
@@ -29,12 +29,12 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: `"what does this code do?"`,
-        command: "continue.sendMainUserInput",
+        command: "softcodes.sendMainUserInput",
         arguments: ["what does this code do?"],
       },
       {
         title: `"what is an alternative to this?"`,
-        command: "continue.sendMainUserInput",
+        command: "softcodes.sendMainUserInput",
         arguments: ["what is an alternative to this?"],
       },
     ],
@@ -44,7 +44,7 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: `${cmdCtrl}+I`,
-        command: "continue.quickEdit",
+        command: "softcodes.quickEdit",
         arguments: [{ initialPrompt: "Add comments" } as QuickEditShowParams],
       },
     ],
@@ -54,7 +54,7 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: "Run the file",
-        command: "continue.sendToTerminal",
+        command: "softcodes.sendToTerminal",
         arguments: [
           `python ${path.join(
             getExtensionUri().fsPath,
@@ -69,7 +69,7 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: "Debug the error",
-        command: "continue.debugTerminal",
+        command: "softcodes.debugTerminal",
       },
     ],
   },
@@ -78,7 +78,7 @@ const actions: TutorialCodeLensItems[] = [
     commands: [
       {
         title: `${cmdCtrl}+Shift+R`,
-        command: "continue.debugTerminal",
+        command: "softcodes.debugTerminal",
       },
     ],
   },
@@ -122,7 +122,7 @@ export class TutorialCodeLensProvider implements vscode.CodeLensProvider {
       codeLenses.push(
         new vscode.CodeLens(range, {
           title: "Highlight the function",
-          command: "continue.selectRange",
+          command: "softcodes.selectRange",
           arguments: [lineOf11 + 3, lineOf11 + 11],
         }),
       );
@@ -135,7 +135,7 @@ export class TutorialCodeLensProvider implements vscode.CodeLensProvider {
       codeLenses.push(
         new vscode.CodeLens(range, {
           title: "Highlight the function",
-          command: "continue.selectRange",
+          command: "softcodes.selectRange",
           arguments: [lineOf21 + 3, lineOf21 + 14],
         }),
       );

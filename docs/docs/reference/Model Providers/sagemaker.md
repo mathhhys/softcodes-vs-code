@@ -4,7 +4,7 @@ SageMaker provider support SageMaker endpoint deployed with [LMI](https://docs.d
 
 To setup SageMaker, add the following to your `config.json` file:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
   "models": [
     {

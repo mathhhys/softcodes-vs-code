@@ -74,7 +74,7 @@ function ConfigureProvider() {
     }
   }, [providerName]);
 
-  const handleContinue = () => {
+  const handleSoftcodes = () => {
     if (!modelInfo) return;
 
     let formParams: any = {};

@@ -1,7 +1,7 @@
 {
-  "name": "continue-docs",
+  "name": "softcodes-docs",
   "version": "0.0.0",
-  "author": "Continue Dev, Inc",
+  "author": "Softcodes",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",

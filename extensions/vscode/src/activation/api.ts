@@ -1,7 +1,7 @@
 import { IContextProvider } from "core";
 import { VsCodeExtension } from "../extension/VsCodeExtension";
 
-export class VsCodeContinueApi {
+export class VsCodeSoftcodesApi {
   constructor(private readonly vscodeExtension: VsCodeExtension) {}
 
   registerCustomContextProvider(contextProvider: IContextProvider) {

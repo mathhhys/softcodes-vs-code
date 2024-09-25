@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import { Battery } from "../util/battery";
 import {
-  CONTINUE_WORKSPACE_KEY,
-  getContinueWorkspaceConfig,
+  SOFTCODES_WORKSPACE_KEY,
+  getSoftcodesWorkspaceConfig,
 } from "../util/workspaceConfig";
 
 export enum StatusBarStatus {
@@ -42,11 +42,11 @@ const statusBarItemText = (status: StatusBarStatus | undefined) => {
   switch (status) {
     case undefined:
     case StatusBarStatus.Disabled:
-      return "$(circle-slash) Continue";
+      return "$(circle-slash) Softcodes";
     case StatusBarStatus.Enabled:
-      return "$(check) Continue";
+      return "$(check) Softcodes";
     case StatusBarStatus.Paused:
-      return "$(debug-pause) Continue";
+      return "$(debug-pause) Softcodes";
   }
 };
 
@@ -89,10 +89,10 @@ export function setupStatusBar(
   }
 
   statusBarItem.text = loading
-    ? "$(loading~spin) Continue"
+    ? "$(loading~spin) Softcodes"
     : statusBarItemText(status);
   statusBarItem.tooltip = statusBarItemTooltip(status ?? statusBarStatus);
-  statusBarItem.command = "continue.openTabAutocompleteConfigMenu";
+  statusBarItem.command = "softcodes.openTabAutocompleteConfigMenu";
 
   statusBarItem.show();
   if (status !== undefined) {
@@ -100,8 +100,8 @@ export function setupStatusBar(
   }
 
   vscode.workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration(CONTINUE_WORKSPACE_KEY)) {
-      const enabled = getContinueWorkspaceConfig().get<boolean>(
+    if (event.affectsConfiguration(SOFTCODES_WORKSPACE_KEY)) {
+      const enabled = getSoftcodesWorkspaceConfig().get<boolean>(
         "enableTabAutocomplete",
       );
       if (enabled && statusBarStatus === StatusBarStatus.Paused) {
@@ -120,7 +120,7 @@ export function getStatusBarStatus(): StatusBarStatus | undefined {
 
 export function monitorBatteryChanges(battery: Battery): vscode.Disposable {
   return battery.onChangeAC((acConnected: boolean) => {
-    const config = vscode.workspace.getConfiguration("continue");
+    const config = vscode.workspace.getConfiguration("softcodes");
     const enabled = config.get<boolean>("enableTabAutocomplete");
     if (!!enabled) {
       const pauseOnBattery = config.get<boolean>(

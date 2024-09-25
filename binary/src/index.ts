@@ -11,14 +11,14 @@ import { setupCoreLogging } from "./logging";
 import { TcpMessenger } from "./TcpMessenger";
 
 const logFilePath = getCoreLogsPath();
-fs.appendFileSync(logFilePath, "[info] Starting Continue core...\n");
+fs.appendFileSync(logFilePath, "[info] Starting Softcodes core...\n");
 
 const program = new Command();
 
 program.action(async () => {
   try {
     let messenger: IMessenger<ToCoreProtocol, FromCoreProtocol>;
-    if (process.env.CONTINUE_DEVELOPMENT === "true") {
+    if (process.env.SOFTCODES_DEVELOPMENT === "true") {
       messenger = new TcpMessenger<ToCoreProtocol, FromCoreProtocol>();
       console.log("Waiting for connection");
       await (

@@ -2,7 +2,7 @@
 import { RunResult } from "sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import { Table } from "vectordb";
-import { IContinueServerClient } from "../continueServer/interface.js";
+import { ISoftcodesServerClient } from "../SoftcodesServer/interface.js";
 import {
   BranchAndDir,
   Chunk,
@@ -41,7 +41,7 @@ export class LanceDbIndex implements CodebaseIndex {
     private readonly embeddingsProvider: EmbeddingsProvider,
     private readonly readFile: (filepath: string) => Promise<string>,
     private readonly pathSep: string,
-    private readonly continueServerClient?: IContinueServerClient,
+    private readonly softcodesServerClient?: ISoftcodesServerClient,
   ) {}
 
   private tableNameForTag(tag: IndexTag) {
@@ -201,10 +201,10 @@ export class LanceDbIndex implements CodebaseIndex {
     };
 
     // Check remote cache
-    if (this.continueServerClient?.connected) {
+    if (this.softcodesServerClient?.connected) {
       try {
         const keys = results.compute.map(({ cacheKey }) => cacheKey);
-        const resp = await this.continueServerClient.getFromIndexCache(
+        const resp = await this.softcodesServerClient.getFromIndexCache(
           keys,
           "embeddings",
           repoName,
@@ -216,7 +216,7 @@ export class LanceDbIndex implements CodebaseIndex {
           )?.path;
           if (!path) {
             console.warn(
-              "Continue server sent a cacheKey that wasn't requested",
+              "Softcodes server sent a cacheKey that wasn't requested",
               cacheKey,
             );
             continue;

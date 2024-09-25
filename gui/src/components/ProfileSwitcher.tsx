@@ -146,7 +146,7 @@ function ProfileSwitcher(props: {}) {
         !lastControlServerBetaEnabledStatus && enableControlServerBeta;
 
       if (shouldShowPopup) {
-        ideMessenger.ide.infoPopup("Continue for Teams enabled");
+        ideMessenger.ide.infoPopup("Softcodes for Teams enabled");
       }
 
       setControlServerBetaEnabled(enableControlServerBeta);
@@ -244,7 +244,7 @@ function ProfileSwitcher(props: {}) {
             );
           }
         }}
-        text="Configure Continue"
+        text="Configure Softcodes"
       >
         <Cog6ToothIcon width="1.4em" height="1.4em" />
       </HeaderButtonWithText>
@@ -256,7 +256,7 @@ function ProfileSwitcher(props: {}) {
           text={
             session?.account
               ? `Logged in as ${session.account.label}`
-              : "Click to login to Continue"
+              : "Click to login to Softcodes"
           }
           onClick={() => {
             if (session?.account) {

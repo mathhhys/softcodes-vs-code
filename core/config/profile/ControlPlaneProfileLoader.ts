@@ -1,10 +1,10 @@
 import { ConfigJson } from "@continuedev/config-types";
 import { ControlPlaneClient } from "../../control-plane/client.js";
 import {
-  ContinueConfig,
+  SoftcodesConfig,
   IDE,
   IdeSettings,
-  SerializedContinueConfig,
+  SerializedSoftcodesConfig,
 } from "../../index.js";
 import { IProfileLoader } from "./IProfileLoader.js";
 import doLoadConfig from "./doLoadConfig.js";
@@ -36,13 +36,13 @@ export default class ControlPlaneProfileLoader implements IProfileLoader {
     }, ControlPlaneProfileLoader.RELOAD_INTERVAL);
   }
 
-  async doLoadConfig(): Promise<ContinueConfig> {
+  async doLoadConfig(): Promise<SoftcodesConfig> {
     const settings =
       this.workspaceSettings ??
       ((await this.controlPlaneClient.getSettingsForWorkspace(
         this.profileId,
       )) as any);
-    const serializedConfig: SerializedContinueConfig = settings;
+    const serializedConfig: SerializedSoftcodesConfig = settings;
 
     return doLoadConfig(
       this.ide,

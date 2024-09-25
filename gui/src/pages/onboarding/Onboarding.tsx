@@ -71,12 +71,12 @@ function Onboarding() {
   return (
     <div className="max-w-96  mx-auto leading-normal">
       <div className="leading-relaxed">
-        <h1 className="text-center">Welcome to Continue</h1>
+        <h1 className="text-center">Welcome to Softcodes</h1>
         <p className="text-center ">
           Let's find the setup that works best for you. You can update your
           configuration after onboarding by clicking the
           <Cog6ToothIcon className="inline-block h-5 w-5 align-middle px-1" />
-          icon in the bottom-right corner of Continue.
+          icon in the bottom-right corner of Softcodes.
         </p>
       </div>
 
@@ -202,7 +202,7 @@ function Onboarding() {
             Skip
           </div>
           <StyledButton disabled={!selectedOnboardingMode} onClick={onSubmit}>
-            Continue
+            Softcodes
           </StyledButton>
         </div>
       </div>

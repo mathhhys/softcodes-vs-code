@@ -9,7 +9,7 @@ import {
   PersistedSessionInfo,
   PromptLog,
 } from "core";
-import { BrowserSerializedContinueConfig } from "core/config/load";
+import { BrowserSerializedSoftcodesConfig } from "core/config/load";
 import { stripImages } from "core/llm/images";
 import { createSelector } from "reselect";
 import { v4 } from "uuid";
@@ -99,7 +99,7 @@ type State = {
   history: ChatHistory;
   contextItems: ContextItemWithId[];
   active: boolean;
-  config: BrowserSerializedContinueConfig;
+  config: BrowserSerializedSoftcodesConfig;
   title: string;
   sessionId: string;
   defaultModelTitle: string;
@@ -145,7 +145,7 @@ export const stateSlice = createSlice({
   reducers: {
     setConfig: (
       state,
-      { payload: config }: PayloadAction<BrowserSerializedContinueConfig>,
+      { payload: config }: PayloadAction<BrowserSerializedSoftcodesConfig>,
     ) => {
       const defaultModelTitle =
         config.models.find((model) => model.title === state.defaultModelTitle)

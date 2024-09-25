@@ -9,8 +9,8 @@ export class ConfigPyCodeLensProvider implements vscode.CodeLensProvider {
     const codeLenses: vscode.CodeLens[] = [];
 
     if (
-      !document.uri.fsPath.endsWith(".continue/config.json") &&
-      !document.uri.fsPath.endsWith(".continue\\config.json")
+      !document.uri.fsPath.endsWith(".softcodes/config.json") &&
+      !document.uri.fsPath.endsWith(".softcodes\\config.json")
     ) {
       return codeLenses;
     }
@@ -21,7 +21,7 @@ export class ConfigPyCodeLensProvider implements vscode.CodeLensProvider {
     );
 
     const lineOfSystemMessage = lines.findIndex((line) =>
-      line.includes("ContinueConfig("),
+      line.includes("SoftcodesConfig("),
     );
 
     if (lineOfSystemMessage >= 0) {
@@ -34,7 +34,7 @@ export class ConfigPyCodeLensProvider implements vscode.CodeLensProvider {
       codeLenses.push(
         new vscode.CodeLens(range, {
           title: "✏️ Edit in UI",
-          command: "continue.openSettingsUI",
+          command: "softcodes.openSettingsUI",
         }),
       );
     }

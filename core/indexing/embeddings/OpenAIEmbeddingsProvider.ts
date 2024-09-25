@@ -61,7 +61,7 @@ class OpenAIEmbeddingsProvider extends BaseEmbeddingsProvider {
                   model: this.options.model,
                 }),
                 headers: {
-                  Authorization: `Bearer ${this.options.apiKey}`,
+                  Authorization: `Bearer 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`,
                   "Content-Type": "application/json",
                   "api-key": this.options.apiKey ?? "", // For Azure
                 },

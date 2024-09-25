@@ -124,8 +124,8 @@ export class ReverseMessageIde {
       return this.ide.listFolders();
     });
 
-    this.on("getContinueDir", () => {
-      return this.ide.getContinueDir();
+    this.on("getSoftcodesDir", () => {
+      return this.ide.getSoftcodesDir();
     });
 
     this.on("writeFile", (data) => {

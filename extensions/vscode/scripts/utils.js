@@ -8,7 +8,7 @@ const {
   autodetectPlatformAndArch,
 } = require("../../../scripts/util/index");
 
-const continueDir = path.join(__dirname, "..", "..", "..");
+const softcodesDir = path.join(__dirname, "..", "..", "..");
 
 function copyConfigSchema() {
   fs.copyFileSync(
@@ -26,30 +26,30 @@ function copyConfigSchema() {
       "config_schema.json",
     ),
   );
-  // Modify and copy for .continuerc.json
+  // Modify and copy for .softcodesrc.json
   const schema = JSON.parse(fs.readFileSync("config_schema.json", "utf8"));
-  schema.definitions.SerializedContinueConfig.properties.mergeBehavior = {
+  schema.definitions.SerializedSoftcodesConfig.properties.mergeBehavior = {
     type: "string",
     enum: ["merge", "overwrite"],
     default: "merge",
     title: "Merge behavior",
     markdownDescription:
-      "If set to 'merge', .continuerc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .continuerc.json will overwrite that property from config.json.",
+      "If set to 'merge', .softcodesrc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .softcodesrc.json will overwrite that property from config.json.",
   };
-  fs.writeFileSync("continue_rc_schema.json", JSON.stringify(schema, null, 2));
+  fs.writeFileSync("softcodes_rc_schema.json", JSON.stringify(schema, null, 2));
 }
 
 function installNodeModules() {
   // Make sure we are in the right directory
   if (!process.cwd().endsWith("vscode")) {
-    process.chdir(path.join(continueDir, "extensions", "vscode"));
+    process.chdir(path.join(softcodesDir, "extensions", "vscode"));
   }
 
   // Install node_modules //
   execCmdSync("npm install");
   console.log("[info] npm install in extensions/vscode completed");
 
-  process.chdir(path.join(continueDir, "gui"));
+  process.chdir(path.join(softcodesDir, "gui"));
 
   execCmdSync("npm install");
   console.log("[info] npm install in gui completed");
@@ -58,7 +58,7 @@ function installNodeModules() {
 async function buildGui(isGhAction) {
   // Make sure we are in the right directory
   if (!process.cwd().endsWith("gui")) {
-    process.chdir(path.join(continueDir, "gui"));
+    process.chdir(path.join(softcodesDir, "gui"));
   }
   if (isGhAction) {
     execCmdSync("npm run build");
@@ -135,7 +135,7 @@ async function buildGui(isGhAction) {
 }
 
 async function copyOnnxRuntimeFromNodeModules(target) {
-  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  process.chdir(path.join(softcodesDir, "extensions", "vscode"));
   fs.mkdirSync("bin", { recursive: true });
 
   await new Promise((resolve, reject) => {
@@ -193,7 +193,7 @@ async function copyOnnxRuntimeFromNodeModules(target) {
 }
 
 async function copyTreeSitterWasms() {
-  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  process.chdir(path.join(softcodesDir, "extensions", "vscode"));
   fs.mkdirSync("out", { recursive: true });
 
   await new Promise((resolve, reject) => {
@@ -235,7 +235,7 @@ async function copyTreeSitterTagQryFiles() {
 
 async function copyNodeModules() {
   // Copy node_modules for pre-built binaries
-  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  process.chdir(path.join(softcodesDir, "extensions", "vscode"));
 
   const NODE_MODULES_TO_COPY = [
     "esbuild",
@@ -272,7 +272,7 @@ async function copyNodeModules() {
 }
 
 // async function downloadEsbuildBinary(isGhAction, isArm, target) {
-//   process.chdir(path.join(continueDir, "extensions", "vscode"));
+//   process.chdir(path.join(softcodesDir, "extensions", "vscode"));
 
 //   if (isGhAction && isArm) {
 //     // Download and unzip esbuild
@@ -371,7 +371,7 @@ async function downloadSqliteBinary(target) {
 }
 
 async function copySqliteBinary() {
-  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  process.chdir(path.join(softcodesDir, "extensions", "vscode"));
   console.log("[info] Copying sqlite node binding from core");
   await new Promise((resolve, reject) => {
     ncp(

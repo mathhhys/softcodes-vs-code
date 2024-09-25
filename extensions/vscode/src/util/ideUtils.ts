@@ -154,7 +154,7 @@ export class VsCodeIdeUtils {
       .openTextDocument(
         vscode.Uri.parse(
           `${
-            VsCodeExtension.continueVirtualDocumentScheme
+            VsCodeExtension.softcodesVirtualDocumentScheme
           }:${encodeURIComponent(name)}?${encodeURIComponent(contents)}`,
         ),
       )
@@ -170,20 +170,20 @@ export class VsCodeIdeUtils {
 
   async getUserSecret(key: string) {
     // Check if secret already exists in VS Code settings (global)
-    let secret = vscode.workspace.getConfiguration("continue").get(key);
+    let secret = vscode.workspace.getConfiguration("softcodes").get(key);
     if (typeof secret !== "undefined" && secret !== null) {
       return secret;
     }
 
     // If not, ask user for secret
     secret = await vscode.window.showInputBox({
-      prompt: `Either enter secret for ${key} or press enter to try Continue for free.`,
+      prompt: `Either enter secret for ${key} or press enter to try Softcodes for free.`,
       password: true,
     });
 
     // Add secret to VS Code settings
     vscode.workspace
-      .getConfiguration("continue")
+      .getConfiguration("softcodes")
       .update(key, secret, vscode.ConfigurationTarget.Global);
 
     return secret;

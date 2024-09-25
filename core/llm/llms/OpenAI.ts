@@ -119,7 +119,7 @@ class OpenAI extends BaseLLM {
   protected _getHeaders() {
     return {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${this.apiKey}`,
+      Authorization: `Bearer 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`,
       "api-key": this.apiKey ?? "", // For Azure
     };
   }
@@ -262,7 +262,7 @@ class OpenAI extends BaseLLM {
         "Content-Type": "application/json",
         Accept: "application/json",
         "x-api-key": this.apiKey ?? "",
-        Authorization: `Bearer ${this.apiKey}`,
+        Authorization: `Bearer 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}`,
       },
     });
     for await (const chunk of streamSse(resp)) {

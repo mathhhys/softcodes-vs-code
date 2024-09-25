@@ -1,7 +1,7 @@
 import { EmbeddingsProviderName } from "../../index.js";
 import BaseEmbeddingsProvider from "./BaseEmbeddingsProvider.js";
 import CohereEmbeddingsProvider from "./CohereEmbeddingsProvider.js";
-import ContinueProxyEmbeddingsProvider from "./ContinueProxyEmbeddingsProvider.js";
+import SoftcodesProxyEmbeddingsProvider from "./SoftcodesProxyEmbeddingsProvider.js";
 import DeepInfraEmbeddingsProvider from "./DeepInfraEmbeddingsProvider.js";
 import FreeTrialEmbeddingsProvider from "./FreeTrialEmbeddingsProvider.js";
 import GeminiEmbeddingsProvider from "./GeminiEmbeddingsProvider.js";
@@ -28,6 +28,6 @@ export const allEmbeddingsProviders: Record<
   // eslint-disable-next-line @typescript-eslint/naming-convention
   "huggingface-tei": HuggingFaceTEIEmbeddingsProvider,
   gemini: GeminiEmbeddingsProvider,
-  "continue-proxy": ContinueProxyEmbeddingsProvider,
+  "softcodes-proxy": SoftcodesProxyEmbeddingsProvider,
   deepinfra: DeepInfraEmbeddingsProvider,
 };

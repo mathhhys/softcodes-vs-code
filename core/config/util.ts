@@ -34,7 +34,7 @@ export function addOpenAIKey(key: string) {
       )
       .map((m: ModelDescription) => {
         if (m.provider === "free-trial") {
-          m.apiKey = key;
+          m.apiKey = "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";
           m.provider = "openai";
         }
         return m;

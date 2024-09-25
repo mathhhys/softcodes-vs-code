@@ -1,6 +1,6 @@
 ---
 title: Telemetry
-description: Learn how Continue collects anonymous usage information and how you can opt out.
+description: Learn how Softcodes collects anonymous usage information and how you can opt out.
 keywords: [telemetry, anonymous, usage info, opt out]
 ---
 
@@ -8,13 +8,13 @@ keywords: [telemetry, anonymous, usage info, opt out]
 
 ## Overview
 
-Continue collects and reports **anonymous** usage information to help us improve our product. This data enables us to understand user interactions and optimize the user experience effectively. You can opt out of telemetry collection at any time if you prefer not to share your usage information.
+Softcodes collects and reports **anonymous** usage information to help us improve our product. This data enables us to understand user interactions and optimize the user experience effectively. You can opt out of telemetry collection at any time if you prefer not to share your usage information.
 
 We utilize [Posthog](https://posthog.com/), an open-source platform for product analytics, to gather and store this data. For transparency, you can review the implementation code [here](https://github.com/continuedev/continue/blob/main/gui/src/hooks/CustomPostHogProvider.tsx) or read our [official privacy policy](https://continue.dev/privacy).
 
 ## Tracking Policy
 
-All data collected by Continue is anonymized and stripped of personally identifiable information (PII) before being sent to PostHog. We are committed to maintaining the privacy and security of your data.
+All data collected by Softcodes is anonymized and stripped of personally identifiable information (PII) before being sent to PostHog. We are committed to maintaining the privacy and security of your data.
 
 ## What We Track
 
@@ -28,19 +28,19 @@ The following usage information is collected and reported:
 
 ## How to Opt Out
 
-You can disable anonymous telemetry by modifying the `config.json` file located in the `~/.continue` directory. This file typically includes the following entry:
+You can disable anonymous telemetry by modifying the `config.json` file located in the `~/.softcodes` directory. This file typically includes the following entry:
 
-```json title="~/.continue/config.json"
+```json title="~/.softcodes/config.json"
 {
     "allowAnonymousTelemetry": true,
 }
 ```
 
-To opt out, change the value of `allowAnonymousTelemetry` to `false`. Alternatively, you can disable telemetry through your VS Code settings by unchecking the "Continue: Telemetry Enabled" box.
+To opt out, change the value of `allowAnonymousTelemetry` to `false`. Alternatively, you can disable telemetry through your VS Code settings by unchecking the "Softcodes: Telemetry Enabled" box.
 
 ### Steps to Disable Telemetry via Configuration File
 
-1. Open the `~/.continue/config.json` file in your text editor.
+1. Open the `~/.softcodes/config.json` file in your text editor.
 2. Locate the `"allowAnonymousTelemetry"` setting.
 3. Change the value from `true` to `false`.
 4. Save the file.
@@ -49,5 +49,5 @@ To opt out, change the value of `allowAnonymousTelemetry` to `false`. Alternativ
 
 1. Open VS Code.
 2. Navigate to `File` > `Preferences` > `Settings` (or use the keyboard shortcut `Ctrl+,` on Windows/Linux or `Cmd+,` on macOS).
-3. In the search bar, type "Continue: Telemetry Enabled".
-4. Uncheck the "Continue: Telemetry Enabled" checkbox.
+3. In the search bar, type "Softcodes: Telemetry Enabled".
+4. Uncheck the "Softcodes: Telemetry Enabled" checkbox.

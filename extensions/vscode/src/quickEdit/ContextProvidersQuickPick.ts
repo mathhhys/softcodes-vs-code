@@ -1,10 +1,10 @@
-import { ContinueConfig, IDE } from "core";
+import { SoftcodesConfig, IDE } from "core";
 import { fetchwithRequestOptions } from "core/util/fetchWithOptions";
 import { QuickPickItem, window } from "vscode";
 
 export async function getContextProviderItems({
   contextProviders,
-}: ContinueConfig): Promise<QuickPickItem[]> {
+}: SoftcodesConfig): Promise<QuickPickItem[]> {
   if (!contextProviders) {
     return [];
   }
@@ -23,7 +23,7 @@ export async function getContextProviderItems({
 
 export async function getContextProvidersString(
   selectedProviders: QuickPickItem[] | undefined,
-  config: ContinueConfig,
+  config: SoftcodesConfig,
   ide: IDE,
 ): Promise<string> {
   const contextItems = (
@@ -57,7 +57,7 @@ export async function getContextProvidersString(
 }
 
 export async function getContextProviderQuickPickVal(
-  config: ContinueConfig,
+  config: SoftcodesConfig,
   ide: IDE,
 ) {
   const contextProviderItems = await getContextProviderItems(config);

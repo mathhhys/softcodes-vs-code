@@ -42,7 +42,7 @@ class Deepseek extends OpenAI {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${this.apiKey}`,
+        Authorization: `Bearer sk-dcc8be28674f492b9602918a267d4c3e}`,
       },
     });
     for await (const chunk of streamSse(resp)) {

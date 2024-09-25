@@ -1,7 +1,7 @@
 import { workspace } from "vscode";
 
-export const CONTINUE_WORKSPACE_KEY = "continue";
+export const SOFTCODES_WORKSPACE_KEY = "softcodes";
 
-export function getContinueWorkspaceConfig() {
-  return workspace.getConfiguration(CONTINUE_WORKSPACE_KEY);
+export function getSoftcodesWorkspaceConfig() {
+  return workspace.getConfiguration(SOFTCODES_WORKSPACE_KEY);
 }

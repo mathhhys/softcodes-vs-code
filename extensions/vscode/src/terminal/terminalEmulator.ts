@@ -132,7 +132,7 @@ export class CapturedTerminal {
   private readonly onCommandOutput: ((output: string) => void) | undefined;
 
   splitByCommandsListener(data: string) {
-    // Split the output by commands so it can be sent to Continue Server
+    // Split the output by commands so it can be sent to Softcodes Server
 
     const strippedData = stripAnsi(data);
     this.splitByCommandsBuffer += data;

@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { ContinueServerClient } from "../../continueServer/stubs/client.js";
+import { SoftcodesServerClient } from "../../SoftcodesServer/stubs/client.js";
 import { CodebaseIndexer, PauseToken } from "../../indexing/CodebaseIndexer.js";
 import { getComputeDeleteAddRemove } from "../../indexing/refreshIndex.js";
 import { TestCodebaseIndex } from "../../indexing/TestCodebaseIndex.js";
@@ -59,12 +59,12 @@ class TestCodebaseIndexer extends CodebaseIndexer {
 // the individual CodebaseIndex classes
 describe("CodebaseIndexer", () => {
   const pauseToken = new PauseToken(false);
-  const continueServerClient = new ContinueServerClient(undefined, undefined);
+  const softcodesServerClient = new SoftcodesServerClient(undefined, undefined);
   const codebaseIndexer = new TestCodebaseIndexer(
     testConfigHandler,
     testIde,
     pauseToken,
-    continueServerClient,
+    softcodesServerClient,
   );
   const testIndex = new TestCodebaseIndex();
 

@@ -1,5 +1,5 @@
 import { TRIAL_FIM_MODEL } from "../../config/onboarding.js";
-import { getHeaders } from "../../continueServer/stubs/headers.js";
+import { getHeaders } from "../../SoftcodesServer/stubs/headers.js";
 import { constants } from "../../deploy/constants.js";
 import { ChatMessage, CompletionOptions, ModelProvider } from "../../index.js";
 import { Telemetry } from "../../util/posthog.js";
@@ -18,7 +18,7 @@ class FreeTrial extends BaseLLM {
   private async _getHeaders() {
     if (!this.ghAuthToken) {
       throw new Error(
-        "Please sign in with GitHub in order to use the free trial. If you'd like to use Continue without signing in, you can set up your own local model or API key.",
+        "Please sign in with GitHub in order to use the free trial. If you'd like to use Softcodes without signing in, you can set up your own local model or API key.",
       );
     }
     return {

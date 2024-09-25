@@ -1,5 +1,5 @@
 import { ConfigHandler } from "../config/ConfigHandler.js";
-import { IContinueServerClient } from "../continueServer/interface.js";
+import { ISoftcodesServerClient } from "../SoftcodesServer/interface.js";
 import { IDE, IndexTag, IndexingProgressUpdate } from "../index.js";
 import { ChunkCodebaseIndex } from "./chunk/ChunkCodebaseIndex.js";
 import { CodeSnippetsCodebaseIndex } from "./CodeSnippetsIndex.js";
@@ -30,7 +30,7 @@ export class CodebaseIndexer {
     private readonly configHandler: ConfigHandler,
     protected readonly ide: IDE,
     private readonly pauseToken: PauseToken,
-    private readonly continueServerClient: IContinueServerClient,
+    private readonly softcodesServerClient: ISoftcodesServerClient,
   ) {}
 
   protected async getIndexesToBuild(): Promise<CodebaseIndex[]> {
@@ -41,14 +41,14 @@ export class CodebaseIndexer {
       new ChunkCodebaseIndex(
         this.ide.readFile.bind(this.ide),
         pathSep,
-        this.continueServerClient,
+        this.softcodesServerClient,
         config.embeddingsProvider.maxChunkSize,
       ), // Chunking must come first
       new LanceDbIndex(
         config.embeddingsProvider,
         this.ide.readFile.bind(this.ide),
         pathSep,
-        this.continueServerClient,
+        this.softcodesServerClient,
       ),
       new FullTextSearchCodebaseIndex(),
       new CodeSnippetsCodebaseIndex(this.ide),
@@ -233,7 +233,7 @@ export class CodebaseIndexer {
     let errMsg: string;
     if (match) {
       const [_, valuesLength, expectedLength] = match;
-      errMsg = `Generated embedding had length ${valuesLength} but was expected to be ${expectedLength}. This may be solved by deleting ~/.continue/index and refreshing the window to re-index.`;
+      errMsg = `Generated embedding had length ${valuesLength} but was expected to be ${expectedLength}. This may be solved by deleting ~/.softcodes/index and refreshing the window to re-index.`;
     } else {
       errMsg = `${err}`;
     }

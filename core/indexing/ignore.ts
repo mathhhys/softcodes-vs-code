@@ -62,7 +62,7 @@ export const DEFAULT_IGNORE_FILETYPES = [
   "*.env",
   "*.gitignore",
   "*.gitkeep",
-  "*.continueignore",
+  "*.softcodesignore",
   "config.json",
   "*.csv",
   // "*.prompt", // can be incredibly confusing for the LLM to have another set of instructions injected into the prompt
@@ -87,7 +87,7 @@ export const DEFAULT_IGNORE_DIRS = [
   "bin/",
   ".pytest_cache/",
   ".vscode-test/",
-  ".continue/",
+  ".softcodes/",
   "__pycache__/",
   "site-packages/",
   ".gradle/",

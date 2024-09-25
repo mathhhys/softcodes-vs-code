@@ -186,7 +186,7 @@ declare global {
     replacement: string;
   }
   
-  export interface ContinueError {
+  export interface SoftcodesError {
     title: string;
     message: string;
   }
@@ -364,10 +364,10 @@ declare global {
     getAvailableThreads(): Promise<Thread[]>;
     listFolders(): Promise<string[]>;
     getWorkspaceDirs(): Promise<string[]>;
-    getWorkspaceConfigs(): Promise<ContinueRcJson[]>;
+    getWorkspaceConfigs(): Promise<SoftcodesRcJson[]>;
     writeFile(path: string, contents: string): Promise<void>;
     showVirtualFile(title: string, contents: string): Promise<void>;
-    getContinueDir(): Promise<string>;
+    getSoftcodesDir(): Promise<string>;
     openFile(path: string): Promise<void>;
     runCommand(command: string): Promise<void>;
     saveFile(filepath: string): Promise<void>;
@@ -395,7 +395,7 @@ declare global {
   
   // Slash Commands
   
-  export interface ContinueSDK {
+  export interface SoftcodesSDK {
     ide: IDE;
     llm: ILLM;
     addContextItem: (item: ContextItemWithId) => void;
@@ -404,7 +404,7 @@ declare global {
     params?: { [key: string]: any } | undefined;
     contextItems: ContextItemWithId[];
     selectedCode: RangeInFile[];
-    config: ContinueConfig;
+    config: SoftcodesConfig;
     fetch: FetchFunction;
   }
   
@@ -412,7 +412,7 @@ declare global {
     name: string;
     description: string;
     params?: { [key: string]: any };
-    run: (sdk: ContinueSDK) => AsyncGenerator<string | undefined>;
+    run: (sdk: SoftcodesSDK) => AsyncGenerator<string | undefined>;
   }
   
   // Config
@@ -672,7 +672,7 @@ declare global {
     disableInFiles?: string[];
   }
   
-  export interface ContinueUIConfig {
+  export interface SoftcodesUIConfig {
     codeBlockToolbarPosition?: "top" | "bottom";
   }
   
@@ -693,7 +693,7 @@ declare global {
     modelRoles?: ModelRoles;
   }
   
-  export interface SerializedContinueConfig {
+  export interface SerializedSoftcodesConfig {
     env?: string[];
     allowAnonymousTelemetry?: boolean;
     models: ModelDescription[];
@@ -709,23 +709,23 @@ declare global {
     embeddingsProvider?: EmbeddingsProviderDescription;
     tabAutocompleteModel?: ModelDescription;
     tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
-    ui?: ContinueUIConfig;
+    ui?: SoftcodesUIConfig;
     reranker?: RerankerDescription;
     experimental?: ExperimentalConfig;
   }
   
   export type ConfigMergeType = "merge" | "overwrite";
   
-  export type ContinueRcJson = Partial<SerializedContinueConfig> & {
+  export type SoftcodesRcJson = Partial<SerializedSoftcodesConfig> & {
     mergeBehavior: ConfigMergeType;
   };
   
   export interface Config {
-    /** If set to true, Continue will collect anonymous usage data to improve the product. If set to false, we will collect nothing. Read here to learn more: https://docs.continue.dev/telemetry */
+    /** If set to true, Softcodes will collect anonymous usage data to improve the product. If set to false, we will collect nothing.
     allowAnonymousTelemetry?: boolean;
     /** Each entry in this array will originally be a ModelDescription, the same object from your config.json, but you may add CustomLLMs.
      * A CustomLLM requires you only to define an AsyncGenerator that calls the LLM and yields string updates. You can choose to define either \`streamCompletion\` or \`streamChat\` (or both).
-     * Continue will do the rest of the work to construct prompt templates, handle context items, prune context, etc.
+     * Softcodes will do the rest of the work to construct prompt templates, handle context items, prune context, etc.
      */
     models: (CustomLLM | ModelDescription)[];
     /** A system message to be followed by all of your models */
@@ -737,30 +737,30 @@ declare global {
     /** The list of slash commands that will be available in the sidebar */
     slashCommands?: SlashCommand[];
     /** Each entry in this array will originally be a ContextProviderWithParams, the same object from your config.json, but you may add CustomContextProviders.
-     * A CustomContextProvider requires you only to define a title and getContextItems function. When you type '@title <query>', Continue will call \`getContextItems(query)\`.
+     * A CustomContextProvider requires you only to define a title and getContextItems function. When you type '@title <query>', Softcodes will call \`getContextItems(query)\`.
      */
     contextProviders?: (CustomContextProvider | ContextProviderWithParams)[];
-    /** If set to true, Continue will not index your codebase for retrieval */
+    /** If set to true, Softcodes will not index your codebase for retrieval */
     disableIndexing?: boolean;
-    /** If set to true, Continue will not make extra requests to the LLM to generate a summary title of each session. */
+    /** If set to true, Softcodes will not make extra requests to the LLM to generate a summary title of each session. */
     disableSessionTitles?: boolean;
-    /** An optional token to identify a user. Not used by Continue unless you write custom coniguration that requires such a token */
+    /** An optional token to identify a user. Not used by Softcodes unless you write custom configuration that requires such a token */
     userToken?: string;
-    /** The provider used to calculate embeddings. If left empty, Continue will use transformers.js to calculate the embeddings with all-MiniLM-L6-v2 */
+    /** The provider used to calculate embeddings. If left empty, Softcodes will use transformers.js to calculate the embeddings with all-MiniLM-L6-v2 */
     embeddingsProvider?: EmbeddingsProviderDescription | EmbeddingsProvider;
-    /** The model that Continue will use for tab autocompletions. */
+    /** The model that Softcodes will use for tab autocompletions. */
     tabAutocompleteModel?: CustomLLM | ModelDescription;
     /** Options for tab autocomplete */
     tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
     /** UI styles customization */
-    ui?: ContinueUIConfig;
+    ui?: SoftcodesUIConfig;
     /** Options for the reranker */
     reranker?: RerankerDescription | Reranker;
     /** Experimental configuration */
     experimental?: ExperimentalConfig;
   }
   
-  export interface ContinueConfig {
+  export interface SoftcodesConfig {
     allowAnonymousTelemetry?: boolean;
     models: ILLM[];
     systemMessage?: string;
@@ -774,12 +774,12 @@ declare global {
     embeddingsProvider: EmbeddingsProvider;
     tabAutocompleteModel?: ILLM;
     tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
-    ui?: ContinueUIConfig;
+    ui?: SoftcodesUIConfig;
     reranker?: Reranker;
     experimental?: ExperimentalConfig;
   }
   
-  export interface BrowserSerializedContinueConfig {
+  export interface BrowserSerializedSoftcodesConfig {
     allowAnonymousTelemetry?: boolean;
     models: ModelDescription[];
     systemMessage?: string;
@@ -791,7 +791,7 @@ declare global {
     disableSessionTitles?: boolean;
     userToken?: string;
     embeddingsProvider?: string;
-    ui?: ContinueUIConfig;
+    ui?: SoftcodesUIConfig;
     reranker?: RerankerDescription;
     experimental?: ExperimentalConfig;
   }  
