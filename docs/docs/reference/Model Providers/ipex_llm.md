@@ -31,9 +31,13 @@ If you would like to reach the Ollama service from another machine, make sure yo
     }
   ]
 }
+<<<<<<< HEAD
 ```
 
 :::tip
 - For more configuration options regarding completion or authentication, you could refer to [here](./ollama.md#completion-options) for Ollama provider.
 - If you would like to preload the model before your first conversation with that model in Softcodes, you could refer to [here](https://ipex-llm.readthedocs.io/en/latest/doc/LLM/Quickstart/continue_quickstart.html#pull-and-prepare-the-model) for more information.
 :::
+=======
+```
+>>>>>>> 117f2832 (Softcodes stable v1)

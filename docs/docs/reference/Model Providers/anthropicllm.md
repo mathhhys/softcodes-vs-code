@@ -14,5 +14,3 @@ To setup Anthropic, obtain an API key from [here](https://www.anthropic.com/api)
   ]
 }
 ```
-
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/Anthropic.ts)

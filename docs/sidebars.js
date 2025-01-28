@@ -70,7 +70,7 @@ const sidebars = {
         {
           type: 'link',
           label: 'Privacy Policy',
-          href: 'https://www.continue.dev/privacy',
+          href: 'https://www.softcodes.io/company/privacy-policy',
         },
       ],
     },

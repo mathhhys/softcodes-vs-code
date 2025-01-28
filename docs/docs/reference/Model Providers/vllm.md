@@ -19,4 +19,4 @@ The Softcodes implementation uses [OpenAI](./openai.md) under the hood and autom
 }
 ```
 
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/Vllm.ts)
+

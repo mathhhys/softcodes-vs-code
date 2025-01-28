@@ -8,6 +8,7 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamResponse } from "../stream.js";
+import { accessSecret } from './access-secret-gemini';
 
 class Gemini extends BaseLLM {
   static providerName: ModelProvider = "gemini";
@@ -17,6 +18,47 @@ class Gemini extends BaseLLM {
     apiBase: "https://generativelanguage.googleapis.com/v1beta/",
   };
 
+  private _apiKey: string | null = null;
+
+  constructor(options: Partial<LLMOptions> = {}) {
+    super({
+      ...Gemini.defaultOptions,
+      ...options,
+      model: options.model || Gemini.defaultOptions.model || 'gemini-pro'
+    } as LLMOptions);
+    this._initializeApiKey();
+  }
+
+  private async _initializeApiKey() {
+    if (!this._apiKey) {
+      this._apiKey = await this._getApiKey();
+    }
+  }
+
+  private async _getApiKey(): Promise<string> {
+    const projectId = "softcodes";
+    const secretName = 'API_KEY_GEMINI';
+  
+    if (!projectId) {
+      throw new Error('GCP_PROJECT_ID is not set');
+    }
+  
+    try {
+      const apiKey = await accessSecret(projectId, secretName);
+      if (!apiKey) {
+        throw new Error('Retrieved API key is empty or null');
+      }
+      return apiKey;
+    } catch (error) {
+      console.error('Failed to retrieve API key from Secret Manager:', error);
+      if (error instanceof Error) {
+        throw new Error(`API Key Retrieval Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred while retrieving API key');
+      }
+    }
+  }
+  
   // Function to convert completion options to Gemini format
   private _convertArgs(options: CompletionOptions) {
     const finalOptions: any = {}; // Initialize an empty object
@@ -75,7 +117,8 @@ class Gemini extends BaseLLM {
     const apiBase =
       this.apiBase ||
       Gemini.defaultOptions?.apiBase ||
-      "https://generativelanguage.googleapis.com/v1beta/"; // Determine if it's a v1 API call based on apiBase
+      "https://generativelanguage.googleapis.com/v1beta/";
+    // Determine if it's a v1 API call based on apiBase
     const isV1API = apiBase.includes("/v1/");
 
     // Conditionally apply removeSystemMessage
@@ -118,8 +161,9 @@ class Gemini extends BaseLLM {
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
+    await this._initializeApiKey(); // Ensure API key is initialized
     const apiURL = new URL(
-      `models/${options.model}:streamGenerateContent?key=AIzaSyA0rfQcTbDGwPQd-oFvzeZFT90eal6egTo`,
+      `models/${options.model}:streamGenerateContent?key=${this._apiKey}`,
       this.apiBase,
     );
     // This feels hacky to repeat code from above function but was the quickest
@@ -127,7 +171,8 @@ class Gemini extends BaseLLM {
     const apiBase =
       this.apiBase ||
       Gemini.defaultOptions?.apiBase ||
-      "https://generativelanguage.googleapis.com/v1beta/"; // Determine if it's a v1 API call based on apiBase
+      "https://generativelanguage.googleapis.com/v1beta/";
+    // Determine if it's a v1 API call based on apiBase
     const isV1API = apiBase.includes("/v1/");
 
     const contents = messages
@@ -144,7 +189,6 @@ class Gemini extends BaseLLM {
         };
       })
       .filter((c) => c !== null);
-
     const body = {
       ...this._convertArgs(options),
       contents,
@@ -213,17 +257,19 @@ class Gemini extends BaseLLM {
       }
     }
   }
+
   private async *streamChatBison(
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
+    await this._initializeApiKey(); // Ensure API key is initialized
     const msgList = [];
     for (const message of messages) {
       msgList.push({ content: message.content });
     }
 
     const apiURL = new URL(
-      `models/${options.model}:generateMessage?key=AIzaSyA0rfQcTbDGwPQd-oFvzeZFT90eal6egTo`,
+      `models/${options.model}:generateMessage?key=${this._apiKey}`,
       this.apiBase,
     );
     const body = { prompt: { messages: msgList } };

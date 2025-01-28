@@ -14,5 +14,3 @@ The Together API is a cloud platform for running large AI models. You can sign u
   ]
 }
 ```
-
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/Together.ts)

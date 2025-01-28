@@ -43,4 +43,3 @@ To force usage of `chat/completions` instead of `completions` endpoint you can s
 
 [^1]: Use the [Vllm Model Provider](./vllm.md) instead.
 
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/OpenAI.ts)

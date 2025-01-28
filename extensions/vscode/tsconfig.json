@@ -5,6 +5,7 @@
     "lib": ["ES2022", "dom", "es6", "es5", "dom.iterable", "scripthost"],
     "outDir": "out/tsc/src",
     "sourceMap": true,
+    "jsx": "react",
     "rootDir": "../../",
     "strict": true /* enable all strict type-checking options */,
     /* Additional Checks */

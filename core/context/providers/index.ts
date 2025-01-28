@@ -22,13 +22,7 @@ import SearchContextProvider from "./SearchContextProvider.js";
 import TerminalContextProvider from "./TerminalContextProvider.js";
 import URLContextProvider from "./URLContextProvider.js";
 
-/**
- * Note: We are currently omitting the following providers due to bugs:
- * - `CodeOutlineContextProvider`
- * - `CodeHighlightsContextProvider`
- *
- * See this issue for details: https://github.com/continuedev/continue/issues/1365
- */
+
 const Providers: (typeof BaseContextProvider)[] = [
   DiffContextProvider,
   FileTreeContextProvider,

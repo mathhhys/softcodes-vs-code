@@ -29,4 +29,4 @@ To configure a remote instance of LM Studio, add the `"apiBase"` property to you
 
 This `apiBase` will now be used instead of the default `http://localhost:1234/v1`.
 
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/LMStudio.ts)
+

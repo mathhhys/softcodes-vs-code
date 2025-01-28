@@ -51,5 +51,3 @@ Softcodes plays a critical role in leveraging development data for enhancing LLM
 
 Understanding the privacy and security implications of development data collection is crucial. Ensure that sensitive information is safeguarded and that data collection aligns with your organization's privacy policies. For more detailed insights and guidelines, refer to the following:
 
-- [Privacy Policy](https://continue.dev/privacy)
-- [It’s time to collect data on how you build software](https://blog.continue.dev/its-time-to-collect-data-on-how-you-build-software) (Article)

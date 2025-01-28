@@ -7,6 +7,7 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamSse } from "../stream.js";
+import { accessSecret } from './access-secret-anthropic';
 
 class Anthropic extends BaseLLM {
   static providerName: ModelProvider = "anthropic";
@@ -20,6 +21,40 @@ class Anthropic extends BaseLLM {
     apiBase: "https://api.anthropic.com/v1/",
   };
 
+  constructor(options: LLMOptions) {
+    super(options);
+    this._initializeApiKey();
+  }
+
+  private async _getApiKey(): Promise<string> {
+    const projectId = "softcodes";
+    const secretName = 'API_KEY_ANTHROPIC';
+
+    if (!projectId) {
+      throw new Error('GCP_PROJECT_ID is not set');
+    }
+
+    try {
+      const apiKey = await accessSecret(projectId, secretName);
+      if (!apiKey) {
+        throw new Error('Retrieved API key is empty or null');
+      }
+      return apiKey;
+    } catch (error) {
+      console.error('Failed to retrieve API key from Secret Manager:', error);
+      if (error instanceof Error) {
+        throw new Error(`API Key Retrieval Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred while retrieving API key');
+      }
+    }
+  }
+
+  private async _initializeApiKey() {
+    if (!this.apiKey) {
+      this.apiKey = await this._getApiKey();
+    }
+  }
   private _convertArgs(options: CompletionOptions) {
     const finalOptions = {
       top_k: options.topK,
@@ -75,6 +110,7 @@ class Anthropic extends BaseLLM {
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
+    await this._initializeApiKey();
     const response = await this.fetch(new URL("messages", this.apiBase), {
       method: "POST",
       headers: {

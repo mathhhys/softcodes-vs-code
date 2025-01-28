@@ -45,6 +45,7 @@
     "@octokit/rest": "^20.0.2",
     "commander": "^12.0.0",
     "core": "file:../core",
+    "firebase": "^10.13.2",
     "follow-redirects": "^1.15.5",
     "mac-ca": "^2.0.3",
     "ncp": "^2.0.0",

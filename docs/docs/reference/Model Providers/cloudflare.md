@@ -42,5 +42,3 @@ Cloudflare Workers AI can be used for both chat and tab autocompletion in Softco
 Visit the [Cloudflare dashboard](https://dash.cloudflare.com/) to [create an API key](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/).
 
 Review [available models](https://developers.cloudflare.com/workers-ai/models/) on Workers AI
-
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/Cloudflare.ts)

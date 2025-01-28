@@ -16,4 +16,3 @@ Hugging Face Inference Endpoints are an easy way to setup instances of open-sour
 }
 ```
 
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/HuggingFaceInferenceAPI.ts)

@@ -74,7 +74,7 @@ export function TutorialCard({ onClose }: TutorialCardProps) {
             className="align-middle pr-3"
           />
           <span>
-            <a href="https://docs.continue.dev" target="_blank">
+            <a href="https://www.softcodes.io/docs/introduction" target="_blank">
               Read our documentation
             </a>{" "}
             to learn more

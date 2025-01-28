@@ -21,4 +21,4 @@ After it's up and running, change `~/.softcodes/config.json` to look like this:
 }
 ```
 
-[View the source](https://github.com/continuedev/continue/blob/main/core/llm/llms/LlamaCpp.ts)
+

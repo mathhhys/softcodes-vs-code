@@ -94,6 +94,7 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
     ],
     apiKeyUrl: "https://console.anthropic.com/account/keys",
   },
+<<<<<<< HEAD
   mistral: {
     title: "Mistral API",
     provider: "mistral",
@@ -141,6 +142,8 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
     ],
     apiKeyUrl: "https://console.groq.com/keys",
   },
+=======
+>>>>>>> 117f2832 (Softcodes stable v1)
   deepseek: {
     title: "DeepSeek",
     provider: "deepseek",

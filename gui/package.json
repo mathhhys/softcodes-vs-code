@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@esbuild/darwin-arm64": "^0.24.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@monaco-editor/react": "^4.6.0",
@@ -31,6 +32,7 @@
     "core": "file:../core",
     "dompurify": "^3.0.6",
     "downshift": "^7.6.0",
+    "firebase": "^10.13.2",
     "lodash": "^4.17.21",
     "minisearch": "^7.0.2",
     "onigasm": "^2.2.5",
@@ -57,6 +59,7 @@
     "reselect": "^5.1.1",
     "seti-file-icons": "^0.0.8",
     "socket.io-client": "^4.7.2",
+    "sqlite3": "^5.1.7",
     "styled-components": "^5.3.6",
     "table": "^6.8.1",
     "tippy.js": "^6.3.7",

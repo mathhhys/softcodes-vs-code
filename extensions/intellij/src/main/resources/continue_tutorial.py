@@ -59,5 +59,8 @@ select the code"""
 accept [⌥ ⇧ Y] or reject [⌥ ⇧ N] the edit"""
 
 # endregion
+<<<<<<< HEAD
 
 # Ready to learn more? Check out the Softcodes documentation: https://docs.continue.dev
+=======
+>>>>>>> 117f2832 (Softcodes stable v1)

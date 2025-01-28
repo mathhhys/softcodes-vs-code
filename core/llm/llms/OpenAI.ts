@@ -7,6 +7,14 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamSse } from "../stream.js";
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
+import { accessSecret } from './access-secret-openai';
+import { Storage } from '@google-cloud/storage';
+import * as os from 'os';
+import * as path from 'path';
+import * as fs from 'fs/promises';
+
+
 
 const NON_CHAT_MODELS = [
   "text-davinci-002",
@@ -40,14 +48,19 @@ const CHAT_ONLY_MODELS = [
 ];
 
 class OpenAI extends BaseLLM {
+  protected _apiKey: string | null = null;
   public useLegacyCompletionsEndpoint: boolean | undefined = undefined;
-
   protected maxStopWords: number | undefined = undefined;
+  private secretManagerClient: SecretManagerServiceClient;
 
   constructor(options: LLMOptions) {
     super(options);
     this.useLegacyCompletionsEndpoint = options.useLegacyCompletionsEndpoint;
     this.apiVersion = options.apiVersion ?? "2023-07-01-preview";
+    this.secretManagerClient = new SecretManagerServiceClient();
+    this._initializeApiKey().catch(error => {
+      console.error('Failed to initialize API key:', error);
+    });
   }
 
   static providerName: ModelProvider = "openai";
@@ -116,14 +129,47 @@ class OpenAI extends BaseLLM {
     return finalOptions;
   }
 
+
   protected _getHeaders() {
+    if (!this._apiKey) {
+      throw new Error('API key not initialized');
+    }
     return {
       "Content-Type": "application/json",
-      Authorization: `Bearer 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`,
-      "api-key": this.apiKey ?? "", // For Azure
+      Authorization: `Bearer ${this._apiKey}`,
+      "api-key": this._apiKey, // For Azure
     };
   }
 
+  protected async _initializeApiKey() {
+    if (!this._apiKey) {
+      this._apiKey = await this._getApiKey();
+    }
+  }
+
+  private async _getApiKey(): Promise<string> {
+    const projectId = "softcodes";
+    const secretName = 'API_KEY_OPENAI';
+  
+    if (!projectId) {
+      throw new Error('GCP_PROJECT_ID is not set');
+    }
+  
+    try {
+      const apiKey = await accessSecret(projectId, secretName);
+      if (!apiKey) {
+        throw new Error('Retrieved API key is empty or null');
+      }
+      return apiKey;
+    } catch (error) {
+      console.error('Failed to retrieve API key from Secret Manager:', error);
+      if (error instanceof Error) {
+        throw new Error(`API Key Retrieval Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred while retrieving API key');
+      }
+    }
+  }
   protected async _complete(
     prompt: string,
     options: CompletionOptions,
@@ -161,6 +207,8 @@ class OpenAI extends BaseLLM {
     prompt: string,
     options: CompletionOptions,
   ): AsyncGenerator<string> {
+    await this._initializeApiKey();
+  
     for await (const chunk of this._streamChat(
       [{ role: "user", content: prompt }],
       options,
@@ -168,11 +216,12 @@ class OpenAI extends BaseLLM {
       yield stripImages(chunk.content);
     }
   }
-
+  
   protected async *_legacystreamComplete(
     prompt: string,
     options: CompletionOptions,
   ): AsyncGenerator<string> {
+    await this._initializeApiKey();
     const args: any = this._convertArgs(options, []);
     args.prompt = prompt;
     args.messages = undefined;
@@ -197,6 +246,7 @@ class OpenAI extends BaseLLM {
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
+    await this._initializeApiKey();  // Ensure API key is initialized
     if (
       !CHAT_ONLY_MODELS.includes(options.model) &&
       this.supportsCompletions() &&
@@ -243,6 +293,8 @@ class OpenAI extends BaseLLM {
     suffix: string,
     options: CompletionOptions,
   ): AsyncGenerator<string> {
+    await this._initializeApiKey();
+  
     const endpoint = new URL("fim/completions", this.apiBase);
     const resp = await this.fetch(endpoint, {
       method: "POST",
@@ -258,13 +310,9 @@ class OpenAI extends BaseLLM {
         stop: options.stop,
         stream: true,
       }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "x-api-key": this.apiKey ?? "",
-        Authorization: `Bearer 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}`,
-      },
+      headers: this._getHeaders(),
     });
+  
     for await (const chunk of streamSse(resp)) {
       yield chunk.choices[0].delta.content;
     }
