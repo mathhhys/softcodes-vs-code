@@ -65,6 +65,7 @@
     "tippy.js": "^6.3.7",
     "unist-util-visit": "^5.0.0",
     "uuid": "^9.0.1",
+    "vscode": "^1.1.37",
     "vscode-webview": "^1.0.1-beta.1"
   },
   "devDependencies": {

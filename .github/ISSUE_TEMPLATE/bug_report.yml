@@ -66,9 +66,5 @@ body:
     attributes:
       label: Log output
       description: |
-<<<<<<< HEAD
-        Please refer to the [troubleshooting guide](https://docs.continue.dev/troubleshooting) in the Softcodes Docs for instructions on obtaining the logs. Copy either the relevant lines or the last 100 lines or so.
-=======
         Please refer to the [troubleshooting guide](https://docs..dev/troubleshooting) in the Softcodes Docs for instructions on obtaining the logs. Copy either the relevant lines or the last 100 lines or so.
->>>>>>> 117f2832 (Softcodes stable v1)
       render: Shell

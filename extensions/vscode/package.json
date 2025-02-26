@@ -73,7 +73,7 @@
         "softcodes.telemetryEnabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Softcodes collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [.dev › Telemetry](https://docs.continue.dev/telemetry)."
+          "markdownDescription": "Softcodes collects anonymous usage data, cleaned of PII, to help us improve the product for our users."
         },
         "softcodes.enableSoftcodesForTeams": {
           "type": "boolean",
@@ -88,12 +88,12 @@
         "softcodes.enableQuickActions": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Quick Actions (experimental)](https://docs.continue.dev/features/quick-actions)"
+          "markdownDescription": "Enable the experimental Quick Actions feature."
         },
         "softcodes.enableTabAutocomplete": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable Softcodes' tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
+          "markdownDescription": "Enable Softcodes' tab autocomplete feature."
         },
         "softcodes.pauseTabAutocompleteOnBattery": {
           "type": "boolean",
@@ -456,11 +456,7 @@
         {
           "id": "softcodes",
           "title": "Softcodes",
-<<<<<<< HEAD
-          "icon": "media/sidebar-icon.png"
-=======
           "icon": "media/sidebar-icon.svg"
->>>>>>> 117f2832 (Softcodes stable v1)
         }
       ]
     },
@@ -584,7 +580,7 @@
     "axios": "^1.2.5",
     "core": "file:../../core",
     "cors": "^2.8.5",
-    "dbinfoz": "^0.11.0",
+    "dbinfoz": "^0.14.0",
     "downshift": "^7.6.0",
     "esbuild": "^0.17.19",
     "express": "^4.18.2",

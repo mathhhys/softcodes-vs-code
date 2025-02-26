@@ -14,7 +14,7 @@ function createAnalyticsProvider(
       return new PostHogAnalyticsProvider();
     case "logstash":
       return new LogStashAnalyticsProvider();
-    case "softcodes-proxy":
+    case "continue-proxy":
       return new SoftcodesProxyAnalyticsProvider();
     default:
       return undefined;

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@clerk/nextjs": "^6.10.1",
+    "@continuedev/config-types": "^1.0.14",
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@google-cloud/secret-manager": "^5.6.0",
     "@google-cloud/storage": "^7.13.0",

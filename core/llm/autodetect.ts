@@ -122,6 +122,12 @@ function llmCanGenerateInParallel(
 }
 
 function autodetectTemplateType(model: string): TemplateType | undefined {
+  // Add a defensive check
+  if (!model || typeof model !== "string") {
+    console.warn("Model is undefined or not a string:", model);
+    return undefined; // or return a default value if appropriate
+  }
+
   const lower = model.toLowerCase();
 
   if (lower.includes("codellama") && lower.includes("70b")) {

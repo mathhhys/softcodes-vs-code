@@ -658,7 +658,6 @@ mod tests {
         let tree_prime =
             compute_tree_for_dir(temp_dir.path(), None).expect("Failed to compute tree");
 
-        // All nodes up the tree from dir2/subdir/continue.py should be marked as changed
         let (add, remove) = diff(&tree, &tree_prime);
         assert_eq!(add.len(), 4);
         assert_eq!(remove.len(), 4);

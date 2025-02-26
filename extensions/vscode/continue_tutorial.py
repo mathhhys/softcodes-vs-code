@@ -71,7 +71,3 @@ print_sum(["a", "b", "c"])
 
 # endregion
 
-<<<<<<< HEAD
-# Ready to learn more? Check out the Softcodes documentation: https://docs.continue.dev
-=======
->>>>>>> 117f2832 (Softcodes stable v1)

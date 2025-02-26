@@ -723,10 +723,7 @@ export default class DocsService {
 
     if (isJetBrainsAndPreIndexedDocsProvider) {
       this.ide.errorPopup(
-        "The 'transformers.js' embeddings provider currently cannot be used to index " +
-          "documentation in JetBrains. To enable documentation indexing, you can use " +
-          "any of the other providers described in the docs: " +
-          "https://docs.continue.dev/walkthroughs/codebase-embeddings#embeddings-providers",
+        "The 'transformers.js' embeddings provider currently cannot be used to index "
       );
 
       this.globalContext.update(

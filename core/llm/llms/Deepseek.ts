@@ -15,6 +15,10 @@ class Deepseek extends OpenAI {
   };
   protected maxStopWords: number | undefined = 16;
 
+  constructor(options: LLMOptions) {
+    super(options);
+  }
+
   supportsFim(): boolean {
     return true;
   }

@@ -1,5 +1,5 @@
 import { Octokit } from "@octokit/rest";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import fetch from "node-fetch";
 import { URL } from "node:url";
 

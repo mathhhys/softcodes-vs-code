@@ -1,4 +1,4 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { QuestionMarkCircleIcon, UserCircleIcon } from "@heroicons/react/24/outline"; // Import the profile icon
 import { IndexingProgressUpdate } from "core";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,6 +103,19 @@ const ProfileDropdownPortalDiv = styled.div`
   margin-left: calc(100% - 190px);
   z-index: 200;
   font-size: ${getFontSize() - 2};
+`;
+
+const ProfileIconLink = styled.a`
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  color: ${vscForeground};
+  text-decoration: none;
+
+  &:hover {
+    color: ${vscForeground};
+    opacity: 0.8;
+  }
 `;
 
 // #endregion
@@ -282,6 +295,10 @@ const Layout = () => {
                   )}
                 <IndexingProgressBar indexingState={indexingState} />
               </div>
+
+              <ProfileIconLink href="https://www.softcodes.io/" target="_blank" rel="noopener noreferrer" title="Go to Profile">
+            <UserCircleIcon width="1.4em" height="1.4em" />
+          </ProfileIconLink>
 
               <ProfileSwitcher />
               <HeaderButtonWithText

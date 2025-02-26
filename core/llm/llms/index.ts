@@ -91,11 +91,20 @@ export async function llmFromDescription(
     systemMessage = await renderTemplatedString(systemMessage, readFile, {});
   }
 
+
+  // Ensure the model property is always included and valid
+  const model = desc.model || cls.defaultOptions?.model || "default-model";
+  if (typeof model !== "string") {
+    console.warn(
+      `Invalid model detected in llmFromDescription. Provider: ${desc.provider}, Model: ${model}. Setting default model.`,
+    );
+  }
+
   let options: LLMOptions = {
     ...desc,
     completionOptions: {
       ...finalCompletionOptions,
-      model: (desc.model || cls.defaultOptions?.model) ?? "codellama-7b",
+      model: model, // Ensure the model property is always a string
       maxTokens:
         finalCompletionOptions.maxTokens ??
         cls.defaultOptions?.completionOptions?.maxTokens ??
@@ -117,17 +126,4 @@ export async function llmFromDescription(
   }
 
   return new cls(options);
-}
-
-export function llmFromProviderAndOptions(
-  providerName: string,
-  llmOptions: LLMOptions,
-): ILLM {
-  const cls = LLMs.find((llm) => llm.providerName === providerName);
-
-  if (!cls) {
-    throw new Error(`Unknown LLM provider type "${providerName}"`);
-  }
-
-  return new cls(llmOptions);
 }

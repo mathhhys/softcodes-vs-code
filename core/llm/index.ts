@@ -2,18 +2,18 @@ import { findLlmInfo } from "@continuedev/llm-info";
 import Handlebars from "handlebars";
 import {
   ChatMessage,
-  ChatMessageRole,
+  ChatMessageRole, // Ensure this is imported or defined
   CompletionOptions,
   ILLM,
   LLMFullCompletionOptions,
   LLMOptions,
   ModelCapability,
-  ModelName,
   ModelProvider,
   PromptLog,
   PromptTemplate,
   RequestOptions,
   TemplateType,
+  ModelName, // Ensure this is imported or defined
 } from "../index.js";
 import { logDevData } from "../util/devdata.js";
 import { DevDataSqliteDb } from "../util/devdataSqlite.js";
@@ -70,8 +70,6 @@ export abstract class BaseLLM implements ILLM {
         this.apiBase?.includes(":1337") ||
         this._llmOptions.useLegacyCompletionsEndpoint?.valueOf() === false
       ) {
-        // Jan + Groq + Mistral don't support completions : (
-        // Seems to be going out of style...
         return false;
       }
     }
@@ -111,10 +109,9 @@ export abstract class BaseLLM implements ILLM {
   aiGatewaySlug?: string;
 
   // For WatsonX only.
-
   watsonxUrl?: string;
   watsonxApiKey?: string;
-  watsonxZenApiKeyBase64?: string = "YOUR_WATSONX_ZENAPIKEY"; // Required if using watsonx software with ZenApiKey auth
+  watsonxZenApiKeyBase64?: string = "YOUR_WATSONX_ZENAPIKEY";
   watsonxUsername?: string;
   watsonxPassword?: string;
   watsonxProjectId?: string;
@@ -123,6 +120,12 @@ export abstract class BaseLLM implements ILLM {
   private _llmOptions: LLMOptions;
 
   constructor(_options: LLMOptions) {
+
+    // Validate model property
+    if (typeof _options.model !== 'string') {
+      throw new Error('Invalid or missing model in BaseLLM constructor. Options: ' + JSON.stringify(_options));
+    }
+
     this._llmOptions = _options;
 
     // Set default options
@@ -131,6 +134,12 @@ export abstract class BaseLLM implements ILLM {
       ...(this.constructor as typeof BaseLLM).defaultOptions,
       ..._options,
     };
+
+    // Ensure model is a string and set a default if not provided
+    if (typeof options.model !== 'string') {
+      console.warn('Model is not a string or undefined. Setting default model.');
+      options.model = "default-model"; // Set a sensible default model name
+    }
 
     this.model = options.model;
     const llmInfo = findLlmInfo(this.model);
@@ -223,7 +232,6 @@ export abstract class BaseLLM implements ILLM {
   }
 
   private _getSystemMessage(): string | undefined {
-    // TODO: Merge with config system message
     return this.systemMessage;
   }
 
@@ -233,7 +241,6 @@ export abstract class BaseLLM implements ILLM {
     }
 
     const msgs: ChatMessage[] = [{ role: "user", content: prompt }];
-
     const systemMessage = this._getSystemMessage();
     if (systemMessage) {
       msgs.unshift({ role: "system", content: systemMessage });
@@ -246,6 +253,7 @@ export abstract class BaseLLM implements ILLM {
     prompt: string,
     completionOptions: CompletionOptions,
   ): string {
+    console.log("Model in _compileLogMessage:", completionOptions.model);
     const dict = { contextLength: this.contextLength, ...completionOptions };
     const settings = Object.entries(dict)
       .map(([key, value]) => `${key}: ${value}`)
@@ -263,6 +271,7 @@ ${prompt}`;
     prompt: string,
     completion: string,
   ) {
+    console.log("Model in _logTokensGenerated:", model);
     let promptTokens = this.countTokens(prompt);
     let generatedTokens = this.countTokens(completion);
     Telemetry.capture(
@@ -290,7 +299,6 @@ ${prompt}`;
   }
 
   fetch(url: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-    // Custom Node.js fetch
     const customFetch = async (input: URL | RequestInfo, init: any) => {
       try {
         const resp = await fetchwithRequestOptions(
@@ -299,7 +307,6 @@ ${prompt}`;
           { ...this.requestOptions },
         );
 
-        // Error mapping to be more helpful
         if (!resp.ok) {
           let text = await resp.text();
           if (resp.status === 404 && !resp.url.includes("/v1")) {
@@ -327,7 +334,6 @@ ${prompt}`;
 
         return resp;
       } catch (e: any) {
-        // Errors to ignore
         if (!e.message.includes("/api/show")) {
           console.warn(
             `${e.message}\n\nCode: ${e.code}\nError number: ${e.errno}\nSyscall: ${e.erroredSysCall}\nType: ${e.type}\n\n${e.stack}`,
@@ -392,7 +398,6 @@ ${prompt}`;
     options: LLMFullCompletionOptions = {},
   ): AsyncGenerator<string> {
     const { completionOptions, log } = this._parseCompletionOptions(options);
-
     const madeUpFimPrompt = `${prefix}<FIM>${suffix}`;
     if (log) {
       if (this.writeLog) {
@@ -466,7 +471,6 @@ ${prompt}`;
     }
 
     this._logTokensGenerated(completionOptions.model, prompt, completion);
-
     if (log && this.writeLog) {
       await this.writeLog(`Completion:\n\n${completion}\n\n`);
     }
@@ -580,7 +584,6 @@ ${prompt}`;
     };
   }
 
-  // biome-ignore lint/correctness/useYield: Purposefully not implemented
   protected async *_streamComplete(
     prompt: string,
     options: CompletionOptions,
@@ -654,9 +657,6 @@ ${prompt}`;
       rendered[rendered.length - 1]?.role === "assistant" &&
       !canPutWordsInModelsMouth
     ) {
-      // Some providers don't allow you to put words in the model's mouth
-      // So we have to manually compile the prompt template and use
-      // raw /completions, not /chat/completions
       const templateMessages = autodetectTemplateFunction(
         this.model,
         this.providerName,

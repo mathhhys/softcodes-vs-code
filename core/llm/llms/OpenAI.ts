@@ -7,14 +7,12 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamSse } from "../stream.js";
-import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
-import { accessSecret } from './access-secret-openai';
 import { Storage } from '@google-cloud/storage';
 import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'fs/promises';
-
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const NON_CHAT_MODELS = [
   "text-davinci-002",
@@ -51,13 +49,11 @@ class OpenAI extends BaseLLM {
   protected _apiKey: string | null = null;
   public useLegacyCompletionsEndpoint: boolean | undefined = undefined;
   protected maxStopWords: number | undefined = undefined;
-  private secretManagerClient: SecretManagerServiceClient;
 
   constructor(options: LLMOptions) {
     super(options);
     this.useLegacyCompletionsEndpoint = options.useLegacyCompletionsEndpoint;
     this.apiVersion = options.apiVersion ?? "2023-07-01-preview";
-    this.secretManagerClient = new SecretManagerServiceClient();
     this._initializeApiKey().catch(error => {
       console.error('Failed to initialize API key:', error);
     });
@@ -72,9 +68,6 @@ class OpenAI extends BaseLLM {
     if (typeof message.content === "string") {
       return message;
     } else if (!message.content.some((item) => item.type !== "text")) {
-      // If no multi-media is in the message, just send as text
-      // for compatibility with OpenAI "compatible" servers
-      // that don't support multi-media format
       return {
         ...message,
         content: message.content.map((item) => item.text).join(""),
@@ -113,7 +106,6 @@ class OpenAI extends BaseLLM {
       frequency_penalty: options.frequencyPenalty,
       presence_penalty: options.presencePenalty,
       stop:
-        // Jan + Azure OpenAI don't truncate and will throw an error
         this.maxStopWords !== undefined
           ? options.stop?.slice(0, this.maxStopWords)
           : url.host === "api.deepseek.com"
@@ -129,51 +121,43 @@ class OpenAI extends BaseLLM {
     return finalOptions;
   }
 
-
   protected _getHeaders() {
     if (!this._apiKey) {
+      console.error("API key is not initialized. Current state:", this._apiKey);
       throw new Error('API key not initialized');
     }
     return {
       "Content-Type": "application/json",
       Authorization: `Bearer ${this._apiKey}`,
-      "api-key": this._apiKey, // For Azure
+      "api-key": this._apiKey,
     };
   }
 
   protected async _initializeApiKey() {
     if (!this._apiKey) {
-      this._apiKey = await this._getApiKey();
+      try {
+        this._apiKey = await this._getApiKey();
+      } catch (error) {
+        throw error;
+      }
     }
   }
 
   private async _getApiKey(): Promise<string> {
-    const projectId = "softcodes";
-    const secretName = 'API_KEY_OPENAI';
-  
-    if (!projectId) {
-      throw new Error('GCP_PROJECT_ID is not set');
+    const apiKey = process.env.API_KEY_OPENAI;
+
+    if (!apiKey) {
+      throw new Error('API_KEY_OPENAI environment variable is not set');
     }
-  
-    try {
-      const apiKey = await accessSecret(projectId, secretName);
-      if (!apiKey) {
-        throw new Error('Retrieved API key is empty or null');
-      }
-      return apiKey;
-    } catch (error) {
-      console.error('Failed to retrieve API key from Secret Manager:', error);
-      if (error instanceof Error) {
-        throw new Error(`API Key Retrieval Error: ${error.message}`);
-      } else {
-        throw new Error('Unknown error occurred while retrieving API key');
-      }
-    }
+
+    return apiKey;
   }
+
   protected async _complete(
     prompt: string,
     options: CompletionOptions,
   ): Promise<string> {
+    await this._initializeApiKey();
     let completion = "";
     for await (const chunk of this._streamChat(
       [{ role: "user", content: prompt }],
@@ -181,7 +165,6 @@ class OpenAI extends BaseLLM {
     )) {
       completion += chunk.content;
     }
-
     return completion;
   }
 
@@ -246,7 +229,7 @@ class OpenAI extends BaseLLM {
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
-    await this._initializeApiKey();  // Ensure API key is initialized
+    await this._initializeApiKey();
     if (
       !CHAT_ONLY_MODELS.includes(options.model) &&
       this.supportsCompletions() &&
@@ -270,7 +253,6 @@ class OpenAI extends BaseLLM {
       ...this._convertArgs(options, messages),
       stream: true,
     };
-    // Empty messages cause an error in LM Studio
     body.messages = body.messages.map((m) => ({
       ...m,
       content: m.content === "" ? " " : m.content,

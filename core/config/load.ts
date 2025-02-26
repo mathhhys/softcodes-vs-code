@@ -65,7 +65,9 @@ import {
 
 function resolveSerializedConfig(filepath: string): SerializedSoftcodesConfig {
   let content = fs.readFileSync(filepath, "utf8");
+
   const config = JSONC.parse(content) as unknown as SerializedSoftcodesConfig;
+
   if (config.env && Array.isArray(config.env)) {
     const env = {
       ...process.env,
@@ -99,6 +101,8 @@ function loadSerializedConfig(
   overrideConfigJson: SerializedSoftcodesConfig | undefined,
 ): SerializedSoftcodesConfig {
   const configPath = getConfigJsonPath(ideType);
+  console.log("Config path:", configPath);
+
   let config: SerializedSoftcodesConfig = overrideConfigJson!;
   if (!config) {
     try {
@@ -117,6 +121,7 @@ function loadSerializedConfig(
       const remoteConfigJson = resolveSerializedConfig(
         getConfigJsonPathForRemote(ideSettings.remoteConfigServerUrl),
       );
+      console.log("Loaded remote config:", remoteConfigJson);
       config = mergeJson(config, remoteConfigJson, "merge", configMergeKeys);
     } catch (e) {
       console.warn("Error loading remote config: ", e);
@@ -124,6 +129,7 @@ function loadSerializedConfig(
   }
 
   for (const workspaceConfig of workspaceConfigs) {
+    console.log("Merging workspace config:", workspaceConfig);
     config = mergeJson(
       config,
       workspaceConfig,
@@ -196,10 +202,23 @@ async function serializedToIntermediateConfig(
   return config;
 }
 
-function isModelDescription(
-  llm: ModelDescription | CustomLLM,
-): llm is ModelDescription {
-  return (llm as ModelDescription).title !== undefined;
+function isModelDescription(desc: CustomLLM | ModelDescription): desc is ModelDescription {
+  // Check if `desc` has the required properties of ModelDescription
+  return (
+    typeof desc === 'object' &&
+    desc !== null &&
+    'model' in desc &&
+    'provider' in desc
+  );
+}
+
+function isCustomLLM(desc: CustomLLM | ModelDescription): desc is CustomLLM {
+  // Check if `desc` has the required properties of CustomLLM
+  return (
+    typeof desc === 'object' &&
+    desc !== null &&
+    'options' in desc
+  );
 }
 
 function isContextProviderWithParams(
@@ -218,26 +237,26 @@ async function intermediateToFinalConfig(
   workOsAccessToken: string | undefined,
   allowFreeTrial: boolean = true,
 ): Promise<SoftcodesConfig> {
-  // Auto-detect models
   let models: BaseLLM[] = [];
   for (const desc of config.models) {
     if (isModelDescription(desc)) {
-      const llm = await llmFromDescription(
-        desc,
-        ide.readFile.bind(ide),
-        uniqueId,
-        ideSettings,
-        writeLog,
-        config.completionOptions,
-        config.systemMessage,
-      );
-      if (!llm) {
-        continue;
-      }
+      try {
+        const llm = await llmFromDescription(
+          desc,
+          ide.readFile.bind(ide),
+          uniqueId,
+          ideSettings,
+          writeLog,
+          config.completionOptions,
+          config.systemMessage,
+        );
+        if (!llm) {
+          continue;
+        }
 
-      if (llm.model === "AUTODETECT") {
-        try {
+        if (llm.model === "AUTODETECT") {
           const modelNames = await llm.listModels();
+          console.log("Detected custom model names:", modelNames);
           const detectedModels = await Promise.all(
             modelNames.map(async (modelName) => {
               return await llmFromDescription(
@@ -260,39 +279,47 @@ async function intermediateToFinalConfig(
               (x) => typeof x !== "undefined",
             ) as BaseLLM[]),
           );
-        } catch (e) {
-          console.warn("Error listing models: ", e);
+        } else {
+          models.push(llm);
         }
-      } else {
-        models.push(llm);
+      } catch (error) {
       }
-    } else {
-      const llm = new CustomLLMClass({
-        ...desc,
-        options: { ...desc.options, writeLog } as any,
-      });
-      if (llm.model === "AUTODETECT") {
-        try {
+    } else if (isCustomLLM(desc)) {
+      console.log("Processing CustomLLM:", desc);
+      try {
+        // Ensure the `model` property is present in `desc.options`
+        if (!desc.options?.model) {
+          console.error("Missing 'model' in CustomLLM options:", desc.options);
+          continue; // Skip this model if `model` is missing
+        }
+
+        const llm = new CustomLLMClass({
+          ...desc,
+          options: { ...desc.options, writeLog } as any,
+        });
+        console.log("CustomLLMClass options:", desc.options);
+
+        if (llm.model === "AUTODETECT") {
           const modelNames = await llm.listModels();
-          const models = modelNames.map(
+          const detectedModels = modelNames.map(
             (modelName) =>
               new CustomLLMClass({
                 ...desc,
                 options: { ...desc.options, model: modelName, writeLog },
               }),
           );
-
-          models.push(...models);
-        } catch (e) {
-          console.warn("Error listing models: ", e);
+          models.push(...detectedModels);
+        } else {
+          models.push(llm);
         }
-      } else {
-        models.push(llm);
+      } catch (error) {
+        console.error("Error creating CustomLLMClass:", error);
       }
+    } else {
+      console.error("Unknown model description type. Full desc object:", JSON.stringify(desc, null, 2));
     }
   }
 
-  // Prepare models
   for (const model of models) {
     model.requestOptions = {
       ...model.requestOptions,
@@ -301,57 +328,62 @@ async function intermediateToFinalConfig(
   }
 
   if (allowFreeTrial) {
-    // Obtain auth token (iff free trial being used)
     const freeTrialModels = models.filter(
       (model) => model.providerName === "free-trial",
     );
     if (freeTrialModels.length > 0) {
-      const ghAuthToken = await ide.getGitHubAuthToken();
-      for (const model of freeTrialModels) {
-        (model as FreeTrial).setupGhAuthToken(ghAuthToken);
+      try {
+        const ghAuthToken = await ide.getGitHubAuthToken();
+        for (const model of freeTrialModels) {
+          (model as FreeTrial).setupGhAuthToken(ghAuthToken);
+        }
+      } catch (error) {
+        console.error("Error setting up free trial models:", error);
       }
     }
   } else {
-    // Remove free trial models
     models = models.filter((model) => model.providerName !== "free-trial");
   }
 
-  // Tab autocomplete model
   let tabAutocompleteModels: BaseLLM[] = [];
   if (config.tabAutocompleteModel) {
-    tabAutocompleteModels = (
-      await Promise.all(
-        (Array.isArray(config.tabAutocompleteModel)
-          ? config.tabAutocompleteModel
-          : [config.tabAutocompleteModel]
-        ).map(async (desc) => {
-          if (isModelDescription(desc)) {
-            const llm = await llmFromDescription(
-              desc,
-              ide.readFile.bind(ide),
-              uniqueId,
-              ideSettings,
-              writeLog,
-              config.completionOptions,
-              config.systemMessage,
-            );
+    try {
+      tabAutocompleteModels = (
+        await Promise.all(
+          (Array.isArray(config.tabAutocompleteModel)
+            ? config.tabAutocompleteModel
+            : [config.tabAutocompleteModel]
+          ).map(async (desc) => {
+            if (isModelDescription(desc)) {
+              const llm = await llmFromDescription(
+                desc,
+                ide.readFile.bind(ide),
+                uniqueId,
+                ideSettings,
+                writeLog,
+                config.completionOptions,
+                config.systemMessage,
+              );
 
-            if (llm?.providerName === "free-trial") {
-              if (!allowFreeTrial) {
-                // This shouldn't happen
-                throw new Error("Free trial cannot be used with control plane");
+              if (llm?.providerName === "free-trial") {
+                if (!allowFreeTrial) {
+                  throw new Error("Free trial cannot be used with control plane");
+                }
+                const ghAuthToken = await ide.getGitHubAuthToken();
+                (llm as FreeTrial).setupGhAuthToken(ghAuthToken);
               }
-              const ghAuthToken = await ide.getGitHubAuthToken();
-              (llm as FreeTrial).setupGhAuthToken(ghAuthToken);
+              return llm;
+            } else {
+              return new CustomLLMClass(desc);
             }
-            return llm;
-          } else {
-            return new CustomLLMClass(desc);
-          }
-        }),
-      )
-    ).filter((x) => x !== undefined) as BaseLLM[];
+          }),
+        )
+      ).filter((x) => x !== undefined) as BaseLLM[];
+    } catch (error) {
+      console.error("Error setting up tab autocomplete models:", error);
+    }
   }
+
 
   // These context providers are always included, regardless of what, if anything,
   // the user has configured in config.json

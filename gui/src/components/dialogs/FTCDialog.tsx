@@ -28,17 +28,6 @@ function FTCDialog() {
 
   return (
     <div className="p-4">
-      <h3>Free Trial Limit Reached</h3>
-      <p>
-        You've reached the free trial limit of {FREE_TRIAL_LIMIT_REQUESTS} free
-        inputs. To keep using Softcodes, you can either use your own API key, or
-        use a local LLM. To read more about the options, see our{" "}
-        <a href="https://docs.continue.dev/setup/overview" target="_blank">
-          documentation
-        </a>
-        .
-      </p>
-
       <Input
         type="text"
         placeholder="Enter your OpenAI API key"

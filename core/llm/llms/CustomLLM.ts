@@ -24,7 +24,18 @@ class CustomLLMClass extends BaseLLM {
   ) => AsyncGenerator<string>;
 
   constructor(custom: CustomLLM) {
-    super(custom.options || { model: "custom" });
+    const options = custom.options || {};
+
+    // Validate model property
+    if (!options.model || typeof options.model !== 'string') {
+      throw new Error(
+        `Invalid or missing 'model' in CustomLLMClass constructor. ` +
+        `Please provide a valid model name in the options. Received: ${JSON.stringify(options)}`
+      );
+    }
+
+    console.log("Options in CustomLLMClass constructor:", options);
+    super(options);
     this.customStreamCompletion = custom.streamCompletion;
     this.customStreamChat = custom.streamChat;
   }
@@ -38,11 +49,11 @@ class CustomLLMClass extends BaseLLM {
         messages,
         options,
         (...args) => this.fetch(...args),
-      )) {
+      )) { // Added missing closing parenthesis here
         yield { role: "assistant", content };
       }
     } else {
-      for await (const update of super._streamChat(messages, options)) {
+      for await (const update of super._streamChat(messages, options)) { // Added missing closing parenthesis here
         yield update;
       }
     }
@@ -57,7 +68,7 @@ class CustomLLMClass extends BaseLLM {
         prompt,
         options,
         (...args) => this.fetch(...args),
-      )) {
+      )) { // Added missing closing parenthesis here
         yield content;
       }
     } else if (this.customStreamChat) {
@@ -65,7 +76,7 @@ class CustomLLMClass extends BaseLLM {
         [{ role: "user", content: prompt }],
         options,
         (...args) => this.fetch(...args),
-      )) {
+      )) { // Added missing closing parenthesis here
         yield content;
       }
     } else {

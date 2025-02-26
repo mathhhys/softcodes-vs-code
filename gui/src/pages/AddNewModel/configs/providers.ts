@@ -94,56 +94,6 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
     ],
     apiKeyUrl: "https://console.anthropic.com/account/keys",
   },
-<<<<<<< HEAD
-  mistral: {
-    title: "Mistral API",
-    provider: "mistral",
-    description:
-      "The Mistral API provides seamless access to their models, including Codestral, Mistral 8x22B, Mistral Large, and more.",
-    icon: "mistral.png",
-    longDescription: `To get access to the Mistral API, obtain your API key from [here](https://console.mistral.ai/codestral) for Codestral or the [Mistral platform](https://docs.mistral.ai/) for all other models.`,
-    tags: [ModelProviderTags.OpenSource],
-    params: {
-      apiKey: "",
-    },
-    packages: [
-      models.codestral,
-      models.codestralMamba,
-      models.mistralLarge,
-      models.mistralSmall,
-      models.mistral8x22b,
-      models.mistral8x7b,
-      models.mistral7b,
-    ],
-    apiKeyUrl: "https://console.mistral.ai/codestral",
-  },
-  groq: {
-    title: "Groq",
-    provider: "groq",
-    icon: "groq.png",
-    description:
-      "Groq is the fastest LLM provider by a wide margin, using 'LPUs' to serve open-source models at blazing speed.",
-    longDescription:
-      "To get started with Groq, obtain an API key from their website [here](https://wow.groq.com/).",
-    tags: [ModelProviderTags.OpenSource],
-    packages: [
-      models.llama31405bChat,
-      models.llama3170bChat,
-      models.llama318bChat,
-      { ...models.mixtralTrial, title: "Mixtral" },
-      models.llama270bChat,
-      {
-        ...models.AUTODETECT,
-        params: {
-          ...models.AUTODETECT.params,
-          title: "Groq",
-        },
-      },
-    ],
-    apiKeyUrl: "https://console.groq.com/keys",
-  },
-=======
->>>>>>> 117f2832 (Softcodes stable v1)
   deepseek: {
     title: "DeepSeek",
     provider: "deepseek",

@@ -7,7 +7,11 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamSse } from "../stream.js";
-import { accessSecret } from './access-secret-anthropic';
+import * as dotenv from 'dotenv';
+dotenv.config(); // Load environment variables from .env file
+
+console.log('Environment Variables:', process.env); // Debug: Log all environment variables
+console.log('API_KEY_ANTHROPIC:', process.env.API_KEY_ANTHROPIC); // Debug: Log the specific variable
 
 class Anthropic extends BaseLLM {
   static providerName: ModelProvider = "anthropic";
@@ -27,27 +31,14 @@ class Anthropic extends BaseLLM {
   }
 
   private async _getApiKey(): Promise<string> {
-    const projectId = "softcodes";
-    const secretName = 'API_KEY_ANTHROPIC';
-
-    if (!projectId) {
-      throw new Error('GCP_PROJECT_ID is not set');
+    console.log("Environment Variables:", process.env); // Debug: Log all environment variables
+    const apiKey = process.env.API_KEY_ANTHROPIC;
+  
+    if (!apiKey) {
+      throw new Error('API_KEY_ANTHROPIC is not set in environment variables');
     }
-
-    try {
-      const apiKey = await accessSecret(projectId, secretName);
-      if (!apiKey) {
-        throw new Error('Retrieved API key is empty or null');
-      }
-      return apiKey;
-    } catch (error) {
-      console.error('Failed to retrieve API key from Secret Manager:', error);
-      if (error instanceof Error) {
-        throw new Error(`API Key Retrieval Error: ${error.message}`);
-      } else {
-        throw new Error('Unknown error occurred while retrieving API key');
-      }
-    }
+  
+    return apiKey;
   }
 
   private async _initializeApiKey() {
@@ -55,6 +46,7 @@ class Anthropic extends BaseLLM {
       this.apiKey = await this._getApiKey();
     }
   }
+
   private _convertArgs(options: CompletionOptions) {
     const finalOptions = {
       top_k: options.topK,
