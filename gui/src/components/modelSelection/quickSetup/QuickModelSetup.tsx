@@ -45,12 +45,12 @@ function QuickModelSetup(props: QuickModelSetupProps) {
             free inputs. To keep using Softcodes, you can either use your own API
             key, or use a local LLM. To read more about the options, see our{" "}
             <a
-              href="https://docs.continue.dev/setup/overview"
+              href="https://www.softcodes.io"
               target="_blank"
               onClick={() =>
                 ideMessenger.post(
                   "openUrl",
-                  "https://docs.continue.dev/setup/overview",
+                  "https://www.softcodes.io",
                 )
               }
             >

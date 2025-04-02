@@ -35,7 +35,7 @@ export class SoftcodesCompletionProvider
       if (val === "Documentation") {
         vscode.env.openExternal(
           vscode.Uri.parse(
-            "https://docs.continue.dev/features/tab-autocomplete",
+            "https://www.softcodes.io",
           ),
         );
       } else if (val === "Download Ollama") {

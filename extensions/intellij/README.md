@@ -4,7 +4,7 @@
 
 <div align="center">
 
-**[Softcodes](https://docs.continue.dev) is the leading open-source AI code assistant. You can connect any models and any context to build custom autocomplete and chat experiences inside [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains](https://plugins.jetbrains.com/plugin/22707-continue-extension)**
+**[Softcodes](https://www.softcodes.io) is the leading open-source AI code assistant. You can connect any models and any context to build custom autocomplete and chat experiences inside [VS Code](https://marketplace.visualstudio.com/items?itemName=Continue.continue) and [JetBrains](https://plugins.jetbrains.com/plugin/22707-continue-extension)**
 
 </div>
 
@@ -27,12 +27,6 @@
 `@docs` (MacOS) / `@docs` (Windows)
 
 </div>
-
-## Getting Started
-
-You can try out Softcodes with our free trial models before configuring your setup.
-
-Learn more about the models and providers [here](https://continue.dev/docs/setup/overview).
 
 ## License
 

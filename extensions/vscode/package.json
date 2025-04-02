@@ -12,10 +12,9 @@
     "workspace"
   ],
   "bugs": {
-    "url": "https://github.com/continuedev/continue/issues",
-    "email": "nate@continue.dev"
+    "email": "mathys@softcodes.io"
   },
-  "homepage": "https://continue.dev",
+  "homepage": "https://www.softcodes.io",
   "qna": "https://github.com/continuedev/continue/issues/new/choose",
   "license": "Apache-2.0",
   "displayName": "Softcodes - Your coding copilot",
@@ -53,7 +52,9 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onView:softcodesGUIView"
+    "onView:softcodesGUIView",
+    "onCommand:extension.login",
+    "onCommand:extension.logout"
   ],
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
@@ -146,6 +147,18 @@
         "category": "Softcodes",
         "title": "Accept Vertical Diff Block",
         "group": "Softcodes"
+      },
+      {
+        "command": "softcodes.login",
+        "title": "Softcodes: Log in"
+      },
+      {
+        "command": "softcodes.logout",
+        "title": "Softcodes: Log out"
+      },
+      {
+        "command": "softcodes.viewProfile",
+        "title": "Softcodes: Show User Info"
       },
       {
         "command": "softcodes.rejectVerticalDiffBlock",
@@ -259,6 +272,16 @@
         "group": "Softcodes"
       },
       {
+        "command": "softcodes.login",
+        "title": "Authenticate to Softcodes",
+        "category": "Softcodes"
+      },
+      {
+        "command": "softcodes.logout",
+        "title": "Sign out",
+        "category": "Softcodes"
+      },
+      {
         "command": "softcodes.docsReIndex",
         "category": "Softcodes",
         "title": "Docs Force Re-Index",
@@ -358,6 +381,12 @@
         },
         {
           "command": "softcodes.focusSoftcodesInputWithoutClear"
+        },
+        {
+          "command": "softcodes.login"
+        },
+        {
+          "command": "softcodes.viewProfile"
         },
         {
           "command": "softcodes.debugTerminal"
@@ -466,7 +495,8 @@
           "type": "webview",
           "id": "softcodes.softcodesGUIView",
           "name": "",
-          "visibility": "visible"
+          "visibility": "visible",
+          "icon": "media/sidebar-icon.svg"
         }
       ]
     },
@@ -570,6 +600,8 @@
     "vsce": "^2.15.0"
   },
   "dependencies": {
+    "@clerk/clerk-js": "^5.55.0",
+    "@clerk/clerk-sdk-node": "^5.1.6",
     "@electron/rebuild": "^3.2.10",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node-fetch": "^2.6.11",
@@ -577,10 +609,11 @@
     "@types/uuid": "^9.0.8",
     "@vscode/ripgrep": "^1.15.9",
     "@vscode/test-electron": "^2.3.9",
-    "axios": "^1.2.5",
+    "axios": "^1.8.1",
     "core": "file:../../core",
     "cors": "^2.8.5",
     "dbinfoz": "^0.14.0",
+    "dotenv": "^16.4.7",
     "downshift": "^7.6.0",
     "esbuild": "^0.17.19",
     "express": "^4.18.2",

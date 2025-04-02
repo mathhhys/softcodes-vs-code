@@ -66,7 +66,6 @@ const config = {
         },
       ],
       // Replace with your project's social card
-      image: "https://docs.continue.dev/img/continue-social-card.png",
       navbar: {
         title: "Softcodes",
         logo: {

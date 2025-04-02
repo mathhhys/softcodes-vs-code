@@ -135,7 +135,7 @@ class VsCodeIde implements IDE {
             } else if (selection === "Learn more") {
               vscode.env.openExternal(
                 vscode.Uri.parse(
-                  "https://docs.continue.dev/reference/Model%20Providers/freetrial",
+                  "https://softcodes.iol",
                 ),
               );
             } else if (selection === "Sign in") {

@@ -176,7 +176,7 @@ export class VsCodeWebviewProtocol
                 } else if (selection === "Troubleshooting") {
                   vscode.env.openExternal(
                     vscode.Uri.parse(
-                      "https://docs.continue.dev/troubleshooting",
+                      "https://www.softcodes.io",
                     ),
                   );
                 }

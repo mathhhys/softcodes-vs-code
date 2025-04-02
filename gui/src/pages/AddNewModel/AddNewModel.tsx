@@ -93,7 +93,7 @@ function AddNewModel() {
           </ul>
           <Link
             target="_blank"
-            to="https://docs.continue.dev/model-setup/overview"
+            to="https://www.softcodes.io"
           >
             Visit our setup overview docs
           </Link>{" "}
@@ -129,7 +129,7 @@ function AddNewModel() {
                   description={modelInfo.description}
                   tags={modelInfo.tags}
                   icon={modelInfo.icon}
-                  refUrl={`https://docs.continue.dev/reference/Model%20Providers/${
+                  refUrl={`https://www.softcodes.io/${
                     modelInfo.refPage || modelInfo.provider.toLowerCase()
                   }`}
                   onClick={(e) => {

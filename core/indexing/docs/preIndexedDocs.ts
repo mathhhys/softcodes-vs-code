@@ -168,10 +168,10 @@ const preIndexedDocs: Record<
     rootUrl: "https://code.visualstudio.com/api",
     faviconUrl: "https://code.visualstudio.com/favicon.ico",
   },
-  "https://docs.continue.dev/intro": {
+  "https://www.softcodes.io": {
     title: "Softcodes",
-    startUrl: "https://docs.continue.dev/intro",
-    rootUrl: "https://docs.continue.dev",
+    startUrl: "https://www.softcodes.io",
+    rootUrl: "https://www.softcodes.io",
     faviconUrl: "https://docs.continue.dev/favicon.ico",
   },
   "https://api.jquery.com/": {
