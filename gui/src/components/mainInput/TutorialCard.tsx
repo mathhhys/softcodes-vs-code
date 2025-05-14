@@ -67,19 +67,6 @@ export function TutorialCard({ onClose }: TutorialCardProps) {
             Click the gear icon in the bottom right to configure Softcodes
           </span>
         </li>
-        <li className="flex items-start">
-          <BookOpenIcon
-            width="1.4em"
-            height="1.4em"
-            className="align-middle pr-3"
-          />
-          <span>
-            <a href="https://www.softcodes.io/docs/introduction" target="_blank">
-              Read our documentation
-            </a>{" "}
-            to learn more
-          </span>
-        </li>
       </ul>
     </TutorialCardDiv>
   );

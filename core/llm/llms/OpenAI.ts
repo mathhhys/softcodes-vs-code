@@ -41,6 +41,9 @@ const CHAT_ONLY_MODELS = [
   "gpt-3.5-turbo-0613",
   "gpt-3.5-turbo-16k",
   "gpt-4",
+  "gpt-4.1-2025-04-14",
+  "gpt-4.1-mini-2025-04-14",
+  "gpt-4.1-nano-2025-04-14",
   "gpt-4-turbo",
   "gpt-4o",
   "gpt-35-turbo-16k",
@@ -166,7 +169,7 @@ class OpenAI extends BaseLLM {
       stop:
         this.maxStopWords !== undefined
           ? options.stop?.slice(0, this.maxStopWords)
-          : url.host === "api.deepseek.com"
+          : url.host === "api.studio.nebius.com"
           ? options.stop?.slice(0, 16)
           : url.port === "1337" ||
             url.host === "api.openai.com" ||

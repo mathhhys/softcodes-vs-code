@@ -6,8 +6,8 @@ import OpenAI from "./OpenAI.js";
 class Deepseek extends OpenAI {
   static providerName: ModelProvider = "deepseek";
   static defaultOptions: Partial<LLMOptions> = {
-    apiBase: "https://api.deepseek.com/",
-    model: "deepseek-coder",
+    apiBase: "https://api.studio.nebius.com/v1/",
+    model: "deepseek-ai/DeepSeek-V3-0324-fast",
     promptTemplates: {
       edit: osModelsEditPrompt,
     },
@@ -46,7 +46,7 @@ class Deepseek extends OpenAI {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer sk-dcc8be28674f492b9602918a267d4c3e}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IlV6SXJWd1h0dnprLVRvdzlLZWstc0M1akptWXBvX1VaVkxUZlpnMDRlOFUiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJnb29nbGUtb2F1dGgyfDEwOTI3MDQwODI2OTA3MjQ0Mjg2OCIsInNjb3BlIjoib3BlbmlkIG9mZmxpbmVfYWNjZXNzIiwiaXNzIjoiYXBpX2tleV9pc3N1ZXIiLCJhdWQiOlsiaHR0cHM6Ly9uZWJpdXMtaW5mZXJlbmNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIl0sImV4cCI6MTkwNDIyMDIzNCwidXVpZCI6ImY1NWI0Mjc4LTU5MDItNDNjYS1hNGZlLTQ5ZTIwNDk5MWM3NCIsIm5hbWUiOiJkZWVwc2VlayIsImV4cGlyZXNfYXQiOiIyMDMwLTA1LTA1VDE0OjAzOjU0KzAwMDAifQ.lBJCFLqHvUz4GmROlUupDJfg45Q2i4e2x9taT55B5Ts`,
       },
     });
     for await (const chunk of streamSse(resp)) {

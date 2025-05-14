@@ -515,7 +515,7 @@ const exe = os === "win32" ? ".exe" : "";
 
     // Tutorial
     "media/welcome.md",
-    "continue_tutorial.py",
+    "softcodes_tutorial.py",
     "config_schema.json",
 
     // Embeddings model

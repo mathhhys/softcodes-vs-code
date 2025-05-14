@@ -8,7 +8,7 @@ import { FimCreateParamsStreaming } from "./base.js";
 export class DeepSeekApi extends OpenAIApi {
   constructor(config: LlmApiConfig) {
     super(config);
-    this.apiBase = "https://api.deepseek.com/";
+    this.apiBase = "https://api.studio.nebius.com/v1/";
   }
   async *fimStream(
     body: FimCreateParamsStreaming,

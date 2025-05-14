@@ -99,6 +99,9 @@ const STARCODER2_T_ARTIFACTS = ["t.", "\nt", "<file_sep>"];
 const PYTHON_ENCODING = "#- coding: utf-8";
 const CODE_BLOCK_END = "```";
 
+// Set your enforced model here - this will be the only model allowed for autocomplete
+const ENFORCED_AUTOCOMPLETE_MODEL = "gpt-4.1-nano-2025-04-14"; // Replace with your specific model name
+
 const multilineStops: string[] = [DOUBLE_NEWLINE, WINDOWS_DOUBLE_NEWLINE];
 const commonStops = [SRC_DIRECTORY, PYTHON_ENCODING, CODE_BLOCK_END];
 
@@ -315,6 +318,9 @@ export class CompletionProvider {
         return undefined;
       }
 
+      // ENFORCE MODEL - Override any user-selected model to enforce our specific model
+      llm.model = ENFORCED_AUTOCOMPLETE_MODEL;
+
       // Set temperature (but don't overrride)
       if (llm.completionOptions.temperature === undefined) {
         llm.completionOptions.temperature = 0.01;
@@ -446,25 +452,17 @@ export class CompletionProvider {
     if (!llm) {
       return;
     }
+    
+    // ENFORCE MODEL AGAIN - Just to make sure at this critical point
+    llm.model = ENFORCED_AUTOCOMPLETE_MODEL;
+    
     if (llm instanceof OpenAI) {
       llm.useLegacyCompletionsEndpoint = true;
     } else if (
       llm.providerName === "free-trial" &&
       llm.model !== TRIAL_FIM_MODEL
     ) {
-      llm.model = TRIAL_FIM_MODEL;
-    }
-
-    if (
-      !shownGptClaudeWarning &&
-      nonAutocompleteModels.some((model) => llm.model.includes(model)) &&
-      !llm.model.toLowerCase().includes("deepseek") &&
-      !llm.model.toLowerCase().includes("codestral")
-    ) {
-      shownGptClaudeWarning = true;
-      throw new Error(
-        `Warning: ${llm.model} is not trained for tab-autocomplete, and will result in low-quality suggestions.`,
-      );
+      llm.model = ENFORCED_AUTOCOMPLETE_MODEL; // Always enforce our model even if free-trial
     }
 
     // Prompt

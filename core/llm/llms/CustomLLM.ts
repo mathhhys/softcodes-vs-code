@@ -4,6 +4,7 @@ import {
   CompletionOptions,
   CustomLLM,
   ModelProvider,
+  LLMOptions,
 } from "../../index.js";
 
 class CustomLLMClass extends BaseLLM {
@@ -24,8 +25,9 @@ class CustomLLMClass extends BaseLLM {
   ) => AsyncGenerator<string>;
 
   constructor(custom: CustomLLM) {
-    const options = custom.options || {};
-
+    // Explicitly type options as LLMOptions
+    const options: LLMOptions = custom.options || { model: "" }; // Provide a default that will trigger validation
+  
     // Validate model property
     if (!options.model || typeof options.model !== 'string') {
       throw new Error(
@@ -33,13 +35,14 @@ class CustomLLMClass extends BaseLLM {
         `Please provide a valid model name in the options. Received: ${JSON.stringify(options)}`
       );
     }
-
+  
     console.log("Options in CustomLLMClass constructor:", options);
     super(options);
     this.customStreamCompletion = custom.streamCompletion;
     this.customStreamChat = custom.streamChat;
   }
 
+  
   protected async *_streamChat(
     messages: ChatMessage[],
     options: CompletionOptions,

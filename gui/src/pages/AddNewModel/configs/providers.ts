@@ -64,6 +64,9 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
       "Supercharge your coding experience with the power of OpenAI's advanced language models.",
     icon: "openai.png",
     packages: [
+      models.gpt41,
+      models.gpt41mini,
+      models.gpt41nano,
       models.gpt4o,
       models.gpt4omini,
       models.gpt4turbo,
@@ -87,24 +90,13 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
     longDescription:
       "Anthropic develops advanced models characterized by extensive context lengths and exceptional recall capabilities.",
     packages: [
+      models.claude37Sonnet,
       models.claude35Sonnet,
       models.claude3Opus,
       models.claude3Sonnet,
-      models.claude3Haiku,
+      models.claude3Haiku
     ],
     apiKeyUrl: "https://console.anthropic.com/account/keys",
-  },
-  deepseek: {
-    title: "DeepSeek",
-    provider: "deepseek",
-    icon: "deepseek.png",
-    description:
-      "DeepSeek provides cheap inference of its DeepSeek Coder v2 and other impressive open-source models.",
-    longDescription:
-      "To get started with DeepSeek, obtain an API key from their website [here](https://platform.deepseek.com/api_keys).",
-    tags: [ModelProviderTags.OpenSource],
-    packages: [models.deepseekCoderApi, models.deepseekChatApi],
-    apiKeyUrl: "https://platform.deepseek.com/api_keys",
   },
   gemini: {
     title: "Google Gemini API",
@@ -114,7 +106,14 @@ export const providers: Partial<Record<ModelProvider, ProviderInfo>> = {
       "Try out Google's state-of-the-art Gemini model from their API.",
     longDescription: `To get started with Google Gemini API, obtain your API key from [here](https://ai.google.dev/tutorials/workspace_auth_quickstart) and paste it below.`,
     icon: "gemini.png",
-    packages: [models.gemini15Pro, models.geminiPro, models.gemini15Flash],
+    packages: [
+      models.gemini25Pro,
+      models.gemini25Flash,
+      models.gemini20Flash,
+      models.gemini15Pro,
+      models.gemini15Flash,
+      models.geminiPro
+    ],
     apiKeyUrl: "https://aistudio.google.com/app/apikey",
   },
 };

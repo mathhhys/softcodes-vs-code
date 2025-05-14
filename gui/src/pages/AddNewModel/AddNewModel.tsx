@@ -10,7 +10,6 @@ import {
   vscBackground,
 } from "../../components";
 import ModelCard from "../../components/modelSelection/ModelCard";
-import Toggle from "../../components/modelSelection/Toggle";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useNavigationListener } from "../../hooks/useNavigationListener";
 import { setDefaultModel } from "../../redux/slices/stateSlice";
@@ -38,8 +37,8 @@ const GridDiv = styled.div`
  * Used to display groupings in the Models tab
  */
 const modelsByProvider: Record<string, ModelPackage[]> = {
-  "Open AI": [models.gpt4turbo, models.gpt4o, models.gpt35turbo],
-  Anthropic: [models.claude3Opus, models.claude3Sonnet, models.claude3Haiku],
+  "Open AI": [models.gpt4turbo, models.gpt4o, models.gpt35turbo, models.gpt41, models.gpt41mini, models.gpt41nano],
+  Anthropic: [models.claude3Opus, models.claude3Sonnet, models.claude3Haiku, models.claude37Sonnet],
   Mistral: [
     models.codestral,
     models.mistral7b,
@@ -50,7 +49,7 @@ const modelsByProvider: Record<string, ModelPackage[]> = {
   ],
   Cohere: [models.commandR, models.commandRPlus],
   DeepSeek: [models.deepseekCoderApi, models.deepseekChatApi],
-  Gemini: [models.geminiPro, models.gemini15Pro, models.gemini15Flash],
+  Gemini: [models.geminiPro, models.gemini15Pro, models.gemini15Flash, models.gemini25Pro, models.gemini25Flash, models.gemini20Flash],
   "Open Source": [models.llama3Chat, models.mistralOs, models.deepseek],
 };
 
@@ -59,8 +58,8 @@ function AddNewModel() {
   const dispatch = useDispatch();
   useNavigationListener();
   const ideMessenger = useContext(IdeMessengerContext);
-
-  const [providersSelected, setProvidersSelected] = React.useState(true);
+  
+  // Removed the Toggle state since we're only showing "Start with a provider"
 
   return (
     <div className="overflow-y-scroll mb-6">
@@ -83,13 +82,12 @@ function AddNewModel() {
       <br />
       <div className="px-6">
         <IntroDiv>
-          To add a new model you can either:
+          To add a new model:
           <ul>
             <li>
               Start by selecting and configuring a provider, then choosing your
               model
             </li>
-            <li>Select a specific model directly</li>
           </ul>
           <Link
             target="_blank"
@@ -100,112 +98,35 @@ function AddNewModel() {
           to learn more.
         </IntroDiv>
 
-        <div className="col-span-full py-4">
-          <Toggle
-            selected={providersSelected}
-            optionOne={"Start with a provider"}
-            optionTwo={"Select a specific model"}
-            onClick={() => {
-              setProvidersSelected((prev) => !prev);
-            }}
-          ></Toggle>
-        </div>
+        {/* Removed the Toggle component */}
 
-        {providersSelected ? (
-          <>
-            <div className="text-center leading-relaxed col-span-full mb-8">
-              <h2 className="mb-0">Providers</h2>
-              <p className="mt-2">
-                Select a provider below, or configure your own in{" "}
-                <code>config.json</code>
-              </p>
-            </div>
-
-            <GridDiv>
-              {Object.entries(providers).map(([providerName, modelInfo], i) => (
-                <ModelCard
-                  key={`${providerName}-${i}`}
-                  title={modelInfo.title}
-                  description={modelInfo.description}
-                  tags={modelInfo.tags}
-                  icon={modelInfo.icon}
-                  refUrl={`https://www.softcodes.io/${
-                    modelInfo.refPage || modelInfo.provider.toLowerCase()
-                  }`}
-                  onClick={(e) => {
-                    console.log(`/addModel/provider/${providerName}`);
-                    navigate(`/addModel/provider/${providerName}`);
-                  }}
-                />
-              ))}
-            </GridDiv>
-          </>
-        ) : (
-          <>
-            <div className="text-center leading-relaxed col-span-full">
-              <h2 className="mb-0">Models</h2>
-              <p className="mt-2">
-                Select a model from the most popular options below, or configure
-                your own in <code>config.json</code>
-              </p>
-            </div>
-
-            {Object.entries(modelsByProvider).map(
-              ([providerTitle, modelConfigsByProviderTitle]) => (
-                <div className="flex flex-col mb-6">
-                  <div className="w-full items-center mb-4">
-                    <h3 className="">{providerTitle}</h3>
-                    <hr
-                      style={{
-                        height: "0px",
-                        width: "100%",
-                        color: lightGray,
-                        border: `1px solid ${lightGray}`,
-                        borderRadius: "2px",
-                      }}
-                    />
-                  </div>
-
-                  <GridDiv>
-                    {modelConfigsByProviderTitle.map((config) => (
-                      <ModelCard
-                        title={config.title}
-                        description={config.description}
-                        tags={config.tags}
-                        icon={config.icon}
-                        dimensions={config.dimensions}
-                        providerOptions={config.providerOptions}
-                        onClick={(e, dimensionChoices, selectedProvider) => {
-                          const model = {
-                            ...config.params,
-                            ..._.merge(
-                              {},
-                              ...(config.dimensions?.map((dimension, i) => {
-                                if (!dimensionChoices?.[i]) return {};
-                                return {
-                                  ...dimension.options[dimensionChoices[i]],
-                                };
-                              }) || []),
-                            ),
-                            provider: providers[selectedProvider].provider,
-                          };
-                          ideMessenger.post("config/addModel", { model });
-                          dispatch(
-                            setDefaultModel({
-                              title: model.title,
-                              force: true,
-                            }),
-                          );
-                          navigate("/");
-                        }}
-                      />
-                    ))}
-                  </GridDiv>
-                </div>
-              ),
-            )}
-          </>
-        )}
+        <>
+          <div className="text-center leading-relaxed col-span-full mb-8">
+            <h2 className="mb-0">Providers</h2>
+            <p className="mt-2">
+              Select a provider below, or configure your own in{" "}
+              <code>config.json</code>
+            </p>
+          </div>
+          <GridDiv>
+            {Object.entries(providers).map(([providerName, modelInfo], i) => (
+              <ModelCard
+                key={`${providerName}-${i}`}
+                title={modelInfo.title}
+                description={modelInfo.description}
+                tags={modelInfo.tags}
+                icon={modelInfo.icon}
+                refUrl={`https://www.softcodes.io/${
+                  modelInfo.refPage || modelInfo.provider.toLowerCase()
+                }`}
+                onClick={(e) => {
+                  console.log(`/addModel/provider/${providerName}`);
+                  navigate(`/addModel/provider/${providerName}`);
+                }}
+              />
+            ))}
+          </GridDiv>
+        </>
 
         <CustomModelButton
           className="mt-12"

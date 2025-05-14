@@ -8,7 +8,17 @@ import {
 import { stripImages } from "../images.js";
 import { BaseLLM } from "../index.js";
 import { streamResponse } from "../stream.js";
-import { accessSecret } from './access-secret-gemini';
+import * as dotenv from 'dotenv';
+import { AuthState } from '../../../extensions/vscode/src/clerk-auth';
+dotenv.config();
+
+// Authentication error class
+class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AuthError';
+  }
+}
 
 class Gemini extends BaseLLM {
   static providerName: ModelProvider = "gemini";
@@ -19,6 +29,9 @@ class Gemini extends BaseLLM {
   };
 
   private _apiKey: string | null = null;
+  
+  // Reference to the singleton auth state
+  private authState = AuthState.getInstance();
 
   constructor(options: Partial<LLMOptions> = {}) {
     super({
@@ -31,34 +44,42 @@ class Gemini extends BaseLLM {
 
   private async _initializeApiKey() {
     if (!this._apiKey) {
-      this._apiKey = await this._getApiKey();
+      try {
+        this._apiKey = await this._getApiKey();
+      } catch (error) {
+        if (error instanceof AuthError) {
+          console.error('Authentication error:', error.message);
+          // We'll re-throw this error when making actual API calls
+        } else {
+          throw error; // Re-throw other errors immediately
+        }
+      }
     }
   }
 
   private async _getApiKey(): Promise<string> {
-    const projectId = "softcodes";
-    const secretName = 'API_KEY_GEMINI';
+    // First check authentication state
+    if (!this.authState.isAuthenticated) {
+      throw new AuthError('User is not authenticated. Please log in to use the Gemini API.');
+    }
+    
+    // If authenticated, proceed with API key retrieval
+    const apiKey = process.env.API_KEY_GEMINI;
   
-    if (!projectId) {
-      throw new Error('GCP_PROJECT_ID is not set');
+    if (!apiKey) {
+      throw new Error('API_KEY_GEMINI is not set in environment variables');
     }
   
-    try {
-      const apiKey = await accessSecret(projectId, secretName);
-      if (!apiKey) {
-        throw new Error('Retrieved API key is empty or null');
-      }
-      return apiKey;
-    } catch (error) {
-      console.error('Failed to retrieve API key from Secret Manager:', error);
-      if (error instanceof Error) {
-        throw new Error(`API Key Retrieval Error: ${error.message}`);
-      } else {
-        throw new Error('Unknown error occurred while retrieving API key');
-      }
-    }
+    return apiKey;
   }
   
+  // Check authentication before making any API requests
+  private async _checkAuth() {
+    if (!this.authState.isAuthenticated) {
+      throw new AuthError('User is not authenticated. Please log in to use the Gemini API.');
+    }
+  }
+
   // Function to convert completion options to Gemini format
   private _convertArgs(options: CompletionOptions) {
     const finalOptions: any = {}; // Initialize an empty object
@@ -87,11 +108,26 @@ class Gemini extends BaseLLM {
     prompt: string,
     options: CompletionOptions,
   ): AsyncGenerator<string> {
-    for await (const message of this._streamChat(
-      [{ content: prompt, role: "user" }],
-      options,
-    )) {
-      yield stripImages(message.content);
+    // Check authentication first
+    await this._checkAuth();
+    
+    // Make sure API key is initialized
+    await this._initializeApiKey();
+    
+    if (!this._apiKey) {
+      throw new AuthError('Unable to initialize API key. Please check your authentication.');
+    }
+    
+    try {
+      for await (const message of this._streamChat(
+        [{ content: prompt, role: "user" }],
+        options,
+      )) {
+        yield stripImages(message.content);
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      throw error;
     }
   }
 
@@ -113,33 +149,48 @@ class Gemini extends BaseLLM {
     messages: ChatMessage[],
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
-    // Ensure this.apiBase is used if available, otherwise use default
-    const apiBase =
-      this.apiBase ||
-      Gemini.defaultOptions?.apiBase ||
-      "https://generativelanguage.googleapis.com/v1beta/";
-    // Determine if it's a v1 API call based on apiBase
-    const isV1API = apiBase.includes("/v1/");
+    // Check authentication first
+    await this._checkAuth();
+    
+    // Make sure API key is initialized
+    await this._initializeApiKey();
+    
+    if (!this._apiKey) {
+      throw new AuthError('Unable to initialize API key. Please check your authentication.');
+    }
+    
+    try {
+      // Ensure this.apiBase is used if available, otherwise use default
+      const apiBase =
+        this.apiBase ||
+        Gemini.defaultOptions?.apiBase ||
+        "https://generativelanguage.googleapis.com/v1beta/";
+      // Determine if it's a v1 API call based on apiBase
+      const isV1API = apiBase.includes("/v1/");
 
-    // Conditionally apply removeSystemMessage
-    const convertedMsgs = isV1API
-      ? this.removeSystemMessage(messages)
-      : messages;
+      // Conditionally apply removeSystemMessage
+      const convertedMsgs = isV1API
+        ? this.removeSystemMessage(messages)
+        : messages;
 
-    if (options.model.includes("gemini")) {
-      for await (const message of this.streamChatGemini(
-        convertedMsgs,
-        options,
-      )) {
-        yield message;
+      if (options.model.includes("gemini")) {
+        for await (const message of this.streamChatGemini(
+          convertedMsgs,
+          options,
+        )) {
+          yield message;
+        }
+      } else {
+        for await (const message of this.streamChatBison(
+          convertedMsgs,
+          options,
+        )) {
+          yield message;
+        }
       }
-    } else {
-      for await (const message of this.streamChatBison(
-        convertedMsgs,
-        options,
-      )) {
-        yield message;
-      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      throw error;
     }
   }
 
@@ -162,99 +213,109 @@ class Gemini extends BaseLLM {
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
     await this._initializeApiKey(); // Ensure API key is initialized
-    const apiURL = new URL(
-      `models/${options.model}:streamGenerateContent?key=${this._apiKey}`,
-      this.apiBase,
-    );
-    // This feels hacky to repeat code from above function but was the quickest
-    // way to ensure system message re-formatting isn't done if user has specified v1
-    const apiBase =
-      this.apiBase ||
-      Gemini.defaultOptions?.apiBase ||
-      "https://generativelanguage.googleapis.com/v1beta/";
-    // Determine if it's a v1 API call based on apiBase
-    const isV1API = apiBase.includes("/v1/");
+    
+    if (!this._apiKey) {
+      throw new AuthError('Unable to initialize API key. Please check your authentication.');
+    }
+    
+    try {
+      const apiURL = new URL(
+        `models/${options.model}:streamGenerateContent?key=${this._apiKey}`,
+        this.apiBase,
+      );
+      // This feels hacky to repeat code from above function but was the quickest
+      // way to ensure system message re-formatting isn't done if user has specified v1
+      const apiBase =
+        this.apiBase ||
+        Gemini.defaultOptions?.apiBase ||
+        "https://generativelanguage.googleapis.com/v1beta/";
+      // Determine if it's a v1 API call based on apiBase
+      const isV1API = apiBase.includes("/v1/");
 
-    const contents = messages
-      .map((msg) => {
-        if (msg.role === "system" && !isV1API) {
-          return null; // Don't include system message in contents
-        }
-        return {
-          role: msg.role === "assistant" ? "model" : "user",
-          parts:
-            typeof msg.content === "string"
-              ? [{ text: msg.content }]
-              : msg.content.map(this._softcodesPartToGeminiPart),
-        };
-      })
-      .filter((c) => c !== null);
-    const body = {
-      ...this._convertArgs(options),
-      contents,
-      // if this.systemMessage is defined, reformat it for Gemini API
-      ...(this.systemMessage &&
-        !isV1API && {
-          systemInstruction: { parts: [{ text: this.systemMessage }] },
-        }),
-    };
-    const response = await this.fetch(apiURL, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-
-    let buffer = "";
-    for await (const chunk of streamResponse(response)) {
-      buffer += chunk;
-      if (buffer.startsWith("[")) {
-        buffer = buffer.slice(1);
-      }
-      if (buffer.endsWith("]")) {
-        buffer = buffer.slice(0, -1);
-      }
-      if (buffer.startsWith(",")) {
-        buffer = buffer.slice(1);
-      }
-
-      const parts = buffer.split("\n,");
-
-      let foundIncomplete = false;
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i];
-        let data;
-        try {
-          data = JSON.parse(part);
-        } catch (e) {
-          foundIncomplete = true;
-          continue; // yo!
-        }
-        if (data.error) {
-          throw new Error(data.error.message);
-        }
-        // Check for existence of each level before accessing the final 'text' property
-        if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-          // Incrementally stream the content to make it smoother
-          const content = data.candidates[0].content.parts[0].text;
-          const words = content.split(/(\s+)/);
-          const delaySeconds = Math.min(4.0 / (words.length + 1), 0.1);
-          while (words.length > 0) {
-            const wordsToYield = Math.min(3, words.length);
-            yield {
-              role: "assistant",
-              content: words.splice(0, wordsToYield).join(""),
-            };
-            await delay(delaySeconds);
+      const contents = messages
+        .map((msg) => {
+          if (msg.role === "system" && !isV1API) {
+            return null; // Don't include system message in contents
           }
+          return {
+            role: msg.role === "assistant" ? "model" : "user",
+            parts:
+              typeof msg.content === "string"
+                ? [{ text: msg.content }]
+                : msg.content.map(this._softcodesPartToGeminiPart),
+          };
+        })
+        .filter((c) => c !== null);
+      const body = {
+        ...this._convertArgs(options),
+        contents,
+        // if this.systemMessage is defined, reformat it for Gemini API
+        ...(this.systemMessage &&
+          !isV1API && {
+            systemInstruction: { parts: [{ text: this.systemMessage }] },
+          }),
+      };
+      const response = await this.fetch(apiURL, {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+
+      let buffer = "";
+      for await (const chunk of streamResponse(response)) {
+        buffer += chunk;
+        if (buffer.startsWith("[")) {
+          buffer = buffer.slice(1);
+        }
+        if (buffer.endsWith("]")) {
+          buffer = buffer.slice(0, -1);
+        }
+        if (buffer.startsWith(",")) {
+          buffer = buffer.slice(1);
+        }
+
+        const parts = buffer.split("\n,");
+
+        let foundIncomplete = false;
+        for (let i = 0; i < parts.length; i++) {
+          const part = parts[i];
+          let data;
+          try {
+            data = JSON.parse(part);
+          } catch (e) {
+            foundIncomplete = true;
+            continue; // yo!
+          }
+          if (data.error) {
+            throw new Error(data.error.message);
+          }
+          // Check for existence of each level before accessing the final 'text' property
+          if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+            // Incrementally stream the content to make it smoother
+            const content = data.candidates[0].content.parts[0].text;
+            const words = content.split(/(\s+)/);
+            const delaySeconds = Math.min(4.0 / (words.length + 1), 0.1);
+            while (words.length > 0) {
+              const wordsToYield = Math.min(3, words.length);
+              yield {
+                role: "assistant",
+                content: words.splice(0, wordsToYield).join(""),
+              };
+              await delay(delaySeconds);
+            }
+          } else {
+            // Handle the case where the expected data structure is not found
+            console.warn("Unexpected response format:", data);
+          }
+        }
+        if (foundIncomplete) {
+          buffer = parts[parts.length - 1];
         } else {
-          // Handle the case where the expected data structure is not found
-          console.warn("Unexpected response format:", data);
+          buffer = "";
         }
       }
-      if (foundIncomplete) {
-        buffer = parts[parts.length - 1];
-      } else {
-        buffer = "";
-      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      throw error;
     }
   }
 
@@ -263,22 +324,32 @@ class Gemini extends BaseLLM {
     options: CompletionOptions,
   ): AsyncGenerator<ChatMessage> {
     await this._initializeApiKey(); // Ensure API key is initialized
-    const msgList = [];
-    for (const message of messages) {
-      msgList.push({ content: message.content });
+    
+    if (!this._apiKey) {
+      throw new AuthError('Unable to initialize API key. Please check your authentication.');
     }
+    
+    try {
+      const msgList = [];
+      for (const message of messages) {
+        msgList.push({ content: message.content });
+      }
 
-    const apiURL = new URL(
-      `models/${options.model}:generateMessage?key=${this._apiKey}`,
-      this.apiBase,
-    );
-    const body = { prompt: { messages: msgList } };
-    const response = await this.fetch(apiURL, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
-    yield { role: "assistant", content: data.candidates[0].content };
+      const apiURL = new URL(
+        `models/${options.model}:generateMessage?key=${this._apiKey}`,
+        this.apiBase,
+      );
+      const body = { prompt: { messages: msgList } };
+      const response = await this.fetch(apiURL, {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      yield { role: "assistant", content: data.candidates[0].content };
+    } catch (error) {
+      console.error('Error during API call:', error);
+      throw error;
+    }
   }
 }
 

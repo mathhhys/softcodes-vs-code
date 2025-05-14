@@ -8,7 +8,6 @@ export async function getAuthUrlForTokenPage(): Promise<string> {
   const params = {
     response_type: "code",
     client_id: CLIENT_ID,
-    redirect_uri: "https://app.continue.dev/tokens/callback",
     // redirect_uri: "http://localhost:3000/tokens/callback",
     state: uuidv4(),
     provider: "authkit",

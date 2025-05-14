@@ -49,45 +49,73 @@ export class ClerkTokenAuth {
     // Reference to global auth state
     private authState = AuthState.getInstance();
     
+    // Token storage key
+    private readonly TOKEN_STORAGE_KEY = 'softcodes.authToken';
+    
     constructor(private context: vscode.ExtensionContext) {
         // Create debug output channel
         this.outputChannel = vscode.window.createOutputChannel('Softcodes Auth Debug');
         this.outputChannel.show();
         this.log('ClerkTokenAuth initialized');
         
-        // Try to load existing token
-        this.token = context.globalState.get('softcodes.authToken');
-        this.log(`Existing token found: ${this.token ? 'Yes' : 'No'}`);
-        
-        // If token exists, try to decode it for debugging
-        if (this.token) {
-            try {
-                // Check if it's a valid JWT format before attempting to decode
-                if (this.token.startsWith('eyJ') && this.token.split('.').length === 3) {
-                    const decoded = this.decodeToken(this.token);
-                    
-                    // Try to extract Clerk domain from the token issuer
-                    if (decoded && decoded.iss) {
-                        this.clerkDomain = decoded.iss;
-                        this.log(`Detected Clerk domain from token: ${this.clerkDomain}`);
+        // Try to load existing token from secrets storage
+        this.loadToken().then(() => {
+            this.log(`Existing token found: ${this.token ? 'Yes' : 'No'}`);
+            
+            // If token exists, try to decode it for debugging
+            if (this.token) {
+                try {
+                    // Check if it's a valid JWT format before attempting to decode
+                    if (this.token.startsWith('eyJ') && this.token.split('.').length === 3) {
+                        const decoded = this.decodeToken(this.token);
+                        
+                        // Try to extract Clerk domain from the token issuer
+                        if (decoded && decoded.iss) {
+                            this.clerkDomain = decoded.iss;
+                            this.log(`Detected Clerk domain from token: ${this.clerkDomain}`);
+                        }
+                        
+                        // Check if this is a VSCode extension token
+                        if (decoded && decoded.vscodeExtension === true) {
+                            this.log('Detected VSCode Extension token format');
+                            this.isVSCodeExtensionToken = true;
+                        }
+                    } else {
+                        this.log('Stored token is not in JWT format, will need to verify with API calls');
                     }
-                    
-                    // Check if this is a VSCode extension token
-                    if (decoded && decoded.vscodeExtension === true) {
-                        this.log('Detected VSCode Extension token format');
-                        this.isVSCodeExtensionToken = true;
-                    }
-                } else {
-                    this.log('Stored token is not in JWT format, will need to verify with API calls');
+                } catch (error) {
+                    this.log(`Error checking stored token: ${error instanceof Error ? error.message : String(error)}`);
+                    // Don't throw, just note the error
                 }
-            } catch (error) {
-                this.log(`Error checking stored token: ${error instanceof Error ? error.message : String(error)}`);
-                // Don't throw, just note the error
             }
+            
+            // Initialize auth state based on token
+            this.checkAuthAndUpdateState();
+        });
+    }
+    
+    // Load token from secrets storage
+    private async loadToken(): Promise<void> {
+        try {
+            this.token = await this.context.secrets.get(this.TOKEN_STORAGE_KEY);
+        } catch (error) {
+            this.log(`Error loading token from secrets: ${error instanceof Error ? error.message : String(error)}`);
+            this.token = undefined;
         }
-        
-        // Initialize auth state based on token
-        this.checkAuthAndUpdateState();
+    }
+    
+    // Save token to secrets storage
+    private async saveToken(token: string | undefined): Promise<void> {
+        try {
+            if (token) {
+                await this.context.secrets.store(this.TOKEN_STORAGE_KEY, token);
+            } else {
+                await this.context.secrets.delete(this.TOKEN_STORAGE_KEY);
+            }
+        } catch (error) {
+            this.log(`Error saving token to secrets: ${error instanceof Error ? error.message : String(error)}`);
+            throw error;
+        }
     }
     
     // Check authentication and update the global auth state
@@ -235,6 +263,14 @@ export class ClerkTokenAuth {
                     this.log('Detected VSCode Extension token format');
                     this.isVSCodeExtensionToken = true;
                 }
+                
+                // Set a very long expiration time if this is a JWT token that can be modified
+                // This is for the use case where we want the token to last for a very long time
+                if (decoded) {
+                    // If it's a JWT we're creating or can modify, adjust the expiration
+                    // This is just logging - actual token modification would require regenerating the JWT
+                    this.log('Token lifetime would be set to very long (100 years) if this were a token we could modify');
+                }
             }
             
             // Attempt to validate the token
@@ -244,9 +280,9 @@ export class ClerkTokenAuth {
                 // Try validating token
                 await this.validateToken(inputToken);
                 
-                // If validation succeeds, save the token
+                // If validation succeeds, save the token in secrets
                 this.token = inputToken;
-                await this.context.globalState.update('softcodes.authToken', inputToken);
+                await this.saveToken(inputToken);
                 this.log('Token validated and saved successfully');
                 
                 // Update global auth state
@@ -263,7 +299,7 @@ export class ClerkTokenAuth {
                 
                 // Clear invalid token
                 this.token = undefined;
-                await this.context.globalState.update('softcodes.authToken', undefined);
+                await this.saveToken(undefined);
                 
                 // Update global auth state
                 this.authState.isAuthenticated = false;
@@ -311,6 +347,11 @@ export class ClerkTokenAuth {
                     const timeToExpiry = expiryDate.getTime() - now.getTime();
                     const minutesToExpiry = Math.floor(timeToExpiry / (1000 * 60));
                     this.log(`Token valid for ${minutesToExpiry} more minutes`);
+                    
+                    // Note: In a real implementation, if we were creating our own tokens,
+                    // we would set a very long expiration (e.g., 100 years)
+                } else {
+                    this.log('Token has no expiration - treating as long-lived');
                 }
                 
                 // Extract Clerk domain from issuer if available
@@ -487,7 +528,7 @@ export class ClerkTokenAuth {
                         // Clear expired token
                         this.token = undefined;
                         this.userInfoCache = null;
-                        await this.context.globalState.update('softcodes.authToken', undefined);
+                        await this.saveToken(undefined);
                         
                         // Update global auth state
                         this.authState.isAuthenticated = false;
@@ -499,13 +540,16 @@ export class ClerkTokenAuth {
                         return;
                     }
                     
-                    // Warn if token is about to expire
-                    if (daysToExpiry < 7) {
-                        this.log(`Token expiring soon (${daysToExpiry} days left)`);
-                        vscode.window.showWarningMessage(`Your Softcodes authentication will expire in ${daysToExpiry} days. Please get a new token soon.`);
+                    // For our long-term tokens, we'll disable expiration warnings
+                    // Only warn if token is about to expire extremely soon (1 day)
+                    if (daysToExpiry < 1) {
+                        this.log(`Token expiring very soon (${daysToExpiry} days left)`);
+                        vscode.window.showWarningMessage(`Your Softcodes authentication will expire in less than a day. Please get a new token soon.`);
                     }
                     
                     return;
+                } else {
+                    this.log('Token has no expiration date - treating as permanent');
                 }
             } catch (error) {
                 this.log(`Error checking JWT expiration: ${error instanceof Error ? error.message : String(error)}`);
@@ -522,7 +566,7 @@ export class ClerkTokenAuth {
         // Clear the token and cache
         this.token = undefined;
         this.userInfoCache = null;
-        await this.context.globalState.update('softcodes.authToken', undefined);
+        await this.saveToken(undefined);
         
         // Update global auth state
         this.authState.isAuthenticated = false;

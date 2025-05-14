@@ -2,6 +2,14 @@ import { LlmInfo } from "../types.js";
 
 export const AnthropicLlms: LlmInfo[] = [
   {
+    model: "claude-3-7-sonnet-20250219",
+    displayName: "Claude 3.7 Sonnet",
+    contextLength: 200_000,
+    description:
+    "Most intelligent model with the highest level of intelligence and capability.",
+    regex: /claude-3\.7-sonnet/i,
+  },
+  {
     model: "claude-3-5-sonnet-20240620",
     displayName: "Claude 3.5 Sonnet",
     contextLength: 200_000,

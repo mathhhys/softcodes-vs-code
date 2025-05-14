@@ -71,4 +71,19 @@ export const OpenAiLlms: LlmInfo[] = [
     displayName: "GPT-4 (1106 Preview)",
     contextLength: 128_000,
   },
+  {
+    model: "gpt-4.1-2025-04-14",
+    displayName: "GPT-4.1",
+    contextLength: 128_000
+  },
+  {
+    model: "gpt-4.1-mini-2025-04-14",
+    displayName: "GPT-4.1 Mini",
+    contextLength: 128_000
+  },
+  {
+    model: "gpt-4.1-nano-2025-04-14",
+    displayName: "GPT-4.1 Nano",
+    contextLength: 128_000
+  }
 ];

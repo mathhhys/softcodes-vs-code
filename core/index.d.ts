@@ -612,6 +612,9 @@ export type ModelName =
   | "AUTODETECT"
   // OpenAI
   | "gpt-3.5-turbo"
+  | "gpt-4.1-2025-04-14"
+  | "gpt-4.1-mini-2025-04-14"
+  | "gpt-4.1-nano-2025-04-14"
   | "gpt-3.5-turbo-16k"
   | "gpt-4"
   | "gpt-3.5-turbo-0613"
@@ -657,6 +660,7 @@ export type ModelName =
   | "claude-3-opus-20240229"
   | "claude-3-sonnet-20240229"
   | "claude-3-haiku-20240307"
+  | "claude-3-7-sonnet-20250219"
   | "claude-2.1"
   | "claude-2"
   // Cohere
@@ -668,6 +672,9 @@ export type ModelName =
   | "gemini-1.5-pro"
   | "gemini-1.5-flash-latest"
   | "gemini-1.5-flash"
+  | "gemini-2.5-pro-preview-05-06"
+  | "gemini-2.5-flash-preview-04-17"
+  | "gemini-2.0-flash"
   // Mistral
   | "mistral-tiny"
   | "mistral-small"

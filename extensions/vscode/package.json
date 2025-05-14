@@ -2,10 +2,10 @@
   "name": "softcodes",
   "icon": "media/icon.png",
   "author": "Softcodes",
-  "version": "0.8.46",
+  "version": "0.8.49",
   "repository": {
     "type": "git",
-    "url": "https://github.com/continuedev/continue"
+    "url": "https://github.com/mathhhys/softcodes-vs-code.git"
   },
   "extensionKind": [
     "ui",
@@ -15,7 +15,6 @@
     "email": "mathys@softcodes.io"
   },
   "homepage": "https://www.softcodes.io",
-  "qna": "https://github.com/continuedev/continue/issues/new/choose",
   "license": "Apache-2.0",
   "displayName": "Softcodes - Your coding copilot",
   "pricing": "Free",
@@ -635,6 +634,7 @@
     "ncp": "^2.0.0",
     "node-fetch": "^3.3.2",
     "node-machine-id": "^1.1.12",
+    "onnxruntime-web": "^1.14.0",
     "posthog-node": "^3.6.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

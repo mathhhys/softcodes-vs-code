@@ -101,9 +101,9 @@ export const defaultConfig: SerializedSoftcodesConfig = {
     },
   ],
   tabAutocompleteModel: {
-    title: "Starcoder2 3b",
-    provider: "ollama",
-    model: "starcoder2:3b",
+    title: "Gemini 2.0 Flash",
+    provider: "gemini",
+    model: "gemini-2.0-flash",
   },
   contextProviders: defaultContextProvidersVsCode,
   slashCommands: defaultSlashCommandsVscode,

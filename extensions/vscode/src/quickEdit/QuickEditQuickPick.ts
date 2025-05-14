@@ -388,9 +388,8 @@ export class QuickEdit {
             // search character to the end of the string
             const searchQuery = value.substring(lastAtIndex + 1);
 
-            const searchResults = this.miniSearch.search(
-              searchQuery,
-            ) as FileMiniSearchResult[];
+            const searchResults = this.miniSearch.search(searchQuery)
+  .map(result => ({ ...result, filename: result.id })); // Assuming 'id' contains the filename
 
             if (searchResults.length > 0) {
               quickPick.items = searchResults

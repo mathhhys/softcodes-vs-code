@@ -80,18 +80,6 @@ const config = {
             position: "left",
             label: "Docs",
           },
-          {
-            to: "https://github.com/continuedev/continue",
-            label: "GitHub",
-            position: "right",
-            className: "github-navbar",
-          },
-          {
-            to: "https://discord.gg/vapESyrFmJ",
-            label: "Discord",
-            position: "right",
-            className: "discord-navbar",
-          },
         ],
       },
       footer: {
@@ -102,24 +90,7 @@ const config = {
             items: [
               {
                 label: "VS Code",
-                to: "https://marketplace.visualstudio.com/items?itemName=Continue.continue",
-              },
-              {
-                label: "JetBrains",
-                to: "https://plugins.jetbrains.com/plugin/22707-continue-extension",
-              },
-            ],
-          },
-          {
-            title: "Community",
-            items: [
-              {
-                label: "Discord",
-                to: "https://discord.gg/vapESyrFmJ",
-              },
-              {
-                label: "GitHub",
-                to: "https://github.com/continuedev/continue",
+                to: "https://marketplace.visualstudio.com/items?itemName=softcodes.softcodes",
               },
             ],
           },
@@ -127,12 +98,8 @@ const config = {
             title: "Follow Us",
             items: [
               {
-                label: "Twitter",
-                to: "https://twitter.com/continuedev",
-              },
-              {
                 label: "LinkedIn",
-                to: "https://linkedin.com/company/continuedev",
+                to: "https://linkedin.com/company/softcodesai/",
               },
             ],
           },

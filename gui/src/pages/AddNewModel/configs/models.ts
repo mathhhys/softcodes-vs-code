@@ -581,6 +581,45 @@ export const models: { [key: string]: ModelPackage } = {
     providerOptions: ["gemini"],
     isOpenSource: false,
   },
+  gemini25Pro: {
+    title: "Gemini 2.5 Pro",
+    description: "Gemini 2.5 Pro is Google's cutting-edge reasoning model, capable of handling complex problems in coding, mathematics, and STEM fields, as well as analyzing large datasets, codebases, and documents using long context.",
+    params: {
+      title: "Gemini 2.5 Pro",
+      model: "gemini-2.5-pro-preview-05-06",
+      contextLength: 2_000_000,
+      apiKey: "<API_KEY>",
+    },
+    icon: "gemini.png",
+    providerOptions: ["gemini", "free-trial"],
+    isOpenSource: false,
+  },
+  gemini25Flash: {
+    title: "Gemini 2.5 Flash",
+    description: "Google's best model in terms of performance-to-speed ratio, offering comprehensive features.",
+    params: {
+      title: "Gemini 2.5 Flash",
+      model: "gemini-2.5-flash-preview-04-17",
+      contextLength: 2_000_000,
+      apiKey: "<API_KEY>",
+    },
+    icon: "gemini.png",
+    providerOptions: ["gemini", "free-trial"],
+    isOpenSource: false,
+  },
+  gemini20Flash: {
+    title: " Gemini 2.0 Flash",
+    description: "Gemini 2.0 Flash offers next-generation features and enhanced functionality, including higher speed, use of native tools and a million-token context window.",
+    params: {
+      title: "Gemini 2.0 Flash",
+      model: "gemini-2.0-flash",
+      contextLength: 2_000_000,
+      apiKey: "<API_KEY>",
+    },
+    icon: "gemini.png",
+    providerOptions: ["gemini", "free-trial"],
+    isOpenSource: false,
+  },
   commandR: {
     title: "Command R",
     description:
@@ -637,6 +676,18 @@ export const models: { [key: string]: ModelPackage } = {
     icon: "openai.png",
     isOpenSource: false,
   },
+  gpt41: {
+    title:"GPT-4.1",
+    description:"A new version of GPT-4 with more powerful capabilities and higher accuracy.",
+    params:{
+        model:"gpt-4.1-2025-04-14",
+        contextLength:128_000,
+        title:"GPT-4.1"
+    },
+    providerOptions:["openai"],
+    icon:"openai.png",
+    isOpenSource:false
+  },
   gpt4omini: {
     title: "GPT-4o Mini",
     description:
@@ -647,6 +698,18 @@ export const models: { [key: string]: ModelPackage } = {
       title: "GPT-4o mini",
       systemMessage:
         "You are an expert software developer. You give helpful and concise responses.",
+    },
+    providerOptions: ["openai"],
+    icon: "openai.png",
+    isOpenSource: false,
+  },
+  gpt41nano: {
+    title: "GPT-4.1 Nano",
+    description: "GPT-4.1-nano is OpenAI's fastest and most cost-effective model with 1 million token context window, delivering impressive performance while scoring higher than GPT-4o mini on key benchmarks",
+    params:{
+      model: "gpt-4.1-nano-2025-04-14",
+      contextLength: 128_000,
+      title: "GPT-4.1 Nano",
     },
     providerOptions: ["openai"],
     icon: "openai.png",
@@ -663,6 +726,18 @@ export const models: { [key: string]: ModelPackage } = {
     },
     providerOptions: ["openai", "free-trial"],
     icon: "openai.png",
+    isOpenSource: false,
+  },
+  gpt41mini: {
+    title: "GPT-4.1 Mini",
+    description: "GPT-4.1 Mini offers nearly full model capabilities with lower latency and cost, outperforming GPT-4o in many benchmarks while supporting a 1M token context window.",
+    params: {
+      model:"gpt-4.1-mini-2025-04-14",
+      contextLength: 128_000,
+      title:"GPT-4.1 mini",
+    },
+    providerOptions: ["openai"],
+    icon:"openai.png",
     isOpenSource: false,
   },
   claude35Sonnet: {
@@ -718,6 +793,20 @@ export const models: { [key: string]: ModelPackage } = {
       apiKey: "",
     },
     providerOptions: ["anthropic", "free-trial"],
+    icon: "anthropic.png",
+    isOpenSource: false,
+  },
+  claude37Sonnet: {
+    title: "Claude 3.7 Sonnet",
+    description:
+      "The third most capable model in the Claude 3 series: fastest and most compact model for near-instant responsiveness",
+    params: {
+      model: "claude-3-7-sonnet-20250219",
+      contextLength: 200_000,
+      title: "Claude 3.7 Sonnet",
+      apiKey: "",
+    },
+    providerOptions: ["anthropic"],
     icon: "anthropic.png",
     isOpenSource: false,
   },

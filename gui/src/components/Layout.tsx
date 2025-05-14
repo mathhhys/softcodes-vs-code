@@ -296,10 +296,6 @@ const Layout = () => {
                 <IndexingProgressBar indexingState={indexingState} />
               </div>
 
-              <ProfileIconLink href="https://www.softcodes.io/" target="_blank" rel="noopener noreferrer" title="Go to Profile">
-            <UserCircleIcon width="1.4em" height="1.4em" />
-          </ProfileIconLink>
-
               <ProfileSwitcher />
               <HeaderButtonWithText
                 tooltipPlacement="top-end"
